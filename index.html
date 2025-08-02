@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orion Labs - Innovate. Create. Elevate.</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="theme-gold-dark"> <!-- Default Theme -->
+
+    <!-- Header Section -->
+    <header class="main-header">
+        <div class="container">
+            <a href="#hero" class="logo">
+                <img src="src/assets/images/orionlabs.png" alt="Orion Labs Logo" onerror="this.onerror=null;this.src='https://placehold.co/100x100/1a1a1a/e0c56e?text=O';">
+                <h1>Orion Labs</h1>
+            </a>
+            <nav class="main-nav">
+                <a href="#about">About</a>
+                <a href="#services">Services</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <!-- Updated Theme Customizer -->
+            <div class="theme-customizer">
+                <button id="theme-toggle-btn" class="theme-button" aria-label="Toggle theme customizer">
+                    <svg class="palette-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                    <div id="current-color-preview" class="current-color-preview"></div>
+                </button>
+                <div id="theme-palette" class="theme-palette">
+                    <div class="theme-swatch" data-theme="theme-gold-dark" style="background-color: #e0c56e;"></div>
+                    <div class="theme-swatch" data-theme="theme-nebula-dark" style="background-color: #be93d4;"></div>
+                    <div class="theme-swatch" data-theme="theme-starlight-dark" style="background-color: #63d2d4;"></div>
+                    <div class="theme-swatch" data-theme="theme-nova-dark" style="background-color: #f5a66f;"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Scroll Container -->
+    <main class="scroll-container">
+        <!-- Hero Section -->
+        <section id="hero" class="hero-fullscreen scroll-section">
+            <div id="particle-container"></div>
+            <div class="hero-content section-content">
+                <h2>Innovate. Create. Elevate.</h2>
+                <p>Orion Labs is your partner in navigating the digital cosmos. We build stellar solutions for ambitious brands.</p>
+                <a href="#services" class="btn btn-primary">Explore Our Universe</a>
+            </div>
+            <a href="#about" class="scroll-down-indicator" aria-label="Scroll down"></a>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="scroll-section">
+            <div class="content-card section-content">
+                <h3>About Us</h3>
+                <p>Founded under the guiding light of the Orion constellation, our lab is a nexus of creativity and technology. We are a team of designers, developers, and modders dedicated to launching your ideas into the stratosphere. Our philosophy is simple: combine brilliant design with powerful functionality to create unforgettable digital experiences.</p>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="services-section scroll-section">
+            <div class="section-content">
+                <h3 class="section-title">Our Services</h3>
+                <div class="content-grid">
+                    <!-- Web Development -->
+                    <div class="content-card">
+                        <div class="service-card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                        </div>
+                        <h4>Web Development</h4>
+                        <p>Crafting high-performance websites and desktop apps that look great on all devices.</p>
+                        <div class="icon-bar">
+                            <div class="icon-wrapper" data-tooltip="JavaScript">
+                               <img src="src/assets/images/javascript.svg" alt="JavaScript Icon" />
+                            </div>
+                            <div class="icon-wrapper" data-tooltip="Electron">
+                                 <img src="src/assets/images/electron.svg" alt="Electron Icon" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Game Modding -->
+                    <div class="content-card">
+                        <div class="service-card-icon">
+                            <img src="src/assets/images/gamemodding.svg" alt="Game Modding Icon" />
+                        </div>
+                        <h4>Game Modding</h4>
+                        <p>Extending and creating new experiences for games built on Unreal Engine 5.</p>
+                         <div class="icon-bar">
+                            <div class="icon-wrapper" data-tooltip="Unreal Engine">
+                                 <img src="src/assets/images/unrealengine.svg" alt="Unreal Engine Icon" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Bot Services -->
+                    <div class="content-card">
+                        <div class="service-card-icon">
+                             <img src="src/assets/images/botservices.svg" alt="Bot Services Icon" />
+                        </div>
+                        <h4>Bot Services</h4>
+                        <p>Automating tasks and building communities with custom bots for multiple platforms.</p>
+                         <div class="icon-bar">
+                            <div class="icon-wrapper" data-tooltip="Discord">
+                               <img src="src/assets/images/discord.svg" alt="Discord Icon" />
+                            </div>
+                            <div class="icon-wrapper" data-tooltip="RCON">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                            </div>
+                            <div class="icon-wrapper" data-tooltip="And more">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Applications -->
+                    <div class="content-card">
+                         <div class="service-card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        </div>
+                        <h4>Applications</h4>
+                        <p>Building intuitive and powerful applications for desktop and web platforms.</p>
+                         <div class="icon-bar">
+                            <div class="icon-wrapper" data-tooltip="Desktop">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                            </div>
+                            <div class="icon-wrapper" data-tooltip="Web">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="scroll-section">
+            <div class="content-card section-content">
+                <h3>Let's Build Together</h3>
+                <p>Have a project in mind? Reach out and let's discuss how we can bring your vision to life.</p>
+                <button id="get-in-touch-btn" class="btn btn-secondary">Get in Touch</button>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Contact Modal -->
+    <div id="contact-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-form-view">
+                <h3>Contact Us</h3>
+                <form id="contact-form">
+                    <div class="form-group">
+                        <label for="email">Email <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="service">Service <span class="required">*</span></label>
+                        <select id="service" name="service" required>
+                            <option value="" disabled selected>Select a service...</option>
+                            <option value="Web Development">Web Development</option>
+                            <option value="Game Modding">Game Modding</option>
+                            <option value="Bot Services">Bot Services</option>
+                            <option value="Applications">Applications</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject <span class="required">*</span></label>
+                        <input type="text" id="subject" name="subject" placeholder="Project Idea" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="summary">Summary <span class="required">*</span></label>
+                        <textarea id="summary" name="summary" rows="4" placeholder="Briefly describe your project or question..." required></textarea>
+                    </div>
+                    <div class="form-button-group">
+                        <button type="button" id="cancel-modal-btn" class="btn btn-cancel">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Confirm</button>
+                    </div>
+                    <p id="form-status"></p>
+                </form>
+            </div>
+            <div class="modal-success-view">
+                <h3>Successfully Sent!</h3>
+                <p>We've received your inquiry and will be looking forward to your stellar idea! We'll be in touch soon!</p>
+                <button id="success-ok-btn" class="btn btn-primary">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
