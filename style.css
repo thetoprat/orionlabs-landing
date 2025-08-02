@@ -5,7 +5,7 @@
     --bg-secondary: #2a2a2a;
     --text-primary: #f0f0f0;
     --text-secondary: #b0b0b0;
-    --accent-primary: #e0c56e; 
+    --accent-primary: #e0c56e; /* Gold */
     --accent-secondary: #ffffff;
     --shadow-color: rgba(0, 0, 0, 0.2);
     --font-family: 'Poppins', sans-serif;
@@ -53,18 +53,19 @@ body {
     color: var(--text-primary);
     transition: background-color 0.5s ease, color 0.5s ease;
     line-height: 1.6;
-    overflow: hidden;
+    overflow: hidden; /* Hide main body scrollbar */
 }
 
 /* --- Scroll Container --- */
 .scroll-container {
     height: 100vh;
     overflow-y: scroll;
-    scrollbar-width: none; 
-    -ms-overflow-style: none;  
+    /* Hide scrollbar */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
 }
 .scroll-container::-webkit-scrollbar {
-    display: none; 
+    display: none; /* Chrome, Safari, Opera */
 }
 
 
@@ -80,6 +81,7 @@ body {
 }
 
 .section-content {
+    /* Transitions are now handled by JS for a smoother effect */
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -281,7 +283,7 @@ body.scrolled .main-header > .container {
 /* --- Content Cards --- */
 .content-card {
     background-color: var(--bg-secondary);
-    padding: 2rem;
+    padding: 1.5rem; /* Adjusted padding */
     border-radius: 24px;
     box-shadow: 0 8px 30px var(--shadow-color);
     text-align: center;
@@ -292,7 +294,15 @@ body.scrolled .main-header > .container {
 .content-card h4 {
     color: var(--accent-primary);
     margin-bottom: 0.5rem;
+    font-size: 1.1rem; /* Adjusted font size */
 }
+
+.content-card p {
+    font-size: 0.9rem; /* Adjusted font size */
+    flex-grow: 1; /* Allow p to take up space */
+    margin-bottom: 1rem;
+}
+
 
 /* About Us & Contact Section Specifics */
 #about .content-card,
@@ -333,7 +343,8 @@ body.scrolled .main-header > .container {
 .services-section .content-card {
     position: absolute;
     width: clamp(250px, 25vmin, 300px);
-    height: clamp(290px, 28vmin, 340px);
+    min-height: clamp(290px, 28vmin, 340px); /* Use min-height */
+    height: auto; /* Allow height to adjust */
     transition: transform 0.4s ease-out;
 }
 
@@ -385,7 +396,7 @@ body.scrolled .main-header > .container {
     justify-content: center;
     gap: 1rem;
     margin-top: auto;
-    padding-top: 1.5rem;
+    padding-top: 1rem;
     color: #ffffff;
 }
 .icon-wrapper {
@@ -579,7 +590,7 @@ body.scrolled .main-header > .container {
 }
 
 .modal-success-view {
-    display: none;
+    display: none; /* Hidden by default */
     text-align: center;
 }
 .modal-success-view h3 {

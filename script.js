@@ -1,5 +1,5 @@
 /**
- * Orion Labs Script
+ * Orion Labs Interactive Script
  */
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -191,9 +191,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const formStatus = document.getElementById('form-status');
 
     const openModal = () => {
-        modalContent.classList.remove('show-success'); 
-        contactForm.reset(); 
-        formStatus.textContent = ''; 
+        modalContent.classList.remove('show-success'); // Reset to form view
+        contactForm.reset(); // Clear form fields
+        formStatus.textContent = ''; // Clear status message
         modal.classList.add('active');
     };
     const closeModal = () => modal.classList.remove('active');
@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const payload = {
                 embeds: [{
                     title: `New Contact Form Submission: ${subject}`,
-                    color: 14742302, 
+                    color: 14742302, // Gold color
                     fields: [
                         { name: 'Email', value: email, inline: true },
                         { name: 'Service', value: service, inline: true },
