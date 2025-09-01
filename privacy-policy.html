@@ -1,20 +1,252 @@
-1. Information We Collect
-To provide and manage our services, we collect your username, IP address, and technical data about your operating system.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Privacy Policy</title>
+  <meta name="description" content="Privacy Policy for our game and services using Epic Online Services and Unreal Engine." />
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #161a22;
+      --text: #e6e9ef;
+      --muted: #a3adbd;
+      --link: #8ab4ff;
+      --border: #262b36;
+    }
 
-2. How We Use Your Information
-Your information is used exclusively for internal purposes such as user account management, providing access to our services, preventing abuse, and communicating with you regarding your account.
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+      line-height: 1.6;
+    }
 
-3. Data Sharing and Sale
-We will never sell, rent, lease, or give away your personal data to any third party. Your information is used solely for the internal operation of this website.
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: linear-gradient(180deg, rgba(15,17,21,.95), rgba(15,17,21,.6));
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
 
-4. Data Retention
-We will retain your information only for as long as is necessary for the purposes set out in this Privacy Policy, or to the extent necessary to comply with our legal obligations, resolve disputes, and enforce our agreements.
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 1.25rem 1rem;
+    }
 
-5. Your Right to Data Deletion
-You have the right to request the complete deletion of your personal data from our systems. To do so, please send an email request to [email protected] from the email address associated with your account.
+    h1 {
+      margin: 0 0 .25rem 0;
+      font-size: 1.75rem;
+      letter-spacing: .3px;
+    }
 
-6. Children's Privacy
-Our Service does not address anyone under the age of 13 ("Children"). We do not knowingly collect personally identifiable information from children under 13. If you are a parent or guardian and you are aware that your Child has provided us with Personal Information, please contact us immediately.
+    .updated {
+      margin: 0;
+      color: var(--muted);
+      font-size: .95rem;
+    }
 
-7. Data Security
-We are committed to protecting the security of your personal information. We implement a variety of industry-standard security measures and best practices to maintain the safety and integrity of your data.
+    nav {
+      padding: .5rem 0 1rem 0;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    nav a {
+      color: var(--link);
+      text-decoration: none;
+      margin-right: 1rem;
+      font-size: .95rem;
+    }
+
+    nav a:hover { text-decoration: underline; }
+
+    main {
+      padding: 1.25rem 0 3rem 0;
+    }
+
+    /* Scrollable policy panel (minimal CSS as requested) */
+    .policy {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      max-height: 70vh;        /* <-- enables vertical scrolling within the panel */
+      overflow-y: auto;        /* <-- vertical scroll */
+      overflow-x: hidden;
+      scrollbar-width: thin;   /* Firefox */
+    }
+
+    /* Optional nice-looking scrollbar (kept minimal) */
+    .policy::-webkit-scrollbar {
+      width: 10px;
+    }
+    .policy::-webkit-scrollbar-track {
+      background: #101318;
+    }
+    .policy::-webkit-scrollbar-thumb {
+      background: #2a3140;
+      border-radius: 8px;
+    }
+
+    section {
+      margin: 1.25rem 0;
+    }
+
+    h2 {
+      margin: 0 0 .5rem 0;
+      font-size: 1.25rem;
+      border-left: 3px solid var(--link);
+      padding-left: .5rem;
+    }
+
+    p { margin: .5rem 0 .75rem 0; }
+
+    ul {
+      margin: .25rem 0 .75rem 1.25rem;
+      padding: 0;
+    }
+
+    a { color: var(--link); }
+
+    footer {
+      color: var(--muted);
+      font-size: .9rem;
+      border-top: 1px dashed var(--border);
+      padding-top: 1rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Privacy Policy</h1>
+      <p class="updated">Last updated: September 1, 2025</p>
+      <nav aria-label="Table of contents">
+        <a href="#info-we-collect">1. Information We Collect</a>
+        <a href="#how-we-use">2. How We Use Your Information</a>
+        <a href="#data-sharing">3. Data Sharing &amp; Sale</a>
+        <a href="#retention">4. Data Retention</a>
+        <a href="#deletion">5. Your Right to Data Deletion</a>
+        <a href="#children">6. Children’s Privacy</a>
+        <a href="#security">7. Data Security</a>
+        <a href="#epic-unreal">8. Epic Online Services &amp; Unreal Engine</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="policy" role="region" aria-label="Privacy policy content">
+      <section id="intro">
+        <p>
+          This Privacy Policy describes how we collect, use, disclose, and safeguard information when you use our website and game (the “Service”).
+          Our game integrates Epic Games Online Services (“Epic Online Services” or “EOS”) and is built using Unreal Engine.
+        </p>
+      </section>
+
+      <section id="info-we-collect">
+        <h2>1. Information We Collect</h2>
+        <p>
+          To provide and manage our services, we collect the following information:
+        </p>
+        <ul>
+          <li><strong>Username</strong></li>
+          <li><strong>IP address</strong></li>
+          <li><strong>Technical data</strong> about your operating system and runtime environment</li>
+        </ul>
+      </section>
+
+      <section id="how-we-use">
+        <h2>2. How We Use Your Information</h2>
+        <p>
+          Your information is used exclusively for internal purposes such as user account management, providing access to our services,
+          preventing abuse, and communicating with you regarding your account.
+        </p>
+      </section>
+
+      <section id="data-sharing">
+        <h2>3. Data Sharing and Sale</h2>
+        <p>
+          We will never sell, rent, lease, or give away your personal data to any third party. Your information is used solely for the
+          internal operation of this website and game. We may share only what is necessary with service providers strictly to operate
+          features of the Service (see Section 8 for Epic Online Services and Unreal Engine details).
+        </p>
+      </section>
+
+      <section id="retention">
+        <h2>4. Data Retention</h2>
+        <p>
+          We will retain your information only for as long as is necessary for the purposes set out in this Privacy Policy, or to the extent
+          necessary to comply with our legal obligations, resolve disputes, and enforce our agreements.
+        </p>
+      </section>
+
+      <section id="deletion">
+        <h2>5. Your Right to Data Deletion</h2>
+        <p>
+          You have the right to request the complete deletion of your personal data from our systems. To do so, please send an email request to
+          <a href="mailto:[email protected]">[email protected]</a> from the email address associated with your account.
+        </p>
+      </section>
+
+      <section id="children">
+        <h2>6. Children’s Privacy</h2>
+        <p>
+          Our Service does not address anyone under the age of 13 (“Children”). We do not knowingly collect personally identifiable information
+          from children under 13. If you are a parent or guardian and you are aware that your Child has provided us with Personal Information,
+          please contact us immediately.
+        </p>
+      </section>
+
+      <section id="security">
+        <h2>7. Data Security</h2>
+        <p>
+          We are committed to protecting the security of your personal information. We implement a variety of industry-standard security measures
+          and best practices to maintain the safety and integrity of your data.
+        </p>
+      </section>
+
+      <section id="epic-unreal">
+        <h2>8. Epic Online Services (EOS) &amp; Unreal Engine</h2>
+        <p>
+          Our game is developed with <strong>Unreal Engine</strong> and integrates <strong>Epic Online Services (EOS)</strong> to provide features such as
+          multiplayer, matchmaking, achievements, leaderboards, voice chat, anti-cheat, and account linking (depending on the features we enable).
+        </p>
+        <p>
+          To operate these features, limited data may be exchanged with Epic’s services (for example, technical identifiers, online IDs, session tokens,
+          and networking information). This exchange is strictly for enabling EOS functionality within our game and is not sold.
+        </p>
+        <ul>
+          <li>We only transmit the minimum information required to enable the EOS features we use.</li>
+          <li>Data processed by Epic is handled under Epic’s own terms and privacy notices.</li>
+          <li>Unreal Engine tooling may collect crash or performance diagnostics to improve engine stability.</li>
+        </ul>
+        <p>
+          For questions about how EOS or Unreal Engine process data, please consult Epic’s official documentation and privacy notices.
+          You can also contact us at <a href="mailto:[email protected]">[email protected]</a> and we’ll help route your request where appropriate.
+        </p>
+      </section>
+
+      <section id="contact">
+        <h2>Contact</h2>
+        <p>
+          If you have any questions about this Privacy Policy or our data practices, contact us at
+          <a href="mailto:[email protected]">[email protected]</a>.
+        </p>
+      </section>
+
+      <footer>
+        <p>
+          Note: This policy is intended to explain, in plain language, how we handle information for our website and game that use Epic Online Services and Unreal Engine.
+        </p>
+      </footer>
+    </div>
+  </main>
+</body>
+</html>
