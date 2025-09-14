@@ -133,6 +133,12 @@ gap: 2rem;
 grid-template-columns: 2.5fr 1fr;
 }
 }
+.job-description-main {
+background: var(--panel);
+border-radius: 16px;
+padding: 2.5rem;
+box-shadow: 8px 8px 0px var(--border);
+}
 .job-description-main h1 {
 margin: 0 0 0.5rem 0;
 font-size: 2rem;
@@ -242,6 +248,33 @@ color: var(--text);
 }
 .hidden {
 display: none !important;
+}
+#draft-manager {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 1rem;
+padding: 0 0.5rem;
+}
+#draft-status-message {
+color: var(--muted);
+font-size: 0.9rem;
+margin: 0;
+}
+.btn-secondary {
+background-color: transparent;
+color: var(--muted);
+border: 1px solid var(--border);
+padding: 0.4rem 0.8rem;
+font-size: 0.8rem;
+border-radius: 999px;
+cursor: pointer;
+transition: color 0.2s, background-color 0.2s;
+width: auto;
+}
+.btn-secondary:hover {
+background-color: var(--border);
+color: var(--text);
 }
 .form-group {
 margin-bottom: 1.5rem;
@@ -419,7 +452,7 @@ color: var(--primary);
 </div>
 </div>
 <div id="details-view" class="hidden">
-<div class="job-description-main panel">
+<div class="job-description-main">
 <a class="back-link" id="back-to-openings">&larr; Back to Job Openings</a>
 <h1 id="job-title-detail"></h1>
 <p class="job-subtitle">Remote</p>
@@ -443,6 +476,10 @@ color: var(--primary);
 </div>
 <div id="form-view" class="hidden">
 <a class="back-link" id="back-to-details">&larr; Back to Job Details</a>
+<div id="draft-manager" class="hidden">
+<p id="draft-status-message">Loaded from draft.</p>
+<button id="clear-draft-button" class="btn-secondary">Clear Draft</button>
+</div>
 <div class="panel">
 <form id="application-form" novalidate>
 <div class="form-group">
@@ -622,10 +659,15 @@ const jobListContainer = document.getElementById('job-list-container');
 const backToOpeningsBtn = document.getElementById('back-to-openings');
 const backToDetailsBtn = document.getElementById('back-to-details');
 const showFormButton = document.getElementById('show-form-button');
+const draftManager = document.getElementById('draft-manager');
+const clearDraftButton = document.getElementById('clear-draft-button');
 let currentRole = '';
 const switchView = (viewToShow) => {
 [openingsView, detailsView, formView].forEach(v => v.classList.add('hidden'));
 viewToShow.classList.remove('hidden');
+if (viewToShow !== formView) {
+draftManager.classList.add('hidden');
+}
 window.scrollTo(0, 0);
 };
 const renderOpenings = () => {
@@ -715,9 +757,16 @@ if (form.elements[key] && key !== 'role') {
 form.elements[key].value = data[key];
 }
 }
+draftManager.classList.remove('hidden');
 }
 };
-const clearDraft = () => localStorage.removeItem(DRAFT_KEY);
+const clearDraft = () => {
+localStorage.removeItem(DRAFT_KEY);
+form.reset();
+form.querySelectorAll('.file-input-label').forEach(label => label.textContent = 'Choose File...');
+draftManager.classList.add('hidden');
+};
+clearDraftButton.addEventListener('click', clearDraft);
 form.querySelectorAll('input[type="text"], input[type="email"], input[type="url"], select, textarea').forEach(el => el.addEventListener('input', saveDraft));
 form.querySelectorAll('.file-input').forEach(fileInput => {
 fileInput.addEventListener('change', () => {
@@ -787,8 +836,6 @@ body: webhookFormData,
 if (response.ok) {
 showPopup('Success!', 'Your application has been submitted successfully!');
 clearDraft();
-form.reset();
-form.querySelectorAll('.file-input-label').forEach(label => label.textContent = 'Choose File...');
 setTimeout(renderOpenings, 500);
 } else {
 showToast('An error occurred. Please try again.');
