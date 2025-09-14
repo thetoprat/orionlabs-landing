@@ -100,7 +100,12 @@ gap: 2rem;
 grid-template-columns: 2.5fr 1fr;
 }
 }
-.job-description-main h1 {
+.job-description-main .panel {
+padding: 0;
+background: none;
+border: none;
+}
+.job-description-main .panel h1 {
 margin: 0 0 0.5rem 0;
 font-size: 2rem;
 }
@@ -166,6 +171,38 @@ color: var(--bg);
 }
 .btn-primary:hover {
 background-color: var(--primary-hover);
+}
+.sidebar-meta {
+margin-top: 1.5rem;
+font-size: 0.9rem;
+}
+.sidebar-meta label {
+display: block;
+color: var(--text);
+margin-bottom: 0.5rem;
+font-weight: 600;
+}
+.sidebar-meta input {
+width: 100%;
+box-sizing: border-box;
+background-color: var(--bg);
+border: 1px solid var(--border);
+border-radius: 6px;
+padding: 0.5rem;
+color: var(--muted);
+margin-bottom: 1rem;
+font-family: inherit;
+font-size: 0.8rem;
+}
+.sidebar-meta-item {
+display: flex;
+justify-content: space-between;
+padding: 0.75rem 0;
+border-top: 1px solid var(--border);
+color: var(--muted);
+}
+.sidebar-meta-item strong {
+color: var(--text);
 }
 .hidden {
 display: none !important;
@@ -287,7 +324,7 @@ color: var(--primary);
 </head>
 <body>
 <main class="wrap">
-<img src="logo.png" alt="Orion Labs Logo" class="logo">
+<img src="src/assets/images/logo.png" alt="Orion Labs Logo" class="logo">
 <div id="openings-view">
 <div class="panel">
 <h1>Current Openings</h1>
@@ -297,13 +334,25 @@ color: var(--primary);
 </div>
 </div>
 <div id="details-view" class="hidden">
-<div class="job-description-main">
+<div class="job-description-main panel">
 <a class="back-link" id="back-to-openings">&larr; Back to Job Openings</a>
 <h1 id="job-title-detail"></h1>
 <div class="job-description-content" id="job-description-detail"></div>
 </div>
 <aside class="apply-sidebar panel">
 <button class="btn btn-primary" id="show-form-button">Apply</button>
+<div class="sidebar-meta">
+<label for="job-link-input">Link to This Job</label>
+<input type="text" id="job-link-input" readonly>
+<div class="sidebar-meta-item">
+<span>Location</span>
+<strong>Remote</strong>
+</div>
+<div class="sidebar-meta-item">
+<span>Employment Type</span>
+<strong>Volunteer</strong>
+</div>
+</div>
 </aside>
 </div>
 <div id="form-view" class="hidden">
@@ -519,6 +568,9 @@ descriptionHTML += '</ul><h3>Qualifications:</h3><ul>';
 job.qualifications.forEach(item => descriptionHTML += `<li>${item}</li>`);
 descriptionHTML += '</ul>';
 document.getElementById('job-description-detail').innerHTML = descriptionHTML;
+const jobLinkInput = document.getElementById('job-link-input');
+const url = `${window.location.href.split('?')[0]}?role=${encodeURIComponent(role)}`;
+jobLinkInput.value = url;
 switchView(detailsView);
 };
 const renderForm = (role) => {
@@ -583,6 +635,16 @@ const label = fileInput.nextElementSibling;
 label.textContent = fileInput.files.length > 0 ? fileInput.files[0].name : 'Choose File...';
 });
 });
+const preselectRoleFromURL = () => {
+const params = new URLSearchParams(window.location.search);
+const role = params.get('role');
+if (role && jobData[role]) {
+renderDetails(role);
+} else {
+renderOpenings();
+}
+};
+preselectRoleFromURL();
 form.addEventListener('submit', async (event) => {
 event.preventDefault();
 let hasError = false;
