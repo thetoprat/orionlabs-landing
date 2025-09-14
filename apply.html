@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Current Openings - Orion Labs</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Apply to Orion Labs</title>
+<meta name="description" content="Join the Orion Labs team and help us build stellar solutions." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -14,13 +15,17 @@
 --text: #e6e9ef;
 --muted: #a3adbd;
 --primary: #e0c56e;
+--primary-hover: #f0d57e;
 --border: #262b36;
+--danger: #ff6b6b;
+--success: #63d2d4;
 }
 html, body {
 margin: 0;
 background: var(--bg);
 color: var(--text);
 font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
+line-height: 1.7;
 }
 header {
 position: sticky;
@@ -49,7 +54,7 @@ margin: 0;
 color: var(--muted);
 font-size: .95rem;
 }
-.openings-panel {
+.panel {
 background: var(--panel);
 border: 1px solid var(--border);
 border-radius: 12px;
@@ -61,6 +66,7 @@ justify-content: space-between;
 align-items: center;
 padding: 1.5rem 0;
 border-bottom: 1px solid var(--border);
+cursor: pointer;
 }
 .job-item:last-child {
 border-bottom: none;
@@ -72,10 +78,10 @@ color: var(--text);
 text-decoration: none;
 transition: color 0.2s;
 }
-.job-title:hover {
+.job-item:hover .job-title {
 color: var(--primary);
 }
-.job-details {
+.job-details-meta {
 display: flex;
 gap: 1.5rem;
 color: var(--muted);
@@ -91,51 +97,551 @@ width: 16px;
 height: 16px;
 stroke: var(--muted);
 }
+#details-view h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+.job-description-content h3 {
+font-size: 1.2rem;
+font-weight: 600;
+color: var(--primary);
+border-left: 3px solid var(--primary);
+padding-left: 0.75rem;
+margin-top: 2rem;
+margin-bottom: 1rem;
+}
+.job-description-content ul {
+list-style: none;
+padding-left: 1rem;
+}
+.job-description-content li {
+margin-bottom: 0.75rem;
+padding-left: 1.25rem;
+position: relative;
+}
+.job-description-content li::before {
+content: '◆';
+position: absolute;
+left: 0;
+color: var(--primary);
+font-size: 0.8rem;
+top: 5px;
+}
+.back-link {
+color: var(--muted);
+text-decoration: none;
+display: inline-block;
+margin-bottom: 1rem;
+cursor: pointer;
+}
+.back-link:hover {
+color: var(--text);
+}
+.btn {
+display: inline-block;
+padding: .75rem 1.5rem;
+border: none;
+border-radius: 6px;
+font-size: 1rem;
+font-weight: 600;
+cursor: pointer;
+text-decoration: none;
+transition: background-color 0.2s, transform 0.1s;
+}
+.btn-primary {
+background-color: var(--primary);
+color: var(--bg);
+}
+.btn-primary:hover {
+background-color: var(--primary-hover);
+}
+.hidden {
+display: none !important;
+}
+.form-group {
+margin-bottom: 1.5rem;
+}
+label {
+display: block;
+margin-bottom: .5rem;
+color: var(--muted);
+font-size: .9rem;
+font-weight: 600;
+}
+input[type="text"], input[type="email"], input[type="url"], select, textarea {
+width: 100%;
+background-color: var(--bg);
+border: 1px solid var(--border);
+border-radius: 6px;
+padding: .75rem;
+color: var(--text);
+font-size: 1rem;
+box-sizing: border-box;
+transition: border-color 0.2s, box-shadow 0.2s;
+font-family: inherit;
+}
+textarea {
+resize: vertical;
+min-height: 120px;
+}
+select {
+-webkit-appearance: none;
+-moz-appearance: none;
+appearance: none;
+background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a3adbd' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+background-repeat: no-repeat;
+background-position: right .75rem center;
+background-size: 1em;
+}
+.file-input-wrapper {
+position: relative;
+}
+.file-input-label {
+display: flex;
+align-items: center;
+width: 100%;
+background-color: var(--bg);
+border: 1px solid var(--border);
+border-radius: 6px;
+padding: .75rem;
+color: var(--muted);
+font-size: 1rem;
+box-sizing: border-box;
+cursor: pointer;
+}
+.file-input {
+opacity: 0;
+position: absolute;
+z-index: -1;
+}
+.form-actions {
+display: flex;
+justify-content: flex-end;
+align-items: center;
+gap: 1rem;
+}
+.required {
+color: var(--primary);
+margin-left: 4px;
+}
+#form-status {
+margin: 0;
+font-size: .9rem;
+height: 1.2em;
+transition: color 0.3s;
+color: var(--success);
+}
+.status-error {
+color: var(--danger) !important;
+}
+#global-popup-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0,0,0,0.7);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1000;
+opacity: 0;
+visibility: hidden;
+transition: opacity 0.3s, visibility 0.3s;
+}
+#global-popup-overlay.visible {
+opacity: 1;
+visibility: visible;
+}
+.popup-content {
+background: var(--panel);
+padding: 2rem;
+border-radius: 12px;
+border: 1px solid var(--border);
+width: 90%;
+max-width: 450px;
+text-align: center;
+transform: scale(0.9);
+transition: transform 0.3s;
+}
+#global-popup-overlay.visible .popup-content {
+transform: scale(1);
+}
+.popup-content h2 {
+margin: 0 0 1rem 0;
+color: var(--primary);
+}
 </style>
 </head>
 <body>
-<header>
-<div class="wrap">
-<h1>Current Openings</h1>
-<p class="subtitle">Thanks for checking out our job openings. See something that interests you? Apply here.</p>
-</div>
+<header class="wrap">
+<h1 id="page-title">Current Openings</h1>
+<p id="page-subtitle" class="subtitle">Thanks for checking out our job openings. See something that interests you? Apply here.</p>
 </header>
 <main class="wrap">
-<div class="openings-panel" id="job-list">
+<div id="openings-view">
+<div class="panel" id="job-list-container">
+</div>
+</div>
+<div id="details-view" class="hidden">
+<a class="back-link" id="back-to-openings">&larr; Back to Openings</a>
+<h1 id="job-title-detail"></h1>
+<div class="job-description-content" id="job-description-detail"></div>
+<br>
+<button class="btn btn-primary" id="show-form-button">Apply for This Job</button>
+</div>
+<div id="form-view" class="hidden">
+<a class="back-link" id="back-to-details">&larr; Back to Job Details</a>
+<div class="panel" style="padding: 2rem;">
+<form id="application-form" novalidate>
+<div class="form-group">
+<label for="name">Full Name<span class="required">*</span></label>
+<input type="text" id="name" name="name" placeholder="John Doe" required>
+</div>
+<div class="form-group">
+<label for="email">Email<span class="required">*</span></label>
+<input type="email" id="email" name="email" placeholder="you@example.com" required>
+</div>
+<div class="form-group">
+<label for="discord">Discord Username</label>
+<input type="text" id="discord" name="discord" placeholder="johndoe#1234">
+</div>
+<div class="form-group">
+<label for="portfolio">Portfolio or GitHub Link</label>
+<input type="url" id="portfolio" name="portfolio" placeholder="https://github.com/johndoe">
+</div>
+<div class="form-group">
+<label for="role">Applying for<span class="required">*</span></label>
+<select id="role" name="role" required>
+<option value="Web Developer">Web Developer</option>
+<option value="Unreal Engine Developer">Unreal Engine Developer</option>
+<option value="Bot Developer">Bot Developer</option>
+<option value="UI/UX Designer">UI/UX Designer</option>
+<option value="Animator">Animator</option>
+<option value="Concept Artist">Concept Artist</option>
+<option value="3D Artist">3D Artist</option>
+</select>
+</div>
+<div class="form-group">
+<label for="resume">Resume<span class="required">*</span></label>
+<div class="file-input-wrapper">
+<input type="file" id="resume" name="resume" class="file-input" required accept=".pdf,.doc,.docx">
+<label for="resume" class="file-input-label">Choose File...</label>
+</div>
+</div>
+<div class="form-group">
+<label for="cover-letter">Cover Letter</label>
+<div class="file-input-wrapper">
+<input type="file" id="cover-letter" name="cover-letter" class="file-input" accept=".pdf,.doc,.docx">
+<label for="cover-letter" class="file-input-label">Choose File...</label>
+</div>
+</div>
+<div class="form-group">
+<label for="skills">Primary Skills<span class="required">*</span></label>
+<textarea id="skills" name="skills" placeholder="List your key skills (e.g., JavaScript, Unreal Engine, C++, Figma...)" required></textarea>
+</div>
+<div class="form-group">
+<label for="reason">Why do you want to join Orion Labs?<span class="required">*</span></label>
+<textarea id="reason" name="reason" placeholder="Tell us about your passion for technology and what you hope to achieve with us." required></textarea>
+</div>
+<div class="form-group">
+<label for="referral">How did you hear about us?</label>
+<input type="text" id="referral" name="referral" placeholder="e.g., GitHub, a friend, our website...">
+</div>
+<div class="form-actions">
+<p id="form-status"></p>
+<button type="submit" class="btn btn-primary">Submit</button>
+</div>
+</form>
+</div>
 </div>
 </main>
+<div id="global-popup-overlay">
+<div class="popup-content">
+<h2 id="popup-title"></h2>
+<p id="popup-message"></p>
+<button id="popup-close" class="btn btn-primary">Close</button>
+</div>
+</div>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-const roles = [
-"Web Developer",
-"Unreal Engine Developer",
-"Bot Developer",
-"UI/UX Designer",
-"Animator",
-"Concept Artist",
-"3D Artist"
-];
-const jobListContainer = document.getElementById('job-list');
-roles.forEach(role => {
-const encodedRole = encodeURIComponent(role);
-const jobItemHTML = `
-<div class="job-item">
-	<div>
-		<a href="job-details.html?role=${encodedRole}" class="job-title">${role}</a>
+const jobData = {
+"Web Developer": {
+responsibilities: [
+"Develop and maintain high-performance websites and web applications.",
+"Collaborate with UI/UX designers to implement modern, responsive interfaces.",
+"Integrate with backend services and APIs.",
+"Optimize applications for maximum speed and scalability."
+],
+qualifications: [
+"Proficiency in HTML, CSS, and JavaScript.",
+"Experience with modern frontend frameworks (e.g., React, Vue, or Svelte).",
+"Understanding of RESTful APIs and web architecture.",
+"Strong problem-solving skills and attention to detail."
+]
+},
+"Unreal Engine Developer": {
+responsibilities: [
+"Design, build, and maintain advanced applications and experiences in Unreal Engine.",
+"Create efficient, reusable, and reliable C++ and Blueprint code.",
+"Collaborate with artists and designers to implement new features.",
+"Identify and fix bottlenecks and bugs to ensure performance."
+],
+qualifications: [
+"Strong experience with C++ and Unreal Engine.",
+"Knowledge of game logic, physics, and rendering pipelines.",
+"Experience with multiplayer and networking concepts.",
+"Ability to work in a team-oriented, collaborative environment."
+]
+},
+"Bot Developer": {
+responsibilities: [
+"Develop and maintain custom bots for platforms like Discord.",
+"Automate tasks and create engaging community-driven features.",
+"Integrate bots with external APIs and services.",
+"Ensure bot reliability, security, and performance."
+],
+qualifications: [
+"Proficiency in a language like Python or JavaScript (Node.js).",
+"Experience with Discord.js, Py-cord, or similar libraries.",
+"Understanding of APIs, webhooks, and asynchronous programming.",
+"Experience managing databases and persistent data."
+]
+},
+"UI/UX Designer": {
+responsibilities: [
+"Create intuitive and visually appealing user interfaces for web and desktop applications.",
+"Develop wireframes, mockups, and prototypes to communicate design ideas.",
+"Conduct user research and evaluate user feedback.",
+"Establish and promote design guidelines and best practices."
+],
+qualifications: [
+"A strong portfolio showcasing UI/UX design skills.",
+"Proficiency in design tools such as Figma, Sketch, or Adobe XD.",
+"Understanding of user-centered design principles.",
+"Excellent visual design skills with a sensitivity to user-system interaction."
+]
+},
+"Animator": {
+responsibilities: [
+"Create high-quality animations for characters, environments, and visual effects.",
+"Work closely with artists and developers to bring creative visions to life.",
+"Rig characters and assets for animation.",
+"Ensure animations are optimized for performance in the target engine."
+],
+qualifications: [
+"Proven experience as an Animator in a game development or similar environment.",
+"Proficiency in animation software like Blender, Maya, or 3ds Max.",
+"Strong understanding of animation principles (timing, weight, appeal).",
+"Experience with in-engine animation systems (e.g., Unreal Engine's Sequencer)."
+]
+},
+"Concept Artist": {
+responsibilities: [
+"Create inspirational and foundational artwork that defines the visual direction of projects.",
+"Develop concepts for characters, environments, and props.",
+"Iterate on designs based on feedback from the creative team.",
+"Produce detailed sketches, illustrations, and mood boards."
+],
+qualifications: [
+"An impressive portfolio of concept art.",
+"Mastery of digital painting software like Photoshop or Procreate.",
+"Strong foundation in traditional art skills (anatomy, perspective, color theory).",
+"Ability to quickly generate and communicate ideas visually."
+]
+},
+"3D Artist": {
+responsibilities: [
+"Create high-quality 3D models, textures, and materials for use in-engine.",
+"Model and sculpt organic and hard-surface assets.",
+"Optimize assets for real-time rendering performance.",
+"Collaborate with the art and development teams to ensure a cohesive visual style."
+],
+qualifications: [
+"A portfolio showcasing strong 3D modeling and texturing skills.",
+"Proficiency in 3D software (Blender, Maya, ZBrush) and texturing tools (Substance Painter).",
+"Understanding of PBR workflows and material creation.",
+"Experience with game engine integration and optimization."
+]
+}
+};
+const pageTitle = document.getElementById('page-title');
+const pageSubtitle = document.getElementById('page-subtitle');
+const openingsView = document.getElementById('openings-view');
+const detailsView = document.getElementById('details-view');
+const formView = document.getElementById('form-view');
+const jobListContainer = document.getElementById('job-list-container');
+const backToOpeningsBtn = document.getElementById('back-to-openings');
+const backToDetailsBtn = document.getElementById('back-to-details');
+const showFormButton = document.getElementById('show-form-button');
+let currentRole = '';
+const switchView = (viewToShow) => {
+[openingsView, detailsView, formView].forEach(v => v.classList.add('hidden'));
+viewToShow.classList.remove('hidden');
+window.scrollTo(0, 0);
+};
+const renderOpenings = () => {
+pageTitle.textContent = 'Current Openings';
+pageSubtitle.textContent = 'Thanks for checking out our job openings. See something that interests you? Apply here.';
+let content = '';
+for (const role in jobData) {
+content += `
+<div class="job-item" data-role="${role}">
+	<div><span class="job-title">${role}</span></div>
+	<div class="job-details-meta">
+		<div class="detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg><span>Remote</span></div>
+		<div class="detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span>Contractor</span></div>
 	</div>
-	<div class="job-details">
-		<div class="detail">
-			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-			<span>Remote</span>
-		</div>
-		<div class="detail">
-			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-			<span>Contractor</span>
-		</div>
-	</div>
-</div>
-`;
-jobListContainer.innerHTML += jobItemHTML;
+</div>`;
+}
+jobListContainer.innerHTML = content;
+switchView(openingsView);
+};
+const renderDetails = (role) => {
+currentRole = role;
+const job = jobData[role];
+pageTitle.textContent = 'Job Overview';
+pageSubtitle.textContent = role;
+document.getElementById('job-title-detail').textContent = role;
+let descriptionHTML = '<h3>Responsibilities:</h3><ul>';
+job.responsibilities.forEach(item => descriptionHTML += `<li>${item}</li>`);
+descriptionHTML += '</ul><h3>Qualifications:</h3><ul>';
+job.qualifications.forEach(item => descriptionHTML += `<li>${item}</li>`);
+descriptionHTML += '</ul>';
+document.getElementById('job-description-detail').innerHTML = descriptionHTML;
+switchView(detailsView);
+};
+const renderForm = (role) => {
+pageTitle.textContent = 'Application';
+pageSubtitle.textContent = `Applying for: ${role}`;
+document.getElementById('role').value = role;
+switchView(formView);
+loadDraft();
+};
+jobListContainer.addEventListener('click', (e) => {
+const jobItem = e.target.closest('.job-item');
+if (jobItem) {
+renderDetails(jobItem.dataset.role);
+}
+});
+backToOpeningsBtn.addEventListener('click', renderOpenings);
+backToDetailsBtn.addEventListener('click', () => renderDetails(currentRole));
+showFormButton.addEventListener('click', () => renderForm(currentRole));
+renderOpenings();
+const form = document.getElementById('application-form');
+const statusEl = document.getElementById('form-status');
+const submitButton = form.querySelector('button[type="submit"]');
+const popupOverlay = document.getElementById('global-popup-overlay');
+const popupTitle = document.getElementById('popup-title');
+const popupMessage = document.getElementById('popup-message');
+const popupClose = document.getElementById('popup-close');
+const DRAFT_KEY = 'orionLabsApplicationDraft';
+const webhookUrl = 'https://discord.com/api/webhooks/1401079578428047461/3TVl-6aLMJbo7beUj2J1axl-wwVkv6Szhzkq92gfRGrliZ9LBxuClbnviLBAC2ig4mQz';
+const showPopup = (title, message) => {
+popupTitle.textContent = title;
+popupMessage.textContent = message;
+popupOverlay.classList.add('visible');
+};
+const closePopup = () => popupOverlay.classList.remove('visible');
+popupOverlay.addEventListener('click', (e) => e.target === popupOverlay && closePopup());
+popupClose.addEventListener('click', closePopup);
+const saveDraft = () => {
+const formData = new FormData(form);
+const data = Object.fromEntries(formData.entries());
+delete data.resume;
+delete data['cover-letter'];
+localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+statusEl.textContent = 'Draft saved.';
+statusEl.className = '';
+};
+const loadDraft = () => {
+const draft = localStorage.getItem(DRAFT_KEY);
+if (draft) {
+const data = JSON.parse(draft);
+for (const key in data) {
+if (form.elements[key] && key !== 'role') {
+form.elements[key].value = data[key];
+}
+}
+statusEl.textContent = 'Loaded from draft.';
+statusEl.className = '';
+}
+};
+const clearDraft = () => localStorage.removeItem(DRAFT_KEY);
+form.querySelectorAll('input[type="text"], input[type="email"], input[type="url"], select, textarea').forEach(el => el.addEventListener('input', saveDraft));
+form.querySelectorAll('.file-input').forEach(fileInput => {
+fileInput.addEventListener('change', () => {
+const label = fileInput.nextElementSibling;
+label.textContent = fileInput.files.length > 0 ? fileInput.files[0].name : 'Choose File...';
+});
+});
+form.addEventListener('submit', async (event) => {
+event.preventDefault();
+let hasError = false;
+form.querySelectorAll('[required]').forEach(input => {
+let isInvalid = (input.type === 'file' && input.files.length === 0) || (input.type !== 'file' && !input.value.trim());
+if (isInvalid) {
+hasError = true;
+(input.closest('.file-input-wrapper') || input).style.borderColor = 'var(--danger)';
+} else {
+(input.closest('.file-input-wrapper') || input).style.borderColor = 'var(--border)';
+}
+});
+if (hasError) {
+statusEl.textContent = 'Please fill out all required fields.';
+statusEl.className = 'status-error';
+return;
+}
+submitButton.disabled = true;
+statusEl.textContent = 'Submitting...';
+statusEl.className = '';
+const formData = new FormData(form);
+const payload = {
+username: 'Orion Labs Applications',
+avatar_url: 'https://www.orionlabs.dev/src/assets/images/orionlabs.png',
+embeds: [{
+title: `New Application: ${formData.get('name')}`,
+color: 14733678,
+fields: [
+{ name: 'Email', value: formData.get('email'), inline: true },
+{ name: 'Discord', value: formData.get('discord') || 'N/A', inline: true },
+{ name: 'Desired Role', value: formData.get('role'), inline: false },
+{ name: 'Portfolio/GitHub', value: formData.get('portfolio') ? `[View Link](${formData.get('portfolio')})` : 'N/A', inline: false }
+],
+timestamp: new Date().toISOString(),
+footer: { text: 'Orion Labs Applicant' }
+}]
+};
+const resumeFile = formData.get('resume');
+if (resumeFile.size > 0) payload.embeds[0].fields.push({ name: '📄 Resume', value: `${resumeFile.name} (${(resumeFile.size / 1024).toFixed(2)} KB)`, inline: false });
+const coverLetterFile = formData.get('cover-letter');
+if (coverLetterFile.size > 0) payload.embeds[0].fields.push({ name: '📄 Cover Letter', value: `${coverLetterFile.name} (${(coverLetterFile.size / 1024).toFixed(2)} KB)`, inline: false });
+payload.embeds[0].fields.push({ name: 'Primary Skills', value: `\`\`\`\n${formData.get('skills')}\n\`\`\``, inline: false });
+payload.embeds[0].fields.push({ name: 'Reason to Join', value: `\`\`\`\n${formData.get('reason')}\n\`\`\``, inline: false });
+payload.embeds[0].fields.push({ name: 'Referral', value: formData.get('referral') || 'N/A', inline: false });
+const webhookFormData = new FormData();
+webhookFormData.append('payload_json', JSON.stringify(payload));
+if (resumeFile.size > 0) webhookFormData.append('file1', resumeFile);
+if (coverLetterFile.size > 0) webhookFormData.append('file2', coverLetterFile);
+try {
+const response = await fetch(webhookUrl, {
+method: 'POST',
+body: webhookFormData,
+});
+if (response.ok) {
+showPopup('Success!', 'Your application has been submitted successfully!');
+clearDraft();
+form.reset();
+form.querySelectorAll('.file-input-label').forEach(label => label.textContent = 'Choose File...');
+statusEl.textContent = '';
+setTimeout(renderOpenings, 500);
+} else {
+statusEl.textContent = 'An error occurred. Please try again.';
+statusEl.className = 'status-error';
+}
+} catch (error) {
+statusEl.textContent = 'A network error occurred. Please check connection.';
+statusEl.className = 'status-error';
+} finally {
+submitButton.disabled = false;
+}
 });
 });
 </script>
