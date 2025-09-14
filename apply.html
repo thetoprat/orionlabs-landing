@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Apply to Orion Labs</title>
+<meta name="description" content="Join the Orion Labs team and help us build stellar solutions." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+--bg: #0f1115;
+--panel: #161a22;
+--text: #e6e9ef;
+--muted: #a3adbd;
+--primary: #e0c56e;
+--primary-hover: #f0d57e;
+--border: #262b36;
+--danger: #ff6b6b;
+--success: #63d2d4;
+}
+html, body {
+height: 100%;
+margin: 0;
+background: var(--bg);
+color: var(--text);
+font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
+line-height: 1.6;
+}
+header {
+position: sticky;
+top: 0;
+z-index: 10;
+background: linear-gradient(180deg, rgba(15,17,21,.95), rgba(15,17,21,.6));
+backdrop-filter: blur(8px);
+-webkit-backdrop-filter: blur(8px);
+border-bottom: 1px solid var(--border);
+}
+.wrap {
+max-width: 900px;
+margin: 0 auto;
+padding: 1.25rem 1rem;
+}
+h1 {
+margin: 0 0 .25rem 0;
+font-size: 1.75rem;
+letter-spacing: .3px;
+}
+.subtitle {
+margin: 0;
+color: var(--muted);
+font-size: .95rem;
+}
+main {
+padding: 1.25rem 0 3rem 0;
+}
+.application-panel {
+background: var(--panel);
+border: 1px solid var(--border);
+border-radius: 12px;
+padding: 2rem;
+}
+.form-group {
+margin-bottom: 1.5rem;
+}
+label {
+display: block;
+margin-bottom: .5rem;
+color: var(--muted);
+font-size: .9rem;
+font-weight: 600;
+}
+input[type="text"], input[type="email"], input[type="url"], select, textarea {
+width: 100%;
+background-color: var(--bg);
+border: 1px solid var(--border);
+border-radius: 6px;
+padding: .75rem;
+color: var(--text);
+font-size: 1rem;
+box-sizing: border-box;
+transition: border-color 0.2s, box-shadow 0.2s;
+font-family: inherit;
+}
+input[type="text"]:focus, input[type="email"]:focus, input[type="url"]:focus, select:focus, textarea:focus {
+outline: none;
+border-color: var(--primary);
+box-shadow: 0 0 0 3px rgba(224, 197, 110, 0.2);
+}
+textarea {
+resize: vertical;
+min-height: 120px;
+}
+select {
+-webkit-appearance: none;
+-moz-appearance: none;
+appearance: none;
+background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a3adbd' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+background-repeat: no-repeat;
+background-position: right .75rem center;
+background-size: 1em;
+}
+select:required:invalid {
+color: var(--muted);
+}
+option {
+color: var(--text);
+background: var(--bg);
+}
+.btn {
+display: inline-block;
+padding: .75rem 1.5rem;
+border: none;
+border-radius: 6px;
+font-size: 1rem;
+font-weight: 600;
+cursor: pointer;
+text-decoration: none;
+transition: background-color 0.2s, transform 0.1s;
+}
+.btn:active {
+transform: scale(0.98);
+}
+.btn-primary {
+background-color: var(--primary);
+color: var(--bg);
+}
+.btn-primary:hover {
+background-color: var(--primary-hover);
+}
+.required {
+color: var(--primary);
+margin-left: 4px;
+}
+#form-status {
+margin-top: 1rem;
+font-size: .9rem;
+height: 1.2em;
+transition: color 0.3s;
+}
+.status-success {
+color: var(--success);
+}
+.status-error {
+color: var(--danger);
+}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap">
+<h1>Join Orion Labs</h1>
+<p class="subtitle">Ready to innovate, create, and elevate with us? Fill out the form below.</p>
+</div>
+</header>
+<main class="wrap">
+<div class="application-panel">
+<form id="application-form" novalidate>
+<div class="form-group">
+<label for="name">Full Name<span class="required">*</span></label>
+<input type="text" id="name" name="name" placeholder="John Doe" required>
+</div>
+<div class="form-group">
+<label for="email">Email<span class="required">*</span></label>
+<input type="email" id="email" name="email" placeholder="you@example.com" required>
+</div>
+<div class="form-group">
+<label for="discord">Discord Username</label>
+<input type="text" id="discord" name="discord" placeholder="johndoe#1234">
+</div>
+<div class="form-group">
+<label for="portfolio">Portfolio or GitHub Link<span class="required">*</span></label>
+<input type="url" id="portfolio" name="portfolio" placeholder="https://github.com/johndoe" required>
+</div>
+<div class="form-group">
+<label for="role">Desired Role<span class="required">*</span></label>
+<select id="role" name="role" required>
+<option value="" disabled selected>Select a role...</option>
+<option value="Web Developer">Web Developer</option>
+<option value="Unreal Engine Developer">Unreal Engine Developer</option>
+<option value="Bot Developer">Bot Developer</option>
+<option value="UI/UX Designer">UI/UX Designer</option>
+<option value="Animator">Animator</option>
+<option value="Concept Artist">Concept Artist</option>
+<option value="3D Artist">3D Artist</option>
+</select>
+</div>
+<div class="form-group">
+<label for="skills">Primary Skills<span class="required">*</span></label>
+<textarea id="skills" name="skills" placeholder="List your key skills (e.g., JavaScript, Unreal Engine, C++, Figma...)" required></textarea>
+</div>
+<div class="form-group">
+<label for="reason">Why do you want to join Orion Labs?<span class="required">*</span></label>
+<textarea id="reason" name="reason" placeholder="Tell us about your passion for technology and what you hope to achieve with us." required></textarea>
+</div>
+<div class="form-group">
+<label for="referral">How did you hear about us?</label>
+<input type="text" id="referral" name="referral" placeholder="e.g., GitHub, a friend, our website...">
+</div>
+<button type="submit" class="btn btn-primary">Submit Application</button>
+<p id="form-status"></p>
+</form>
+</div>
+</main>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+const form = document.getElementById('application-form');
+const statusEl = document.getElementById('form-status');
+const submitButton = form.querySelector('button[type="submit"]');
+const webhookUrl = 'https://discord.com/api/webhooks/1401079578428047461/3TVl-6aLMJbo7beUj2J1axl-wwVkv6Szhzkq92gfRGrliZ9LBxuClbnviLBAC2ig4mQz';
+form.addEventListener('submit', async (event) => {
+event.preventDefault();
+let hasError = false;
+form.querySelectorAll('[required]').forEach(input => {
+if (!input.value || (input.type === 'select-one' && input.value === '')) {
+hasError = true;
+input.style.borderColor = 'var(--danger)';
+} else {
+input.style.borderColor = 'var(--border)';
+}
+});
+if (hasError) {
+statusEl.textContent = 'Please fill out all required fields.';
+statusEl.className = 'status-error';
+return;
+}
+submitButton.disabled = true;
+statusEl.textContent = 'Submitting...';
+statusEl.className = '';
+const formData = new FormData(form);
+const data = Object.fromEntries(formData.entries());
+const payload = {
+username: 'Orion Labs Applications',
+avatar_url: 'https://www.orionlabs.dev/src/assets/images/orionlabs.png',
+embeds: [{
+title: `New Application: ${data.name}`,
+color: 14733678,
+fields: [
+{ name: 'Email', value: data.email, inline: true },
+{ name: 'Discord', value: data.discord || 'N/A', inline: true },
+{ name: 'Desired Role', value: data.role, inline: false },
+{ name: 'Portfolio/GitHub', value: `[View Link](${data.portfolio})`, inline: false },
+{ name: 'Primary Skills', value: `\`\`\`\n${data.skills}\n\`\`\``, inline: false },
+{ name: 'Reason to Join', value: data.reason, inline: false },
+{ name: 'Referral', value: data.referral || 'N/A', inline: false }
+],
+timestamp: new Date().toISOString(),
+footer: { text: 'Orion Labs Applicant' }
+}],
+};
+try {
+const response = await fetch(webhookUrl, {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify(payload),
+});
+if (response.ok) {
+statusEl.textContent = 'Application submitted successfully!';
+statusEl.className = 'status-success';
+form.reset();
+form.querySelectorAll('[required]').forEach(input => {
+input.style.borderColor = 'var(--border)';
+});
+} else {
+const errorData = await response.json();
+console.error('Webhook Error:', errorData);
+statusEl.textContent = 'An error occurred. Please try again later.';
+statusEl.className = 'status-error';
+}
+} catch (error) {
+console.error('Fetch Error:', error);
+statusEl.textContent = 'A network error occurred. Please check your connection.';
+statusEl.className = 'status-error';
+} finally {
+submitButton.disabled = false;
+}
+});
+});
+</script>
+</body>
+</html>
