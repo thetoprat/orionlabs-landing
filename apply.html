@@ -17,17 +17,8 @@
 --primary: #e0c56e;
 --primary-hover: #f0d57e;
 --border: #262b36;
---shadow: rgba(0, 0, 0, 0.35);
 --danger: #ff6b6b;
 --success: #63d2d4;
-}
-body.light-theme {
---bg: #f7f7f7;
---panel: #ffffff;
---text: #2c2c2c;
---muted: #7d7d7d;
---border: #e0e0e0;
---shadow: rgba(100, 100, 100, 0.15);
 }
 html, body {
 margin: 0;
@@ -35,26 +26,57 @@ background: var(--bg);
 color: var(--text);
 font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
 line-height: 1.7;
-transition: background-color 0.3s, color 0.3s;
 }
 .wrap {
 max-width: 1100px;
 margin: 0 auto;
 padding: 1.25rem 1.5rem;
 }
-main {
-padding: 2rem 0 3rem 0;
+.page-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 2rem;
 }
 .logo {
 width: 120px;
-margin-bottom: 2rem;
+}
+.social-icons {
+display: flex;
+gap: 0.75rem;
+}
+.social-icon {
+display: flex;
+justify-content: center;
+align-items: center;
+width: 40px;
+height: 40px;
+background-color: var(--panel);
+border-radius: 50%;
+box-shadow: 4px 4px 0px var(--border);
+transition: transform 0.2s, box-shadow 0.2s;
+}
+.social-icon:hover {
+transform: translateY(-2px);
+box-shadow: 6px 6px 0px var(--border);
+}
+.social-icon svg {
+width: 20px;
+height: 20px;
+fill: var(--muted);
+transition: fill 0.2s;
+}
+.social-icon:hover svg {
+fill: var(--primary);
+}
+main {
+padding: 2rem 0 3rem 0;
 }
 .panel {
 background: var(--panel);
 border-radius: 16px;
 padding: 2.5rem;
-box-shadow: 0 8px 32px var(--shadow);
-transition: background-color 0.3s;
+box-shadow: 8px 8px 0px var(--border);
 }
 .panel h1 {
 margin-top: 0;
@@ -74,7 +96,6 @@ align-items: center;
 padding: 1.5rem 0;
 border-top: 1px solid var(--border);
 cursor: pointer;
-transition: border-color 0.3s;
 }
 .job-item:hover .job-title {
 color: var(--primary);
@@ -288,27 +309,6 @@ gap: 1rem;
 color: var(--primary);
 margin-left: 4px;
 }
-#theme-toggle {
-position: fixed;
-top: 1.5rem;
-right: 1.5rem;
-background-color: var(--panel);
-border: none;
-border-radius: 50%;
-width: 44px;
-height: 44px;
-display: flex;
-justify-content: center;
-align-items: center;
-cursor: pointer;
-box-shadow: 0 4px 12px var(--shadow);
-z-index: 1001;
-}
-#theme-toggle svg {
-width: 22px;
-height: 22px;
-stroke: var(--muted);
-}
 #toast-notification {
 position: fixed;
 top: 2rem;
@@ -319,7 +319,7 @@ color: white;
 padding: 1rem 2rem;
 border-radius: 8px;
 z-index: 2000;
-box-shadow: 0 8px 32px var(--shadow);
+box-shadow: 0 8px 32px rgba(0,0,0,0.35);
 opacity: 0;
 visibility: hidden;
 transition: opacity 0.3s, visibility 0.3s, top 0.3s;
@@ -384,9 +384,6 @@ text-align: center;
 transform: scale(0.9);
 transition: transform 0.3s;
 }
-#global-popup-overlay.visible .popup-content {
-transform: scale(1);
-}
 .popup-content h2 {
 margin: 0 0 1rem 0;
 color: var(--primary);
@@ -394,16 +391,25 @@ color: var(--primary);
 </style>
 </head>
 <body>
-<button id="theme-toggle" aria-label="Toggle Theme">
-<svg id="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-<svg id="theme-icon-moon" class="hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-</button>
 <div id="toast-notification">
 <span id="toast-message"></span>
 <div class="toast-progress"></div>
 </div>
 <main class="wrap">
+<div class="page-header">
 <img src="src/assets/images/logo.png" alt="Orion Labs Logo" class="logo">
+<div class="social-icons">
+<a href="#" class="social-icon" data-network="twitter" aria-label="Share on Twitter">
+<svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+</a>
+<a href="#" class="social-icon" data-network="facebook" aria-label="Share on Facebook">
+<svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+</a>
+<a href="#" class="social-icon" data-network="linkedin" aria-label="Share on LinkedIn">
+<svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+</a>
+</div>
+</div>
 <div id="openings-view">
 <div class="panel">
 <h1>Current Openings</h1>
@@ -793,21 +799,29 @@ showToast('A network error occurred. Please check connection.');
 submitButton.disabled = false;
 }
 });
-const themeToggle = document.getElementById('theme-toggle');
-const sunIcon = document.getElementById('theme-icon-sun');
-const moonIcon = document.getElementById('theme-icon-moon');
-const applyTheme = (theme) => {
-document.body.classList.toggle('light-theme', theme === 'light');
-sunIcon.classList.toggle('hidden', theme === 'light');
-moonIcon.classList.toggle('hidden', theme === 'dark');
-localStorage.setItem('theme', theme);
-};
-themeToggle.addEventListener('click', () => {
-const newTheme = document.body.classList.contains('light-theme') ? 'dark' : 'light';
-applyTheme(newTheme);
+const socialIcons = document.querySelectorAll('.social-icon');
+socialIcons.forEach(icon => {
+icon.addEventListener('click', (e) => {
+e.preventDefault();
+const network = e.currentTarget.dataset.network;
+const url = encodeURIComponent(window.location.href.split('?')[0]);
+const text = encodeURIComponent('Check out the current openings at Orion Labs!');
+let shareUrl = '';
+switch (network) {
+case 'twitter':
+shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
+break;
+case 'facebook':
+shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+break;
+case 'linkedin':
+shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+break;
+}
+const windowOptions = 'width=600,height=400,menubar=no,toolbar=no,location=no,status=no';
+window.open(shareUrl, 'shareWindow', windowOptions);
 });
-const savedTheme = localStorage.getItem('theme') || 'dark';
-applyTheme(savedTheme);
+});
 preselectRoleFromURL();
 });
 </script>
