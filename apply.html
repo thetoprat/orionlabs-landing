@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Apply to Orion Labs</title>
+<title>Careers - Orion Labs</title>
 <meta name="description" content="Join the Orion Labs team and help us build stellar solutions." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
@@ -27,15 +27,6 @@ color: var(--text);
 font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
 line-height: 1.7;
 }
-header {
-position: sticky;
-top: 0;
-z-index: 10;
-background: linear-gradient(180deg, rgba(15,17,21,.95), rgba(15,17,21,.6));
-backdrop-filter: blur(8px);
--webkit-backdrop-filter: blur(8px);
-border-bottom: 1px solid var(--border);
-}
 .wrap {
 max-width: 900px;
 margin: 0 auto;
@@ -44,32 +35,37 @@ padding: 1.25rem 1rem;
 main {
 padding: 2rem 0 3rem 0;
 }
-h1 {
-margin: 0 0 .25rem 0;
-font-size: 1.75rem;
-letter-spacing: .3px;
-}
-.subtitle {
-margin: 0;
-color: var(--muted);
-font-size: .95rem;
+.logo {
+width: 120px;
+margin-bottom: 2rem;
 }
 .panel {
 background: var(--panel);
 border: 1px solid var(--border);
 border-radius: 12px;
-padding: 1rem 2rem;
+padding: 2rem;
+}
+.panel h1 {
+margin-top: 0;
+margin-bottom: 0.5rem;
+font-size: 1.75rem;
+}
+.panel .subtitle {
+margin-top: 0;
+margin-bottom: 1.5rem;
+color: var(--muted);
+font-size: .95rem;
 }
 .job-item {
 display: flex;
 justify-content: space-between;
 align-items: center;
 padding: 1.5rem 0;
-border-bottom: 1px solid var(--border);
+border-top: 1px solid var(--border);
 cursor: pointer;
 }
-.job-item:last-child {
-border-bottom: none;
+.job-item:hover .job-title {
+color: var(--primary);
 }
 .job-title {
 font-size: 1.25rem;
@@ -77,9 +73,6 @@ font-weight: 600;
 color: var(--text);
 text-decoration: none;
 transition: color 0.2s;
-}
-.job-item:hover .job-title {
-color: var(--primary);
 }
 .job-details-meta {
 display: flex;
@@ -97,7 +90,25 @@ width: 16px;
 height: 16px;
 stroke: var(--muted);
 }
-#details-view h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+#details-view {
+display: grid;
+grid-template-columns: 1fr;
+gap: 2rem;
+}
+@media (min-width: 768px) {
+#details-view {
+grid-template-columns: 2.5fr 1fr;
+}
+}
+.job-description-main h1 {
+margin: 0 0 0.5rem 0;
+font-size: 2rem;
+}
+.apply-sidebar {
+position: sticky;
+top: 2rem;
+height: fit-content;
+}
 .job-description-content h3 {
 font-size: 1.2rem;
 font-weight: 600;
@@ -128,8 +139,9 @@ top: 5px;
 color: var(--muted);
 text-decoration: none;
 display: inline-block;
-margin-bottom: 1rem;
+margin-bottom: 1.5rem;
 cursor: pointer;
+font-size: 0.9rem;
 }
 .back-link:hover {
 color: var(--text);
@@ -144,6 +156,9 @@ font-weight: 600;
 cursor: pointer;
 text-decoration: none;
 transition: background-color 0.2s, transform 0.1s;
+width: 100%;
+box-sizing: border-box;
+text-align: center;
 }
 .btn-primary {
 background-color: var(--primary);
@@ -271,25 +286,29 @@ color: var(--primary);
 </style>
 </head>
 <body>
-<header class="wrap">
-<h1 id="page-title">Current Openings</h1>
-<p id="page-subtitle" class="subtitle">Thanks for checking out our job openings. See something that interests you? Apply here.</p>
-</header>
 <main class="wrap">
+<img src="logo.png" alt="Orion Labs Logo" class="logo">
 <div id="openings-view">
-<div class="panel" id="job-list-container">
+<div class="panel">
+<h1>Current Openings</h1>
+<p class="subtitle">Thanks for checking out our job openings. See something that interests you? Apply here.</p>
+<div id="job-list-container">
+</div>
 </div>
 </div>
 <div id="details-view" class="hidden">
-<a class="back-link" id="back-to-openings">&larr; Back to Openings</a>
+<div class="job-description-main">
+<a class="back-link" id="back-to-openings">&larr; Back to Job Openings</a>
 <h1 id="job-title-detail"></h1>
 <div class="job-description-content" id="job-description-detail"></div>
-<br>
-<button class="btn btn-primary" id="show-form-button">Apply for This Job</button>
+</div>
+<aside class="apply-sidebar panel">
+<button class="btn btn-primary" id="show-form-button">Apply</button>
+</aside>
 </div>
 <div id="form-view" class="hidden">
 <a class="back-link" id="back-to-details">&larr; Back to Job Details</a>
-<div class="panel" style="padding: 2rem;">
+<div class="panel">
 <form id="application-form" novalidate>
 <div class="form-group">
 <label for="name">Full Name<span class="required">*</span></label>
@@ -462,8 +481,6 @@ qualifications: [
 ]
 }
 };
-const pageTitle = document.getElementById('page-title');
-const pageSubtitle = document.getElementById('page-subtitle');
 const openingsView = document.getElementById('openings-view');
 const detailsView = document.getElementById('details-view');
 const formView = document.getElementById('form-view');
@@ -478,8 +495,6 @@ viewToShow.classList.remove('hidden');
 window.scrollTo(0, 0);
 };
 const renderOpenings = () => {
-pageTitle.textContent = 'Current Openings';
-pageSubtitle.textContent = 'Thanks for checking out our job openings. See something that interests you? Apply here.';
 let content = '';
 for (const role in jobData) {
 content += `
@@ -487,7 +502,7 @@ content += `
 	<div><span class="job-title">${role}</span></div>
 	<div class="job-details-meta">
 		<div class="detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg><span>Remote</span></div>
-		<div class="detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span>Contractor</span></div>
+		<div class="detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span>Volunteer</span></div>
 	</div>
 </div>`;
 }
@@ -497,8 +512,6 @@ switchView(openingsView);
 const renderDetails = (role) => {
 currentRole = role;
 const job = jobData[role];
-pageTitle.textContent = 'Job Overview';
-pageSubtitle.textContent = role;
 document.getElementById('job-title-detail').textContent = role;
 let descriptionHTML = '<h3>Responsibilities:</h3><ul>';
 job.responsibilities.forEach(item => descriptionHTML += `<li>${item}</li>`);
@@ -509,8 +522,6 @@ document.getElementById('job-description-detail').innerHTML = descriptionHTML;
 switchView(detailsView);
 };
 const renderForm = (role) => {
-pageTitle.textContent = 'Application';
-pageSubtitle.textContent = `Applying for: ${role}`;
 document.getElementById('role').value = role;
 switchView(formView);
 loadDraft();
