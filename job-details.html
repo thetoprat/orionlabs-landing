@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Details - Orion Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+--bg: #0f1115;
+--panel: #161a22;
+--text: #e6e9ef;
+--muted: #a3adbd;
+--primary: #e0c56e;
+--primary-hover: #f0d57e;
+--border: #262b36;
+}
+html, body {
+margin: 0;
+background: var(--bg);
+color: var(--text);
+font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
+line-height: 1.7;
+}
+header {
+position: sticky;
+top: 0;
+z-index: 10;
+background: linear-gradient(180deg, rgba(15,17,21,.95), rgba(15,17,21,.6));
+backdrop-filter: blur(8px);
+-webkit-backdrop-filter: blur(8px);
+border-bottom: 1px solid var(--border);
+}
+.wrap {
+max-width: 900px;
+margin: 0 auto;
+padding: 1.25rem 1rem;
+}
+main {
+padding: 2rem 0 3rem 0;
+}
+.job-overview-panel {
+display: grid;
+grid-template-columns: 2fr 1fr;
+gap: 2rem;
+}
+.job-description h3 {
+font-size: 1.2rem;
+font-weight: 600;
+color: var(--primary);
+border-left: 3px solid var(--primary);
+padding-left: 0.75rem;
+margin-top: 2rem;
+margin-bottom: 1rem;
+}
+.job-description ul {
+list-style: none;
+padding-left: 1rem;
+}
+.job-description li {
+margin-bottom: 0.75rem;
+padding-left: 1.25rem;
+position: relative;
+}
+.job-description li::before {
+content: '◆';
+position: absolute;
+left: 0;
+color: var(--primary);
+font-size: 0.8rem;
+top: 5px;
+}
+.apply-card {
+background: var(--panel);
+border: 1px solid var(--border);
+border-radius: 12px;
+padding: 1.5rem;
+position: sticky;
+top: 100px;
+height: fit-content;
+}
+.btn {
+display: block;
+width: 100%;
+box-sizing: border-box;
+padding: .75rem 1.5rem;
+border: none;
+border-radius: 6px;
+font-size: 1rem;
+font-weight: 600;
+cursor: pointer;
+text-decoration: none;
+text-align: center;
+transition: background-color 0.2s;
+}
+.btn-primary {
+background-color: var(--primary);
+color: var(--bg);
+}
+.btn-primary:hover {
+background-color: var(--primary-hover);
+}
+.job-meta {
+margin-top: 1.5rem;
+font-size: 0.9rem;
+color: var(--muted);
+border-top: 1px solid var(--border);
+padding-top: 1rem;
+}
+.job-meta div {
+display: flex;
+justify-content: space-between;
+margin-bottom: 0.5rem;
+}
+.job-meta strong {
+color: var(--text);
+}
+#job-title { margin-bottom: 0.5rem; font-size: 2rem;}
+#back-link { color: var(--muted); text-decoration: none; display: inline-block; margin-bottom: 1rem;}
+#back-link:hover { color: var(--text); }
+</style>
+</head>
+<body>
+<header>
+<div class="wrap">
+<a href="openings.html" id="back-link">&larr; Back to Job Openings</a>
+<h1 id="job-title">Loading...</h1>
+</div>
+</header>
+<main class="wrap">
+<div class="job-overview-panel">
+<div class="job-description" id="job-description-content">
+</div>
+<aside class="apply-card">
+<a href="#" id="apply-button" class="btn btn-primary">Apply for This Job</a>
+<div class="job-meta">
+<div><span>Location</span><strong id="job-location">Remote</strong></div>
+<div><span>Employment Type</span><strong id="job-type">Contractor</strong></div>
+</div>
+</aside>
+</div>
+</main>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+const jobData = {
+"Web Developer": {
+responsibilities: [
+"Develop and maintain high-performance websites and web applications.",
+"Collaborate with UI/UX designers to implement modern, responsive interfaces.",
+"Integrate with backend services and APIs.",
+"Optimize applications for maximum speed and scalability."
+],
+qualifications: [
+"Proficiency in HTML, CSS, and JavaScript.",
+"Experience with modern frontend frameworks (e.g., React, Vue, or Svelte).",
+"Understanding of RESTful APIs and web architecture.",
+"Strong problem-solving skills and attention to detail."
+]
+},
+"Unreal Engine Developer": {
+responsibilities: [
+"Design, build, and maintain advanced applications and experiences in Unreal Engine.",
+"Create efficient, reusable, and reliable C++ and Blueprint code.",
+"Collaborate with artists and designers to implement new features.",
+"Identify and fix bottlenecks and bugs to ensure performance."
+],
+qualifications: [
+"Strong experience with C++ and Unreal Engine.",
+"Knowledge of game logic, physics, and rendering pipelines.",
+"Experience with multiplayer and networking concepts.",
+"Ability to work in a team-oriented, collaborative environment."
+]
+},
+"Bot Developer": {
+responsibilities: [
+"Develop and maintain custom bots for platforms like Discord.",
+"Automate tasks and create engaging community-driven features.",
+"Integrate bots with external APIs and services.",
+"Ensure bot reliability, security, and performance."
+],
+qualifications: [
+"Proficiency in a language like Python or JavaScript (Node.js).",
+"Experience with Discord.js, Py-cord, or similar libraries.",
+"Understanding of APIs, webhooks, and asynchronous programming.",
+"Experience managing databases and persistent data."
+]
+},
+"UI/UX Designer": {
+responsibilities: [
+"Create intuitive and visually appealing user interfaces for web and desktop applications.",
+"Develop wireframes, mockups, and prototypes to communicate design ideas.",
+"Conduct user research and evaluate user feedback.",
+"Establish and promote design guidelines and best practices."
+],
+qualifications: [
+"A strong portfolio showcasing UI/UX design skills.",
+"Proficiency in design tools such as Figma, Sketch, or Adobe XD.",
+"Understanding of user-centered design principles.",
+"Excellent visual design skills with a sensitivity to user-system interaction."
+]
+},
+"Animator": {
+responsibilities: [
+"Create high-quality animations for characters, environments, and visual effects.",
+"Work closely with artists and developers to bring creative visions to life.",
+"Rig characters and assets for animation.",
+"Ensure animations are optimized for performance in the target engine."
+],
+qualifications: [
+"Proven experience as an Animator in a game development or similar environment.",
+"Proficiency in animation software like Blender, Maya, or 3ds Max.",
+"Strong understanding of animation principles (timing, weight, appeal).",
+"Experience with in-engine animation systems (e.g., Unreal Engine's Sequencer)."
+]
+},
+"Concept Artist": {
+responsibilities: [
+"Create inspirational and foundational artwork that defines the visual direction of projects.",
+"Develop concepts for characters, environments, and props.",
+"Iterate on designs based on feedback from the creative team.",
+"Produce detailed sketches, illustrations, and mood boards."
+],
+qualifications: [
+"An impressive portfolio of concept art.",
+"Mastery of digital painting software like Photoshop or Procreate.",
+"Strong foundation in traditional art skills (anatomy, perspective, color theory).",
+"Ability to quickly generate and communicate ideas visually."
+]
+},
+"3D Artist": {
+responsibilities: [
+"Create high-quality 3D models, textures, and materials for use in-engine.",
+"Model and sculpt organic and hard-surface assets.",
+"Optimize assets for real-time rendering performance.",
+"Collaborate with the art and development teams to ensure a cohesive visual style."
+],
+qualifications: [
+"A portfolio showcasing strong 3D modeling and texturing skills.",
+"Proficiency in 3D software (Blender, Maya, ZBrush) and texturing tools (Substance Painter).",
+"Understanding of PBR workflows and material creation.",
+"Experience with game engine integration and optimization."
+]
+};
+const params = new URLSearchParams(window.location.search);
+const role = params.get('role');
+const job = jobData[role];
+const titleEl = document.getElementById('job-title');
+const descriptionEl = document.getElementById('job-description-content');
+const applyButton = document.getElementById('apply-button');
+if (job) {
+titleEl.textContent = role;
+let descriptionHTML = '<h3>Responsibilities:</h3><ul>';
+job.responsibilities.forEach(item => descriptionHTML += `<li>${item}</li>`);
+descriptionHTML += '</ul><h3>Qualifications:</h3><ul>';
+job.qualifications.forEach(item => descriptionHTML += `<li>${item}</li>`);
+descriptionHTML += '</ul>';
+descriptionEl.innerHTML = descriptionHTML;
+applyButton.href = `apply.html?role=${encodeURIComponent(role)}`;
+} else {
+titleEl.textContent = 'Job Not Found';
+descriptionEl.innerHTML = '<p>The job you are looking for does not exist or has been filled. Please check our current openings.</p>';
+applyButton.style.display = 'none';
+}
+});
+</script>
+</body>
+</html>
