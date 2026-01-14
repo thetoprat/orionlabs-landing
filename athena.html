@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Athena Mod Framework | Orion Labs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #050505;
+            --bg-card: #0a0a0a;
+            --border: #222222;
+            --accent: #FFFC00;
+            --text-main: #FFFFFF;
+            --text-muted: #888888;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #444; }
+
+        #sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 20rem; 
+            z-index: 40;
+            overflow-y: auto;
+            border-right: 1px solid var(--border);
+            background: #0a0a0a;
+        }
+
+        #main-content {
+            margin-left: 20rem;
+            min-height: 100vh;
+            position: relative;
+            z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            #sidebar { display: none; }
+            #main-content { margin-left: 0; }
+        }
+
+        .sidebar-link {
+            transition: all 0.2s ease;
+            border-left: 2px solid transparent;
+        }
+        .sidebar-link:hover, .sidebar-link.active {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border-left-color: var(--accent);
+        }
+
+        .feature-card {
+            background: #0a0a0a;
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.2s ease;
+        }
+        .feature-card:hover {
+            border-color: #333;
+            transform: translateY(-2px);
+        }
+        
+        .tier-card {
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tier-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px -10px rgba(255, 252, 0, 0.1);
+        }
+
+        .tier-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .badge-standard { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); }
+        .badge-orion { background: rgba(255, 252, 0, 0.1); color: var(--accent); border: 1px solid rgba(255, 252, 0, 0.3); }
+        .badge-soon { background: rgba(59, 130, 246, 0.1); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+        
+        .info-pill {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.8rem;
+        }
+
+        .role-pill {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            border-radius: 9999px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #aaa;
+            margin-right: 0.25rem;
+            margin-bottom: 0.25rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .custom-checkbox input:checked + div {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+        .custom-checkbox input:checked + div svg {
+            display: block;
+        }
+        
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(8px);
+        }
+        .full-page-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--bg-dark);
+            z-index: 100;
+            overflow-y: auto;
+            display: flex;
+            flex-col;
+        }
+
+        .comp-table { table-layout: fixed; width: 100%; border-collapse: separate; border-spacing: 0; }
+        .comp-table th, .comp-table td { padding: 1rem; text-align: center; border-bottom: 1px solid #222; vertical-align: middle; }
+        .comp-table th { font-weight: 900; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.05em; }
+        .comp-table td:first-child, .comp-table th:first-child { text-align: left; position: sticky; left: 0; background: #0a0a0a; border-right: 1px solid #222; z-index: 20; width: 30%; }
+        .comp-table th:not(:first-child), .comp-table td:not(:first-child) { width: 17.5%; }
+        .comp-table tr { transition: background-color 0.15s ease; }
+        .comp-table tr:hover td { background: #161616; cursor: help; }
+
+        #global-tooltip {
+            position: absolute;
+            background: rgba(15, 15, 15, 0.98);
+            border: 1px solid #333;
+            color: #ccc;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.8rem;
+            pointer-events: none;
+            z-index: 9999;
+            max-width: 300px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 1);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            transition: opacity 0.15s ease;
+        }
+        #global-tooltip strong { display: block; color: #FFFC00; margin-bottom: 0.25rem; font-size: 0.9rem; font-weight: 800; }
+
+        .fade-in { animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+    </style>
+</head>
+<body>
+
+    <div id="global-tooltip" class="hidden"></div>
+
+    <aside id="sidebar">
+        <div class="p-6 border-b border-[#222]">
+            <h1 class="text-2xl font-black tracking-tight flex items-center gap-2">
+                <span class="text-[#FFFC00]">Athena</span> FW
+            </h1>
+            <p class="text-xs text-gray-500 mt-1 font-mono">by Orion Labs</p>
+            
+            <div class="mt-6 relative">
+                <i class="fa-solid fa-search absolute left-3 top-3 text-gray-600 text-xs"></i>
+                <input type="text" id="search-input" placeholder="Search features..." class="w-full bg-[#111] border border-[#222] rounded-lg py-2 pl-9 pr-4 text-sm text-white focus:outline-none focus:border-[#FFFC00] transition-colors placeholder-gray-600">
+            </div>
+        </div>
+        
+        <nav id="sidebar-nav" class="flex-1 p-2 space-y-1">
+            <a href="#overview" class="sidebar-link block px-3 py-2 text-sm text-gray-400 rounded-r-lg hover:text-white">
+                <i class="fa-solid fa-info-circle w-6"></i> Overview
+            </a>
+            <div class="px-3 pt-5 pb-2 text-xs font-bold text-gray-500 uppercase tracking-wider">Features</div>
+            <a href="#security" class="sidebar-link block px-3 py-2 text-sm text-gray-400 rounded-r-lg hover:text-white">
+                <i class="fa-solid fa-shield-halved w-6"></i> Security & Network
+            </a>
+            <a href="#analytics" class="sidebar-link block px-3 py-2 text-sm text-gray-400 rounded-r-lg hover:text-white">
+                <i class="fa-solid fa-chart-line w-6"></i> Stats & Analytics
+            </a>
+            <a href="#management" class="sidebar-link block px-3 py-2 text-sm text-gray-400 rounded-r-lg hover:text-white">
+                <i class="fa-solid fa-sliders w-6"></i> Server Management
+            </a>
+            <a href="#gameplay" class="sidebar-link block px-3 py-2 text-sm text-gray-400 rounded-r-lg hover:text-white">
+                <i class="fa-solid fa-gamepad w-6"></i> Gameplay & Population
+            </a>
+            <a href="#integration" class="sidebar-link block px-3 py-2 text-sm text-gray-400 rounded-r-lg hover:text-white">
+                <i class="fa-brands fa-discord w-6"></i> Integrations
+            </a>
+            
+            <div class="px-3 pt-5 pb-2 text-xs font-bold text-gray-500 uppercase tracking-wider">Access</div>
+            <a href="#pricing" class="sidebar-link block px-3 py-2 text-sm text-gray-400 rounded-r-lg hover:text-white">
+                <i class="fa-solid fa-tags w-6"></i> Pricing & Tiers
+            </a>
+            <a href="#faq" class="sidebar-link block px-3 py-2 text-sm text-gray-400 rounded-r-lg hover:text-white">
+                <i class="fa-solid fa-circle-question w-6"></i> FAQ
+            </a>
+            <a href="#credits" class="sidebar-link block px-3 py-2 text-sm text-gray-400 rounded-r-lg hover:text-white">
+                <i class="fa-solid fa-users w-6"></i> Credits
+            </a>
+        </nav>
+        
+        <div class="p-4 border-t border-[#222] text-center">
+            <p class="text-xs text-gray-600 font-mono">Version: Early Access</p>
+        </div>
+    </aside>
+
+    <div id="main-content">
+        <div class="max-w-6xl mx-auto p-8 md:p-12 space-y-20">
+            
+            <section id="overview" class="space-y-6 border-b border-[#222] pb-12 fade-in searchable-section">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="h-16 w-16 bg-[#111] rounded-2xl flex items-center justify-center border border-[#222]">
+                        <i class="fa-solid fa-layer-group text-3xl text-[#FFFC00]"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-4xl font-black text-white">Athena Mod Framework</h2>
+                        <p class="text-gray-500 font-mono text-sm mt-1">Server-Side Suite for The Isle (Evrima)</p>
+                    </div>
+                </div>
+                
+                <p class="text-gray-300 leading-relaxed text-lg max-w-3xl">
+                    The Athena Mod Framework is a comprehensive, server-side modification suite built to solve the biggest challenges facing server owners today: security, management, and customization. By installing Athena, you gain access to powerful tools that run alongside the server, providing control that standard RCON tools cannot match.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+                    <div class="bg-[#0a0a0a] p-4 rounded-lg border border-[#222] flex items-center gap-3">
+                        <i class="fa-solid fa-shield text-[#FFFC00]"></i>
+                        <span class="font-bold text-sm">DDoS & Spoof Protection</span>
+                    </div>
+                    <div class="bg-[#0a0a0a] p-4 rounded-lg border border-[#222] flex items-center gap-3">
+                        <i class="fa-solid fa-microchip text-[#FFFC00]"></i>
+                        <span class="font-bold text-sm">Advanced Automation</span>
+                    </div>
+                    <div class="bg-[#0a0a0a] p-4 rounded-lg border border-[#222] flex items-center gap-3">
+                        <i class="fa-solid fa-users-gear text-[#FFFC00]"></i>
+                        <span class="font-bold text-sm">Role Management</span>
+                    </div>
+                </div>
+            </section>
+
+            <div id="features-container" class="space-y-16">
+                <section id="security" class="searchable-section scroll-mt-10">
+                    <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                        <span class="text-[#FFFC00]"><i class="fa-solid fa-shield-halved"></i></span> 
+                        Security & Network
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="feature-card">
+                            <h4 class="font-bold text-lg mb-2">Athena Anti-Cheat</h4>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                                A custom-built Anti-Cheat that works alongside the game's native protection. Includes global network bans for confirmed cheaters and active heuristic scanning.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <h4 class="font-bold text-lg mb-2">DDoS Safety & IP Filter</h4>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                Advanced traffic filtering that only allows IPs currently authenticated on the server to communicate. Includes logic to safely whitelist frequent players while blocking unauthorized traffic.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="analytics" class="searchable-section scroll-mt-10">
+                    <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                        <span class="text-[#FFFC00]"><i class="fa-solid fa-chart-line"></i></span> 
+                        Stats & Analytics
+                    </h3>
+                    <div class="bg-[#0a0a0a] border border-[#222] rounded-xl p-6">
+                        <p class="text-gray-300 mb-6">
+                            Gain deep insights into your playerbase with comprehensive tracking tools that go far beyond standard RCON.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <h5 class="font-bold text-white mb-2 text-sm uppercase text-[#FFFC00]">Player Overview</h5>
+                                <ul class="text-sm text-gray-400 space-y-2">
+                                    <li>• Total Play Time (Hours)</li>
+                                    <li>• Total Kills & Deaths</li>
+                                    <li>• Most Played Dinosaur</li>
+                                    <li>• Least Played Dinosaur</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-white mb-2 text-sm uppercase text-[#FFFC00]">Per-Dino Stats</h5>
+                                <ul class="text-sm text-gray-400 space-y-2">
+                                    <li>• Playtime as specific Dino</li>
+                                    <li>• Kills as specific Dino</li>
+                                    <li>• Deaths as specific Dino</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-white mb-2 text-sm uppercase text-[#FFFC00]">Live Inspection</h5>
+                                <ul class="text-sm text-gray-400 space-y-2">
+                                    <li>• Real-time Vitals Check</li>
+                                    <li>• Growth Percentage</li>
+                                    <li>• Current Location (Coords)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="management" class="searchable-section scroll-mt-10">
+                    <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                        <span class="text-[#FFFC00]"><i class="fa-solid fa-sliders"></i></span> 
+                        Server Management
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="feature-card">
+                            <i class="fa-solid fa-file-code text-gray-500 mb-3 text-xl"></i>
+                            <h4 class="font-bold text-white mb-1">Save File Decryption</h4>
+                            <p class="text-xs text-gray-500">Decrypt and edit player save files directly for debugging or compensation.</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fa-solid fa-gears text-gray-500 mb-3 text-xl"></i>
+                            <h4 class="font-bold text-white mb-1">Config Editor</h4>
+                            <p class="text-xs text-gray-500">A comprehensive, neatly styled visual interface for managing all extensive mod settings. No need to edit raw text files manually.</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fa-solid fa-terminal text-gray-500 mb-3 text-xl"></i>
+                            <h4 class="font-bold text-white mb-1">Live Commands</h4>
+                            <ul class="cmd-list mt-2">
+                                <li>Grow / Heal Dino</li>
+                                <li>Set Health/Hunger/Thirst</li>
+                                <li>Set Mutations / Nutrients</li>
+                                <li>Teleport / Slay</li>
+                                <li>Send Announcements</li>
+                            </ul>
+                        </div>
+                        <div class="feature-card col-span-full border-dashed border-2 border-[#333]">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-bold text-white"><i class="fa-solid fa-user-lock mr-2 text-blue-400"></i> Role Management</h4>
+                                <span class="tier-badge badge-soon">Coming Soon</span>
+                            </div>
+                            <p class="text-sm text-gray-400 mb-3">
+                                A completely custom permission system akin to Discord roles. Create roles, assign specific command permissions, and set priorities.
+                            </p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                                <div class="info-pill">
+                                    <div class="flex items-center gap-3">
+                                        <i class="fa-solid fa-people-arrows text-green-500"></i>
+                                        <div>
+                                            <span class="block text-white font-bold text-xs">bUseOnOthers</span>
+                                            <span class="text-[10px] text-gray-500">Allows usage on other players</span>
+                                        </div>
+                                    </div>
+                                    <span class="text-[10px] bg-green-900/20 text-green-400 px-2 py-1 rounded">Perm</span>
+                                </div>
+                                <div class="info-pill">
+                                    <div class="flex items-center gap-3">
+                                        <i class="fa-solid fa-layer-group text-blue-500"></i>
+                                        <div>
+                                            <span class="block text-white font-bold text-xs">Priority Level</span>
+                                            <span class="text-[10px] text-gray-500">Prevents lower role abuse</span>
+                                        </div>
+                                    </div>
+                                    <span class="text-[10px] bg-blue-900/20 text-blue-400 px-2 py-1 rounded">Logic</span>
+                                </div>
+                                <div class="info-pill">
+                                    <div class="flex items-center gap-3">
+                                        <i class="fa-solid fa-user text-yellow-500"></i>
+                                        <div>
+                                            <span class="block text-white font-bold text-xs">Self-Only</span>
+                                            <span class="text-[10px] text-gray-500">Restrict commands to user</span>
+                                        </div>
+                                    </div>
+                                    <span class="text-[10px] bg-yellow-900/20 text-yellow-400 px-2 py-1 rounded">Restrict</span>
+                                </div>
+                                <div class="info-pill">
+                                    <div class="flex items-center gap-3">
+                                        <i class="fa-solid fa-shield text-purple-500"></i>
+                                        <div>
+                                            <span class="block text-white font-bold text-xs">DLL Handling</span>
+                                            <span class="text-[10px] text-gray-500">Secure server-side check</span>
+                                        </div>
+                                    </div>
+                                    <span class="text-[10px] bg-purple-900/20 text-purple-400 px-2 py-1 rounded">Secure</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="gameplay" class="searchable-section scroll-mt-10">
+                    <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                        <span class="text-[#FFFC00]"><i class="fa-solid fa-gamepad"></i></span> 
+                        Gameplay & Population
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="feature-card">
+                            <h4 class="font-bold text-lg mb-2">Population Control</h4>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                                Automatically limit the number of specific dinosaur species on your server to maintain ecosystem balance.
+                            </p>
+                            <div class="space-y-2 mt-4">
+                                <div class="info-pill">
+                                    <span class="text-xs font-bold text-gray-400 uppercase">Max Limit</span>
+                                    <span class="text-xs font-mono text-red-400 bg-red-900/10 px-2 py-1 rounded border border-red-900/30">Lock species when X exist</span>
+                                </div>
+                                <div class="info-pill">
+                                    <span class="text-xs font-bold text-gray-400 uppercase">Unlock Logic</span>
+                                    <span class="text-xs font-mono text-green-400 bg-green-900/10 px-2 py-1 rounded border border-green-900/30">Reopen when count &lt; Y</span>
+                                </div>
+                                <div class="info-pill">
+                                    <span class="text-xs font-bold text-gray-400 uppercase">Admin Bypass</span>
+                                    <span class="text-xs font-mono text-blue-400 bg-blue-900/10 px-2 py-1 rounded border border-blue-900/30">Admins ignore limits</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="feature-card py-4">
+                                <h5 class="font-bold text-white text-sm">Unrestricted Skins</h5>
+                                <p class="text-xs text-gray-500 mt-1">Unlock full freedom for skin creation.</p>
+                            </div>
+                            <div class="feature-card py-4">
+                                <h5 class="font-bold text-white text-sm">Mutation Edits</h5>
+                                <p class="text-xs text-gray-500 mt-1">Customize and edit mutations directly.</p>
+                            </div>
+                            <div class="feature-card py-4">
+                                <h5 class="font-bold text-white text-sm">Player Storage</h5>
+                                <p class="text-xs text-gray-500 mt-1">Profile storage to save player states (Realism ready).</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="integration" class="searchable-section scroll-mt-10">
+                    <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                        <span class="text-[#FFFC00]"><i class="fa-solid fa-plug"></i></span> 
+                        Integrations
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="feature-card border-l-4 border-l-[#5865F2]">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-bold text-lg">Discord Integration</h4>
+                                <span class="tier-badge badge-soon">Coming Soon</span>
+                            </div>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                                Link your game server to your community Discord with our advanced bot. It allows for remote monitoring and features that bridge the gap between in-game activity and your community chat.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <h4 class="font-bold text-lg mb-2">Auto-Updater</h4>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                Security requires speed. The framework includes an auto-updater to ensure your server always has the latest features, patches, and security definitions without manual file swapping.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <section id="pricing" class="border-t border-[#222] pt-12 fade-in searchable-section">
+                <div class="flex justify-between items-end mb-8">
+                    <h2 class="text-3xl font-black text-white">Pricing & Tiers</h2>
+                    <button onclick="toggleCompare()" class="bg-[#1a1a1a] hover:bg-[#222] text-sm text-gray-300 px-4 py-2 rounded-lg border border-[#333] transition-colors flex items-center gap-2">
+                        <i class="fa-solid fa-table-list"></i> Compare Tiers
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <div onclick="openTierModal('Fan')" class="tier-card bg-[#0a0a0a] border border-[#222] rounded-xl p-6 relative overflow-hidden flex flex-col">
+                        <h3 class="text-lg font-bold text-white mb-1">Fan</h3>
+                        <div class="text-2xl font-black text-[#FFFC00] mb-4">$10<span class="text-xs text-gray-500 font-normal">/mo</span></div>
+                        <p class="text-gray-500 text-xs mb-6 flex-1">Support the development.</p>
+                        <ul class="space-y-3 mb-8 border-t border-[#222] pt-4">
+                            <li class="flex items-center gap-2 text-xs text-gray-300">
+                                <i class="fa-solid fa-check text-green-500"></i> Work-in-progress Updates
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div onclick="openTierModal('Apex')" class="tier-card bg-[#0a0a0a] border border-[#222] rounded-xl p-6 relative overflow-hidden flex flex-col">
+                        <h3 class="text-lg font-bold text-white mb-1">Apex</h3>
+                        <div class="text-2xl font-black text-[#FFFC00] mb-4">$25<span class="text-xs text-gray-500 font-normal">/mo</span></div>
+                        <p class="text-gray-500 text-xs mb-6 flex-1">Standard server access.</p>
+                        <ul class="space-y-3 mb-8 border-t border-[#222] pt-4">
+                            <li class="flex items-center gap-2 text-xs text-gray-300">
+                                <i class="fa-solid fa-check text-green-500"></i> 1 Server License
+                            </li>
+                            <li class="flex items-center gap-2 text-xs text-gray-300">
+                                <i class="fa-solid fa-check text-green-500"></i> Athena Server Mod
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div onclick="openTierModal('Prime')" class="tier-card bg-[#0a0a0a] border border-[#222] rounded-xl p-6 relative overflow-hidden flex flex-col">
+                        <h3 class="text-lg font-bold text-white mb-1">Prime</h3>
+                        <div class="text-2xl font-black text-[#FFFC00] mb-4">$50<span class="text-xs text-gray-500 font-normal">/mo</span></div>
+                        <p class="text-gray-500 text-xs mb-6 flex-1">Enhanced support & access.</p>
+                        <ul class="space-y-3 mb-8 border-t border-[#222] pt-4">
+                            <li class="flex items-center gap-2 text-xs text-gray-300">
+                                <i class="fa-solid fa-check text-green-500"></i> Includes Apex perks
+                            </li>
+                            <li class="flex items-center gap-2 text-xs text-gray-300">
+                                <i class="fa-solid fa-check text-green-500"></i> Live Q&As
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div onclick="openTierModal('Orion')" class="tier-card bg-[#0a0a0a] border border-[#FFFC00] rounded-xl p-6 relative overflow-hidden shadow-[0_0_30px_rgba(255,252,0,0.1)] flex flex-col transform scale-105 z-10">
+                        <div class="absolute top-0 right-0 bg-[#FFFC00] text-black text-[10px] font-bold px-2 py-1 rounded-bl-lg">BEST VALUE</div>
+                        <h3 class="text-lg font-bold text-[#FFFC00] mb-1">Orion</h3>
+                        <div class="text-2xl font-black text-[#FFFC00] mb-4">$80<span class="text-xs text-gray-500 font-normal">/mo</span></div>
+                        <p class="text-gray-500 text-xs mb-6 flex-1">Full network access & community.</p>
+                        <ul class="space-y-3 mb-8 border-t border-[#222] pt-4">
+                            <li class="flex items-center gap-2 text-xs text-gray-300">
+                                <i class="fa-solid fa-check text-[#FFFC00]"></i> 3 Server Licenses
+                            </li>
+                            <li class="flex items-center gap-2 text-xs text-gray-300">
+                                <i class="fa-solid fa-check text-[#FFFC00]"></i> Advanced Features
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </section>
+
+            <section id="faq" class="border-t border-[#222] pt-12 searchable-section">
+                <h2 class="text-3xl font-black text-white mb-8">Public FAQ</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="feature-card">
+                        <h4 class="font-bold text-white mb-2 text-sm"><i class="fa-solid fa-circle-question text-gray-600 mr-2"></i> Do players need to buy the mod?</h4>
+                        <p class="text-gray-400 text-sm">No. The Athena Mod Framework is a server-side license. Players join freely.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4 class="font-bold text-white mb-2 text-sm"><i class="fa-solid fa-circle-question text-gray-600 mr-2"></i> Is this "Pay-to-Win"?</h4>
+                        <p class="text-gray-400 text-sm">Absolutely not. Orion Labs strictly prohibits Pay-to-Win mechanics.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4 class="font-bold text-white mb-2 text-sm"><i class="fa-solid fa-circle-question text-gray-600 mr-2"></i> Legacy branch support?</h4>
+                        <p class="text-gray-400 text-sm">No. Athena is built exclusively for Evrima/Gateway.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4 class="font-bold text-white mb-2 text-sm"><i class="fa-solid fa-circle-question text-gray-600 mr-2"></i> VAC bans allowed?</h4>
+                        <p class="text-gray-400 text-sm">No. We maintain strict integrity; no Game Bans allowed on record.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4 class="font-bold text-white mb-2 text-sm"><i class="fa-solid fa-circle-question text-gray-600 mr-2"></i> Mod compatibility?</h4>
+                        <p class="text-gray-400 text-sm">Yes, but compatibility isn't guaranteed with mods altering base functions.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4 class="font-bold text-white mb-2 text-sm"><i class="fa-solid fa-circle-question text-gray-600 mr-2"></i> RCON Support?</h4>
+                        <p class="text-gray-400 text-sm">Yes, fully compatible. Though our panel offers superior control.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4 class="font-bold text-white mb-2 text-sm"><i class="fa-solid fa-circle-question text-gray-600 mr-2"></i> Updates?</h4>
+                        <p class="text-gray-400 text-sm">Includes an auto-updater for seamless security patches and features.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4 class="font-bold text-white mb-2 text-sm"><i class="fa-solid fa-circle-question text-gray-600 mr-2"></i> Refunds?</h4>
+                        <p class="text-gray-400 text-sm">No refunds for monthly subscriptions unless a critical technical failure occurs.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4 class="font-bold text-white mb-2 text-sm"><i class="fa-solid fa-circle-question text-gray-600 mr-2"></i> Custom Maps?</h4>
+                        <p class="text-gray-400 text-sm">Partial support. Full features guaranteed only on official maps.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4 class="font-bold text-white mb-2 text-sm"><i class="fa-solid fa-circle-question text-gray-600 mr-2"></i> Installation Guide?</h4>
+                        <p class="text-gray-400 text-sm">Yes, subscribers get access to detailed docs and video tutorials.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="credits" class="border-t border-[#222] pt-12 fade-in searchable-section">
+                <h2 class="text-3xl font-black text-white mb-8">Credits</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    
+                    <div class="feature-card flex flex-col items-center text-center">
+                        <h4 class="text-xl font-bold text-white mb-2">TheTopRat</h4>
+                        <div class="flex flex-wrap gap-2 justify-center">
+                            <span class="role-pill text-[#FFFC00] border-[#FFFC00]/30 bg-[#FFFC00]/10">Orion Labs CEO</span>
+                            <span class="role-pill">Executive Director</span>
+                            <span class="role-pill">Web Developer</span>
+                        </div>
+                    </div>
+
+                    <div class="feature-card flex flex-col items-center text-center">
+                        <h4 class="text-xl font-bold text-white mb-2">0xC3</h4>
+                        <div class="flex flex-wrap gap-2 justify-center">
+                            <span class="role-pill text-blue-400 border-blue-400/30 bg-blue-400/10">Lead Developer</span>
+                            <span class="role-pill">Athena Mod Developer</span>
+                        </div>
+                    </div>
+
+                    <div class="feature-card flex flex-col items-center text-center">
+                        <h4 class="text-xl font-bold text-white mb-2">Pretzel</h4>
+                        <div class="flex flex-wrap gap-2 justify-center">
+                            <span class="role-pill text-green-400 border-green-400/30 bg-green-400/10">Operations Director</span>
+                            <span class="role-pill">Community Manager</span>
+                            <span class="role-pill">Unreal Engine Dev</span>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <footer class="pt-20 pb-10 text-center text-gray-600 text-sm border-t border-[#222] mt-12">
+                &copy; 2025 Orion Labs. All rights reserved.
+            </footer>
+        </div>
+    </div>
+
+    <div id="tier-modal" class="fixed inset-0 z-50 modal-backdrop hidden flex items-center justify-center p-4">
+        <div class="bg-[#0a0a0a] border border-[#222] rounded-2xl w-full max-w-lg flex flex-col shadow-2xl fade-in relative overflow-hidden">
+            <div id="tier-modal-header" class="p-6 border-b border-[#222] bg-[#111]">
+                <h3 id="tier-modal-title" class="text-2xl font-black text-white">Tier Name</h3>
+                <p id="tier-modal-price" class="text-[#FFFC00] font-bold text-lg mt-1">$0/mo</p>
+            </div>
+            
+            <div class="p-6 overflow-y-auto max-h-[60vh] space-y-4" id="tier-modal-features">
+            </div>
+
+            <div class="p-6 border-t border-[#222] bg-[#111] flex justify-between gap-4">
+                <button onclick="closeTierModal()" class="px-6 py-3 rounded-lg border border-[#333] text-gray-400 hover:text-white hover:border-gray-500 transition font-bold text-sm w-1/3">Close</button>
+                <button onclick="openEULA()" class="px-6 py-3 rounded-lg bg-[#FFFC00] hover:bg-[#e6e300] text-black font-black text-sm w-2/3 transition transform hover:scale-[1.02]">Subscribe</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="eula-overlay" class="hidden full-page-overlay">
+        <div class="max-w-4xl mx-auto w-full flex flex-col h-full bg-[#050505] shadow-2xl border-x border-[#222]">
+            <div class="p-6 border-b border-[#222] bg-[#0a0a0a] flex-none">
+                <h2 class="text-2xl font-black text-white">Service Agreement</h2>
+                <p class="text-sm text-gray-500">Please review the End User License Agreement before continuing.</p>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-8 md:p-12 text-gray-300 text-sm leading-relaxed space-y-8 font-inter">
+                <div class="bg-[#111] p-8 rounded-lg border border-[#222]">
+                    <h1 class="text-xl font-bold text-white mb-6 text-center">ORION LABS SERVICE AGREEMENT<br><span class="text-gray-500 text-sm font-normal">Athena Mod Framework EULA & Non-Disclosure Agreement</span></h1>
+                    <p class="text-center text-xs text-gray-500 mb-8">Orion Labs &bull; January 14, 2026</p>
+                    
+                    <p class="mb-4">Please read this Agreement carefully. By subscribing to, downloading, or using the Athena Mod Framework, you agree to be bound by the terms set forth below, including the Confidentiality and Non-Disclosure obligations.</p>
+
+                    <h3 class="text-white font-bold mt-6 mb-2">1. Grant of License</h3>
+                    <p>Orion Labs grants you (the "Licensee") a revocable, non-exclusive, non-transferable, limited license to use the Athena Mod Framework (the "Software") strictly for use on servers for the game The Isle.</p>
+                    <p class="mt-2"><strong>1.1 Nature of Access:</strong> You acknowledge that you are purchasing access to use the compiled Software. You are not purchasing ownership of the Software. All rights, title, and interest in the Software remain exclusively with Orion Labs.</p>
+
+                    <h3 class="text-white font-bold mt-6 mb-2">2. Intellectual Property and Restrictions</h3>
+                    <p>The Software is the proprietary property of Orion Labs. To protect the integrity of the work, the following strict prohibitions apply:</p>
+                    <ol class="list-decimal pl-5 mt-2 space-y-2">
+                        <li><strong>No Reverse Engineering:</strong> You may not decompile, disassemble, reverse engineer, or otherwise attempt to derive the source code or underlying algorithms of the Software.</li>
+                        <li><strong>No Inspection:</strong> You may not inspect the memory, network traffic, or binaries of the Software for the purpose of analyzing its internal workings.</li>
+                        <li><strong>No Redistribution:</strong> You may not share, sell, rent, lease, or redistribute the Software to any third party.</li>
+                        <li><strong>Third-Party Liability (Notification & Strict Liability):</strong> You are responsible for the security of the server environment where the Software is installed.
+                            <ul class="list-disc pl-5 mt-1">
+                                <li><strong>Notification Requirement:</strong> You must explicitly notify any third party (e.g., co-owners, hosting support, friends) who is given access to the server of the terms of this EULA and NDA.</li>
+                                <li><strong>Liability:</strong> While authorized users are permitted to access the server for maintenance and viewing, if any user with access to your machine violates these terms (e.g., by attempting to copy or crack the Software), both you (the Licensee) and the offending user will be held liable and subject to sanctions.</li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <h3 class="text-white font-bold mt-6 mb-2">3. Eligibility and Access Requirements</h3>
+                    <p>Orion Labs maintains strict standards to ensure the integrity of the community. Access to the Software is conditional upon the following:</p>
+                    <ul class="list-disc pl-5 mt-2 space-y-2">
+                        <li><strong>Age Requirement (18+):</strong> You must be at least 18 years of age to purchase or use the Software. Minors are not permitted to enter into this Agreement. Parents or guardians may not sign this Agreement on behalf of a minor.</li>
+                        <li><strong>Identity Verification:</strong> Orion Labs reserves the right to request government-issued identification (e.g., Passport, Driver's License) to verify your identity and age if integrity concerns arise. Refusal to provide identification upon request may result in temporary or permanent suspension of access until identity is verified.</li>
+                        <li><strong>No Steam Game Bans:</strong> Access will be denied to any user with a recorded Game Ban on their Steam account, regardless of the game in which the ban was issued.</li>
+                        <li><strong>No Developer Bans:</strong> Access will be denied to any user currently banned by The Isle development team.</li>
+                        <li><strong>One User, One Account:</strong> Access is limited to one account per individual. Account sharing is strictly prohibited.</li>
+                    </ul>
+
+                    <h3 class="text-white font-bold mt-6 mb-2">4. Fair Play and Anti-Cheat</h3>
+                    <p>Orion Labs enforces a Zero Tolerance policy regarding cheating, hacking, and integrity violations.</p>
+                    <ol class="list-decimal pl-5 mt-2 space-y-2">
+                        <li><strong>Prohibition on Hacking:</strong> You may not use the Software to facilitate hacking, cheating, or exploiting. Confirmed hackers (owners, users, or players) will be immediately removed from mod access.</li>
+                        <li><strong>Pay-To-Win Prohibition:</strong> The use of the Software to facilitate "Pay-To-Win" mechanics is strictly prohibited. This is defined as selling significant in-game advantages (e.g., stats, growth, items) for real-world currency, or for any virtual currency, credit, token, or point system that is itself purchased with or obtained via real-world money. Any attempt to obfuscate these transactions to bypass this restriction is a violation.</li>
+                        <li><strong>Server Spoofing:</strong> You may not modify the server, the Software, or use third-party tools to spoof player counts or inject fake players to artificially inflate server population. (Developer Note: Yes, we know exactly how it's done; it's super simple. Just don't do it.)</li>
+                        <li><strong>Athena Anti-Cheat Protection:</strong> The Athena Anti-Cheat protects the integrity of the Software itself, actively scanning for server-side hacks (including player spoofing) and unauthorized modifications to the mod files.</li>
+                        <li><strong>Sanctions:</strong> Violators banned by the Athena Anti-Cheat system will be barred from playing on any server running the Athena Mod Framework. Hackers are permanently prohibited from purchasing access to the Software.</li>
+                    </ol>
+
+                    <h3 class="text-white font-bold mt-6 mb-2">5. Server Limitations</h3>
+                    <p>Usage of the Software is limited based on your subscription tier with Orion Labs:</p>
+                    <ul class="list-disc pl-5 mt-2 space-y-1">
+                        <li><strong>Standard License:</strong> Limited to one (1) active game server instance per person.</li>
+                        <li><strong>Orion Tier License:</strong> Limited to up to three (3) active game server instances per person.</li>
+                    </ul>
+                    <p class="mt-2 text-xs italic">Note: These limits are subject to change to combat abuse. Exceptions may be granted at the sole discretion of Orion Labs upon contact.</p>
+
+                    <h3 class="text-white font-bold mt-6 mb-2">6. Data Collection and Privacy</h3>
+                    <p>To enforce these terms, prevent piracy, and maintain the whitelist, the Software collects specific data from the machine on which it runs. By using the Software, you consent to the collection of the following:</p>
+                    <ul class="list-disc pl-5 mt-2 space-y-2">
+                        <li><strong>Standard Identifiers:</strong> IP Addresses (for server limits), Steam IDs (for verification), and Hardware Identifiers (to prevent spoofing).</li>
+                        <li><strong>VPN/Proxy Data:</strong> We collect both the actual IP address and any VPN/Proxy IP address. We reserve the right to prevent the Software from running if a VPN or Proxy application is detected.</li>
+                        <li><strong>Gameplay & Integrity Telemetry:</strong> To facilitate the Athena Anti-Cheat, we collect active process lists, game memory states, player statistics, and behavioral patterns. This data is used solely to identify unauthorized software or exploits.</li>
+                        <li><strong>Undisclosed Identifiers:</strong> You acknowledge and agree that Orion Labs may collect additional, undisclosed hardware or software identifiers not explicitly listed here for the purpose of identifying the machine and preventing bypass methods.</li>
+                        <li><strong>Development Build Telemetry:</strong> If you are granted access to a "Test" or "Development" build of the Software, Orion Labs may collect additional statistics, including performance profiling, player counts, and resource usage data.</li>
+                    </ul>
+
+                    <h3 class="text-white font-bold mt-6 mb-2">7. Nature of the Software (Early Access)</h3>
+                    <p>The Licensee acknowledges that the Software is currently in an "Early Access" state.</p>
+                    <ul class="list-disc pl-5 mt-2 space-y-2">
+                        <li><strong>Work in Progress:</strong> The Software is not a finished product. It may contain bugs, errors, or stability issues.</li>
+                        <li><strong>Feature Volatility:</strong> Features available today may be modified, deprecated, or removed entirely in future updates without prior notice.</li>
+                        <li><strong>"As Is" Provision:</strong> The Software is provided "AS IS" without warranty of any kind.</li>
+                    </ul>
+
+                    <h3 class="text-white font-bold mt-6 mb-2">8. Confidentiality and Non-Disclosure Agreement (NDA)</h3>
+                    <p>By accepting this Agreement, the Licensee agrees to the following Non-Disclosure terms regarding the Software ("Confidential Information").</p>
+                    <ol class="list-decimal pl-5 mt-2 space-y-2">
+                        <li><strong>Confidential Information:</strong> Includes the Software binaries, the launcher, internal structures, unreleased features, and any communications from Orion Labs labeled as confidential.</li>
+                        <li><strong>Non-Disclosure:</strong> The Licensee agrees not to disclose, publish, share, or distribute the Confidential Information to any third party without prior written consent from Orion Labs.</li>
+                        <li><strong>Term:</strong> This NDA remains in effect for a period of ten (10) years from the date of this Agreement, or the maximum duration permitted by applicable law, whichever is shorter.</li>
+                        <li><strong>Breach:</strong> Any violation of this NDA will result in immediate termination of the license, a permanent ban, and potential legal action.</li>
+                    </ol>
+
+                    <h3 class="text-white font-bold mt-6 mb-2">9. Termination and Sanctions</h3>
+                    <p>Orion Labs reserves the right to terminate this Agreement and revoke access to the Software at any time.</p>
+                    <p class="mt-2 font-bold">9.1 Grounds for Termination</p>
+                    <p>This license will be terminated immediately if:</p>
+                    <ul class="list-disc pl-5 mt-1 space-y-1">
+                        <li>You violate any restriction in Section 2, Section 4, or the NDA in Section 8.</li>
+                        <li>You receive a Game Ban on Steam or an in-game ban from The Isle development team.</li>
+                        <li>A third party accesses your authorized machine and violates these terms.</li>
+                    </ul>
+                    <p class="mt-2 font-bold">9.2 Sanctions and Consequences</p>
+                    <p>In the event of a violation, Orion Labs will impose the following sanctions:</p>
+                    <ol class="list-decimal pl-5 mt-1 space-y-1">
+                        <li><strong>Permanent Access Ban:</strong> You will be permanently banned from accessing, downloading, or viewing the Software.</li>
+                        <li><strong>Athena Anti-Cheat Ban:</strong> You will be banned via the Athena Anti-Cheat system (zero access to play on any server running the Athena Mod Framework).</li>
+                        <li><strong>Joint Liability:</strong> If a user cracks or shares the mod from your machine, both the user and the owner (you) will be banned.</li>
+                        <li><strong>No Refunds:</strong> Orion Labs offers zero refunds for revocations due to violations.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="p-6 border-t border-[#222] bg-[#0a0a0a] flex-none flex flex-col md:flex-row justify-between items-center gap-6">
+                <button onclick="closeEULA()" class="text-gray-500 hover:text-white font-bold text-sm px-4 py-2 flex items-center gap-2 transition">
+                    <i class="fa-solid fa-arrow-left"></i> Back
+                </button>
+
+                <div class="flex flex-col md:flex-row items-center gap-6">
+                    <label class="custom-checkbox flex items-center gap-3 cursor-pointer select-none">
+                        <input type="checkbox" id="eula-checkbox" class="hidden" onchange="toggleContinue()">
+                        <div class="w-5 h-5 border border-[#333] rounded bg-[#111] flex items-center justify-center transition-colors">
+                            <svg class="w-3 h-3 text-black hidden pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <span class="text-xs text-gray-400 max-w-md">I hereby agree to the Orion Labs Athena Framework EULA, Non-Disclosure Agreement, Terms of Service, and Privacy Policy.</span>
+                    </label>
+
+                    <button id="btn-continue" onclick="window.open('https://www.patreon.com/15306522/join', '_blank')" disabled class="bg-[#FFFC00] hover:bg-[#e6e300] text-black px-8 py-3 rounded-lg font-bold text-sm transition opacity-50 cursor-not-allowed disabled:opacity-30">
+                        Continue <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="compare-modal" class="fixed inset-0 z-50 modal-backdrop hidden flex items-center justify-center p-4">
+        <div class="bg-[#0a0a0a] border border-[#222] rounded-2xl w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl fade-in">
+            <div class="p-4 border-b border-[#222] flex justify-between items-center bg-[#111] rounded-t-2xl">
+                <h3 class="font-black text-lg text-white">Compare Membership</h3>
+                <button onclick="toggleCompare()" class="text-gray-500 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div class="overflow-auto flex-1 p-6 relative">
+                <table class="w-full text-sm text-left comp-table">
+                    <thead class="text-xs text-gray-500 uppercase bg-[#0a0a0a] sticky top-0 z-20">
+                        <tr>
+                            <th scope="col">Features</th>
+                            <th scope="col" class="text-gray-400">Fan<br><span class="text-[10px] text-gray-600">$10</span></th>
+                            <th scope="col" class="text-white">Apex<br><span class="text-[10px] text-gray-600">$25</span></th>
+                            <th scope="col" class="text-white">Prime<br><span class="text-[10px] text-gray-600">$50</span></th>
+                            <th scope="col" class="text-[#FFFC00]">Orion<br><span class="text-[10px] text-gray-600">$80</span></th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr data-tooltip="Access to the core mod files required to run Athena on your server.">
+                            <td>
+                                <span class="tooltip-trigger">Athena Server Mod</span>
+                            </td>
+                            <td><i class="fa-solid fa-minus text-gray-700"></i></td>
+                            <td><i class="fa-solid fa-check text-green-500"></i></td>
+                            <td><i class="fa-solid fa-check text-green-500"></i></td>
+                            <td><i class="fa-solid fa-check text-[#FFFC00]"></i></td>
+                        </tr>
+                        <tr data-tooltip="Remote management bot for your Discord server.">
+                            <td>
+                                <span class="tooltip-trigger">Discord Bot</span>
+                            </td>
+                            <td><i class="fa-solid fa-minus text-gray-700"></i></td>
+                            <td><i class="fa-solid fa-minus text-gray-700"></i></td>
+                            <td>
+                                <div class="flex flex-col items-center gap-1">
+                                    <i class="fa-solid fa-check text-green-500"></i>
+                                    <span class="text-[9px] bg-blue-900/20 text-blue-400 px-1.5 py-0.5 rounded uppercase font-bold tracking-wide">Soon</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="flex flex-col items-center gap-1">
+                                    <i class="fa-solid fa-check text-[#FFFC00]"></i>
+                                    <span class="text-[9px] bg-blue-900/20 text-blue-400 px-1.5 py-0.5 rounded uppercase font-bold tracking-wide">Soon</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-tooltip="A fully customizable promotional website for your server.">
+                            <td>
+                                <span class="tooltip-trigger">Custom Website</span>
+                            </td>
+                            <td><i class="fa-solid fa-minus text-gray-700"></i></td>
+                            <td><i class="fa-solid fa-minus text-gray-700"></i></td>
+                            <td><i class="fa-solid fa-minus text-gray-700"></i></td>
+                            <td>
+                                <div class="flex flex-col items-center gap-1">
+                                    <i class="fa-solid fa-check text-[#FFFC00]"></i>
+                                    <span class="text-[9px] bg-blue-900/20 text-blue-400 px-1.5 py-0.5 rounded uppercase font-bold tracking-wide">Soon</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-tooltip="Get exclusive previews and blog posts about upcoming features.">
+                            <td>
+                                <span class="tooltip-trigger">WIP Updates (Digital)</span>
+                            </td>
+                            <td><i class="fa-solid fa-check text-green-500"></i></td>
+                            <td><i class="fa-solid fa-check text-green-500"></i></td>
+                            <td><i class="fa-solid fa-check text-green-500"></i></td>
+                            <td><i class="fa-solid fa-check text-[#FFFC00]"></i></td>
+                        </tr>
+                        <tr data-tooltip="Play with new features and mechanics as they are being developed.">
+                            <td>
+                                <span class="tooltip-trigger">Early Access</span>
+                            </td>
+                            <td><i class="fa-solid fa-minus text-gray-700"></i></td>
+                            <td><i class="fa-solid fa-check text-green-500"></i></td>
+                            <td><i class="fa-solid fa-check text-green-500"></i></td>
+                            <td><i class="fa-solid fa-check text-[#FFFC00]"></i></td>
+                        </tr>
+                        <tr data-tooltip="Number of individual game server instances allowed.">
+                            <td>
+                                <span class="tooltip-trigger">Server Licenses</span>
+                            </td>
+                            <td><span class="text-gray-600">0</span></td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td><span class="text-[#FFFC00] font-bold">3</span></td>
+                        </tr>
+                        <tr data-tooltip="Participate in live voice or chat sessions with developers.">
+                            <td>
+                                <span class="tooltip-trigger">Live Q&As</span>
+                            </td>
+                            <td><i class="fa-solid fa-minus text-gray-700"></i></td>
+                            <td><i class="fa-solid fa-minus text-gray-700"></i></td>
+                            <td><i class="fa-solid fa-check text-green-500"></i></td>
+                            <td><i class="fa-solid fa-check text-[#FFFC00]"></i></td>
+                        </tr>
+                        <tr data-tooltip="Priority consideration for feature requests.">
+                            <td>
+                                <span class="tooltip-trigger">Fan Requests</span>
+                            </td>
+                            <td><i class="fa-solid fa-minus text-gray-700"></i></td>
+                            <td><i class="fa-solid fa-minus text-gray-700"></i></td>
+                            <td><i class="fa-solid fa-minus text-gray-700"></i></td>
+                            <td><i class="fa-solid fa-check text-[#FFFC00]"></i></td>
+                        </tr>
+                         <tr data-tooltip="Access to exclusive Discord channels.">
+                            <td>
+                                <span class="tooltip-trigger">Private Community</span>
+                            </td>
+                            <td><i class="fa-solid fa-minus text-gray-700"></i></td>
+                            <td><i class="fa-solid fa-minus text-gray-700"></i></td>
+                            <td><i class="fa-solid fa-minus text-gray-700"></i></td>
+                            <td><i class="fa-solid fa-check text-[#FFFC00]"></i></td>
+                        </tr>
+                        <tr data-tooltip="In-depth video configuration guides.">
+                            <td>
+                                <span class="tooltip-trigger">Video Tutorials</span>
+                            </td>
+                            <td><i class="fa-solid fa-minus text-gray-700"></i></td>
+                            <td><i class="fa-solid fa-minus text-gray-700"></i></td>
+                            <td><i class="fa-solid fa-minus text-gray-700"></i></td>
+                            <td><i class="fa-solid fa-check text-[#FFFC00]"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="p-4 border-t border-[#222] bg-[#111] rounded-b-2xl text-center">
+                 <button onclick="toggleCompare()" class="bg-[#222] hover:bg-[#333] text-white px-8 py-2 rounded-lg font-bold text-sm transition">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tiers = {
+            'Fan': {
+                price: '$10/mo',
+                features: [
+                    { name: 'WIP Updates', icon: 'fa-solid fa-pen-nib', text: 'Get exclusive digital updates.' }
+                ]
+            },
+            'Apex': {
+                price: '$25/mo',
+                features: [
+                    { name: 'WIP Updates', icon: 'fa-solid fa-pen-nib', text: 'Get exclusive digital updates.' },
+                    { name: '1 Server License', icon: 'fa-solid fa-server', text: 'Run 1 instance of the mod.' },
+                    { name: 'Athena Server Mod', icon: 'fa-solid fa-box-archive', text: 'Full access to the framework.' },
+                    { name: 'Early Access', icon: 'fa-solid fa-flask', text: 'Test features before release.' }
+                ]
+            },
+            'Prime': {
+                price: '$50/mo',
+                features: [
+                    { name: 'Everything in Apex', icon: 'fa-solid fa-check-double', text: 'Includes all Apex tier benefits.' },
+                    { name: 'Live Q&As', icon: 'fa-solid fa-comments', text: 'Chat directly with devs.' },
+                    { name: 'Discord Bot (Soon)', icon: 'fa-brands fa-discord', text: 'Coming soon for Prime users.' }
+                ]
+            },
+            'Orion': {
+                price: '$80/mo',
+                features: [
+                    { name: 'Everything in Prime', icon: 'fa-solid fa-check-double', text: 'Includes all Prime tier benefits.' },
+                    { name: '3 Server Licenses', icon: 'fa-solid fa-server', text: 'Run up to 3 instances.' },
+                    { name: 'Fan Requests', icon: 'fa-solid fa-star', text: 'Priority feature requests.' },
+                    { name: 'Private Community', icon: 'fa-solid fa-lock', text: 'Access private Discord channels.' },
+                    { name: 'Video Tutorials', icon: 'fa-solid fa-video', text: 'Advanced setup guides.' },
+                    { name: 'Custom Website (Soon)', icon: 'fa-solid fa-globe', text: 'Your own promo site.' }
+                ]
+            }
+        };
+
+        function openTierModal(tierName) {
+            document.body.classList.add('overflow-hidden');
+            const modal = document.getElementById('tier-modal');
+            const title = document.getElementById('tier-modal-title');
+            const price = document.getElementById('tier-modal-price');
+            const list = document.getElementById('tier-modal-features');
+            const data = tiers[tierName];
+
+            title.innerText = tierName + " Tier";
+            price.innerText = data.price;
+            list.innerHTML = '';
+
+            data.features.forEach(f => {
+                list.innerHTML += `
+                    <div class="flex items-center gap-4 bg-[#111] p-3 rounded border border-[#222]">
+                        <div class="w-10 h-10 rounded bg-[#222] flex items-center justify-center text-[#FFFC00]">
+                            <i class="${f.icon}"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-sm">${f.name}</h4>
+                            <p class="text-xs text-gray-500">${f.text}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeTierModal() {
+            document.body.classList.remove('overflow-hidden');
+            document.getElementById('tier-modal').classList.add('hidden');
+        }
+
+        function openEULA() {
+            closeTierModal();
+            document.body.classList.add('overflow-hidden'); 
+            document.getElementById('eula-overlay').classList.remove('hidden');
+        }
+
+        function closeEULA() {
+            document.body.classList.remove('overflow-hidden');
+            document.getElementById('eula-overlay').classList.add('hidden');
+            document.getElementById('eula-checkbox').checked = false;
+            toggleContinue();
+        }
+
+        function toggleContinue() {
+            const chk = document.getElementById('eula-checkbox');
+            const btn = document.getElementById('btn-continue');
+            if (chk.checked) {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                btn.classList.add('hover:scale-105');
+            } else {
+                btn.disabled = true;
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+                btn.classList.remove('hover:scale-105');
+            }
+        }
+
+        function toggleCompare() {
+            const modal = document.getElementById('compare-modal');
+            if (modal.classList.contains('hidden')) {
+                document.body.classList.add('overflow-hidden');
+                modal.classList.remove('hidden');
+            } else {
+                document.body.classList.remove('overflow-hidden');
+                modal.classList.add('hidden');
+            }
+        }
+
+        const tooltip = document.getElementById('global-tooltip');
+        let hideTimeout;
+
+        document.querySelectorAll('.comp-table tbody tr').forEach(row => {
+            row.addEventListener('mouseenter', (e) => {
+                if (hideTimeout) clearTimeout(hideTimeout);
+                const text = row.getAttribute('data-tooltip');
+                const featureName = row.cells[0].innerText.trim();
+                
+                if(text) {
+                    tooltip.innerHTML = `<strong>${featureName}</strong>${text}`;
+                    tooltip.classList.remove('hidden');
+                    tooltip.style.opacity = '1';
+                }
+            });
+
+            row.addEventListener('mousemove', (e) => {
+                const x = e.pageX + 15;
+                const y = e.pageY + 15;
+                tooltip.style.left = x + 'px';
+                tooltip.style.top = y + 'px';
+            });
+
+            row.addEventListener('mouseleave', () => {
+                tooltip.style.opacity = '0';
+                hideTimeout = setTimeout(() => {
+                    tooltip.classList.add('hidden');
+                }, 100); 
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase();
+                const cards = document.querySelectorAll('.feature-card, .bg-\\[\\#0a0a0a\\]'); 
+                cards.forEach(card => {
+                    if (card.classList.contains('tier-card')) return;
+                    const text = card.innerText.toLowerCase();
+                    if(text.includes(term)) {
+                        card.style.display = 'block';
+                        card.style.opacity = '1';
+                    } else {
+                        if (!card.closest('aside')) {
+                             card.style.display = 'none';
+                             card.style.opacity = '0';
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
