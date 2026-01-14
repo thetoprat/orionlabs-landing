@@ -4,6 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Athena Mod Framework | Orion Labs</title>
+    
+    <meta name="description" content="The Athena Mod Framework is a comprehensive server-side suite for The Isle (Evrima), offering advanced security, management tools, and gameplay customization. coming February 2026.">
+    <meta name="theme-color" content="#FFFC00">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.orionlabs.dev/athena.html">
+    <meta property="og:title" content="Athena Mod Framework | Orion Labs">
+    <meta property="og:description" content="Enhance your The Isle server with Athena: Advanced Anti-Cheat, Population Control, Role Management, and more. Coming February 2026.">
+    <meta property="og:image" content="https://your-domain.com/path-to-banner.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="orionlabs.dev">
+    <meta property="twitter:url" content="https://www.orionlabs.dev/athena.html">
+    <meta name="twitter:title" content="Athena Mod Framework | Orion Labs">
+    <meta name="twitter:description" content="Enhance your The Isle server with Athena: Advanced Anti-Cheat, Population Control, Role Management, and more. Coming February 2026.">
+    <meta name="twitter:image" content="https://your-domain.com/path-to-banner.png">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -30,11 +47,27 @@
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #444; }
 
+        #sticky-banner {
+            position: sticky;
+            top: 0;
+            z-index: 60;
+            background-color: var(--accent);
+            color: #000;
+            font-weight: 700;
+            text-align: center;
+            padding: 0.75rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
         #sidebar {
             position: fixed;
-            top: 0;
+            top: 3rem; 
             left: 0;
-            height: 100vh;
+            height: calc(100vh - 3rem);
             width: 20rem; 
             z-index: 40;
             overflow-y: auto;
@@ -179,6 +212,16 @@
     </style>
 </head>
 <body>
+
+    <div id="sticky-banner">
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-bullhorn"></i>
+            <span>Athena is coming soon, expected in February!</span>
+        </div>
+        <button onclick="document.getElementById('sticky-banner').style.display='none'; document.getElementById('sidebar').style.top='0'; document.getElementById('sidebar').style.height='100vh';" class="absolute right-4 hover:opacity-75">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
 
     <div id="global-tooltip" class="hidden"></div>
 
