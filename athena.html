@@ -209,6 +209,21 @@
 
         .fade-in { animation: fadeIn 0.3s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+
+        /* Roadmap Specifics */
+        .roadmap-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #FFFC00, #333);
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+        @media (max-width: 768px) {
+            .roadmap-line { left: 20px; }
+        }
     </style>
 </head>
 <body>
@@ -259,6 +274,10 @@
                 <i class="fa-brands fa-discord w-6"></i> Integrations
             </a>
             
+            <a href="#roadmap" class="sidebar-link block px-3 py-2 text-sm text-gray-400 rounded-r-lg hover:text-white">
+                <i class="fa-solid fa-map-location-dot w-6"></i> Roadmap
+            </a>
+
             <div class="px-3 pt-5 pb-2 text-xs font-bold text-gray-500 uppercase tracking-wider">Access</div>
             <a href="#pricing" class="sidebar-link block px-3 py-2 text-sm text-gray-400 rounded-r-lg hover:text-white">
                 <i class="fa-solid fa-tags w-6"></i> Pricing & Tiers
@@ -520,6 +539,110 @@
                         </div>
                     </div>
                 </section>
+
+                <section id="roadmap" class="searchable-section scroll-mt-10 pt-10">
+                    <h3 class="text-3xl font-black text-white mb-12 text-center">
+                        Development Roadmap
+                    </h3>
+                    
+                    <div class="relative max-w-4xl mx-auto px-4">
+                        <div class="roadmap-line"></div>
+
+                        <div class="relative flex flex-col md:flex-row items-center justify-between mb-16 w-full">
+                            <div class="order-1 w-full md:w-[45%]"></div>
+                            
+                            <div class="z-10 flex items-center justify-center order-1 w-10 h-10 bg-[#0a0a0a] border-4 border-[#FFFC00] rounded-full shadow-[0_0_15px_rgba(255,252,0,0.5)]">
+                                <div class="w-3 h-3 bg-white rounded-full"></div>
+                            </div>
+                            
+                            <div class="order-1 w-full md:w-[45%] mt-4 md:mt-0 p-6 bg-[#0a0a0a] border border-[#222] rounded-xl relative hover:border-[#FFFC00] transition-colors group">
+                                <div class="absolute top-0 md:top-6 -left-2 md:-left-3 w-4 h-4 bg-[#0a0a0a] transform rotate-45 border-l border-t border-[#222] md:block hidden group-hover:border-[#FFFC00] transition-colors"></div>
+                                
+                                <h4 class="font-bold text-white text-lg mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-users-viewfinder text-green-400"></i> Population AI Integration
+                                </h4>
+                                <p class="text-sm text-gray-400 leading-relaxed">
+                                    Instead of hard-locking species slots, we are implementing a smart limiter. If a species count exceeds the administrator's threshold (e.g., too many Carnos), the server will automatically throttle the spawn rate of AI and reduce larger AI types for that specific group. This forces overpopulated species to rely on hunting players for food rather than farming AI.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="relative flex flex-col md:flex-row-reverse items-center justify-between mb-16 w-full">
+                            <div class="order-1 w-full md:w-[45%]"></div>
+                            
+                            <div class="z-10 flex items-center justify-center order-1 w-10 h-10 bg-[#0a0a0a] border-4 border-blue-500 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.5)]">
+                                <div class="w-3 h-3 bg-white rounded-full"></div>
+                            </div>
+                            
+                            <div class="order-1 w-full md:w-[45%] mt-4 md:mt-0 p-6 bg-[#0a0a0a] border border-[#222] rounded-xl relative hover:border-blue-500 transition-colors group">
+                                <div class="absolute top-0 md:top-6 -right-2 md:-right-3 w-4 h-4 bg-[#0a0a0a] transform rotate-45 border-r border-t border-[#222] md:block hidden group-hover:border-blue-500 transition-colors"></div>
+
+                                <h4 class="font-bold text-white text-lg mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-cubes text-blue-400"></i> Sandbox Gamemode
+                                </h4>
+                                <p class="text-sm text-gray-400 leading-relaxed mb-3">
+                                    A true Sandbox experience with <strong class="text-white">ZERO DELAYS</strong>.
+                                </p>
+                                <ul class="text-sm text-gray-500 space-y-1 list-disc pl-4">
+                                    <li>Spawn instantly as an Adult.</li>
+                                    <li>Admin configurable ages: Frail Elder, Elder, or Prime Elder.</li>
+                                    <li>Bypass growth times entirely for events or testing.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section id="why-choose-us" class="searchable-section pt-10 border-t border-[#222]">
+                    <h3 class="text-2xl font-bold text-white mb-6 text-center">Why Athena?</h3>
+                    <p class="text-center text-gray-400 mb-10 max-w-2xl mx-auto">
+                        We are building the most robust, secure, and feature-rich framework on the market. Here is how we compare to others like Norden's Mod.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="bg-gradient-to-b from-[#111] to-[#0a0a0a] p-6 rounded-xl border border-[#222] hover:border-[#FFFC00]/50 transition-all duration-300 group">
+                            <div class="w-12 h-12 bg-[#FFFC00]/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-[#FFFC00]/20 transition-colors">
+                                <i class="fa-solid fa-code text-[#FFFC00] text-xl"></i>
+                            </div>
+                            <h4 class="text-white font-bold mb-2">Native C++ Core</h4>
+                            <p class="text-xs text-gray-400 leading-relaxed">
+                                Fully written in C++ for maximum performance and stability. Unlike blueprint or interpreted mods, Athena runs close to the metal with minimal overhead.
+                            </p>
+                        </div>
+
+                        <div class="bg-gradient-to-b from-[#111] to-[#0a0a0a] p-6 rounded-xl border border-[#222] hover:border-green-500/50 transition-all duration-300 group">
+                            <div class="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-green-500/20 transition-colors">
+                                <i class="fa-solid fa-lock text-green-500 text-xl"></i>
+                            </div>
+                            <h4 class="text-white font-bold mb-2">Enterprise Security</h4>
+                            <p class="text-xs text-gray-400 leading-relaxed">
+                                Security is our priority. With integrated anti-spoofing, DLL checks, and encrypted save handling, your server integrity is guaranteed.
+                            </p>
+                        </div>
+
+                        <div class="bg-gradient-to-b from-[#111] to-[#0a0a0a] p-6 rounded-xl border border-[#222] hover:border-purple-500/50 transition-all duration-300 group">
+                            <div class="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-purple-500/20 transition-colors">
+                                <i class="fa-solid fa-headset text-purple-500 text-xl"></i>
+                            </div>
+                            <h4 class="text-white font-bold mb-2">Dedicated Support</h4>
+                            <p class="text-xs text-gray-400 leading-relaxed">
+                                We don't just sell a mod; we support a service. Direct access to developers and detailed documentation ensures you aren't left in the dark.
+                            </p>
+                        </div>
+
+                        <div class="bg-gradient-to-b from-[#111] to-[#0a0a0a] p-6 rounded-xl border border-[#222] hover:border-blue-500/50 transition-all duration-300 group">
+                            <div class="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-500/20 transition-colors">
+                                <i class="fa-solid fa-gift text-blue-500 text-xl"></i>
+                            </div>
+                            <h4 class="text-white font-bold mb-2">Future Free Tier</h4>
+                            <p class="text-xs text-gray-400 leading-relaxed">
+                                Once we reach feature parity with competitors, we plan to release a comprehensive <strong>Free Version</strong>. Paid tiers are strictly donations to support development!
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
             </div>
 
             <section id="pricing" class="border-t border-[#222] pt-12 fade-in searchable-section">
@@ -728,7 +851,7 @@
                     <ul class="list-disc pl-5 mt-2 space-y-2">
                         <li><strong>Age Requirement (18+):</strong> You must be at least 18 years of age to purchase or use the Software. Minors are not permitted to enter into this Agreement. Parents or guardians may not sign this Agreement on behalf of a minor.</li>
                         <li><strong>Identity Verification:</strong> Orion Labs reserves the right to request government-issued identification (e.g., Passport, Driver's License) to verify your identity and age if integrity concerns arise. Refusal to provide identification upon request may result in temporary or permanent suspension of access until identity is verified.</li>
-                        <li><strong>No Steam Game Bans:</strong> Access will be denied to any user with a recorded Game Ban on their Steam account, regardless of the game in which the ban was issued.</li>
+                        <li><strong>No Steam Game Bans:</strong> Access will be denied to any user with a recorded Game Ban on Steam account, regardless of the game in which the ban was issued.</li>
                         <li><strong>No Developer Bans:</strong> Access will be denied to any user currently banned by The Isle development team.</li>
                         <li><strong>One User, One Account:</strong> Access is limited to one account per individual. Account sharing is strictly prohibited.</li>
                     </ul>
