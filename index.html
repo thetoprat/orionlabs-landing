@@ -1,173 +1,390 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orion Labs - Innovate. Create. Elevate.</title>
-    <meta name="description" content="Orion Labs is your partner in navigating the digital cosmos. We build stellar solutions for ambitious brands.">
-    <meta property="og:title" content="Orion Labs">
-    <meta property="og:description" content="Innovate. Create. Elevate. We build stellar solutions for ambitious brands.">
-    <meta property="og:image" content="https://placehold.co/1200x630/1a1a1a/e0c56e?text=Orion+Labs">
-    <meta property="og:url" content="#">
-    <meta property="og:type" content="website">
-    <meta name="theme-color" content="#e0c56e">
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Orion Labs</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+<style>
+:root{--bg:#09090b;--surf:#18181b;--s-h:rgba(39,39,42,0.5);--txt:#ffffff;--mut:#a1a1aa;--acc:#FFFC00;--brd:rgba(255,255,255,0.08);--btn:#FFFC00;--btnt:#000000;--nav:rgba(9,9,11,0.7);--sc:rgba(0,0,0,0.5);--gw:rgba(255,252,0,0.15)}
+.lt{--bg:#f8f9fa;--surf:#ffffff;--s-h:rgba(244,244,245,0.5);--txt:#18181b;--mut:#5f6368;--acc:#d4d100;--brd:rgba(0,0,0,0.08);--btn:#18181b;--btnt:#ffffff;--nav:rgba(255,255,255,0.7);--sc:rgba(0,0,0,0.1);--gw:rgba(0,0,0,0.05)}
+body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background-color .5s,color .5s}
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--mut);border-radius:10px}
+.f-x{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background-image:radial-gradient(circle at 15% 50%,var(--gw),transparent 25%),radial-gradient(circle at 85% 30%,var(--gw),transparent 25%),linear-gradient(var(--brd) 1px,transparent 1px),linear-gradient(90deg,var(--brd) 1px,transparent 1px);background-size:100% 100%,100% 100%,40px 40px,40px 40px;background-position:0 0,0 0,-1px -1px,-1px -1px;animation:p 20s linear infinite}
+@keyframes p{0%{background-position:0 0,0 0,-1px -1px,-1px -1px}100%{background-position:0 0,0 0,39px 39px,39px 39px}}
+.sf{background:var(--surf);border:1px solid var(--brd);border-radius:1.5rem;transition:all .4s cubic-bezier(.4,0,.2,1);backdrop-filter:blur(12px)}
+.sf-h:hover{transform:translateY(-6px) scale(1.01);box-shadow:0 24px 48px -12px var(--sc);border-color:var(--acc)}
+.bt{background:var(--btn);color:var(--btnt);border-radius:9999px;padding:.75rem 1.75rem;font-weight:700;transition:all .3s cubic-bezier(.4,0,.2,1);display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border:none;cursor:pointer;position:relative;overflow:hidden;font-size:1rem}
+.bt::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transform:translateX(-100%);transition:transform .5s}
+.bt:hover::after{transform:translateX(100%)}
+.bt:hover{transform:scale(1.03);box-shadow:0 0 20px var(--gw)}
+.ip{width:100%;background:var(--s-h);border:1px solid var(--brd);border-radius:1rem;padding:1rem;font-family:inherit;transition:all .3s;color:var(--txt);outline:none}
+.ip:focus{border-color:var(--acc);box-shadow:0 0 0 4px var(--gw)}
+.np{padding:.5rem 1.25rem;border-radius:9999px;font-weight:600;font-size:.875rem;color:var(--mut);transition:all .3s;cursor:pointer;display:inline-flex;align-items:center;gap:.5rem}
+.np:hover{background:var(--s-h);color:var(--txt)}
+.np.ac{background:var(--txt);color:var(--bg)}
+.vw{opacity:1;transition:opacity .4s ease}
+.vw.hd{opacity:0;pointer-events:none}
+.rl{opacity:0;transform:translateY(30px);transition:all .8s cubic-bezier(.4,0,.2,1)}
+.rl.ac{opacity:1;transform:translateY(0)}
+.oy{position:fixed;inset:0;z-index:100;background:var(--nav);backdrop-filter:blur(16px);opacity:0;pointer-events:none;transition:all .4s;display:flex;flex-direction:column;align-items:center;overflow-y:auto;padding:2rem 1rem}
+.oy.ac{opacity:1;pointer-events:auto}
+.oy-c{width:100%;max-width:64rem;transform:translateY(20px) scale(.98);transition:all .4s;opacity:0}
+.oy.ac .oy-c{transform:translateY(0) scale(1);opacity:1}
+.mv{color:var(--mut);line-height:1.8;font-size:1.05rem}
+.mv h1,.mv h2,.mv h3,.mv h4{color:var(--txt);font-weight:800;margin:2rem 0 1rem}
+.mv h1{font-size:2.5rem}.mv h2{font-size:2rem}.mv h3{font-size:1.5rem}
+.mv p{margin-bottom:1.25rem}
+.mv a{color:var(--acc);text-decoration:none;font-weight:600}
+.mv a:hover{text-decoration:underline}
+.mv pre{background:var(--s-h);padding:1.25rem;border-radius:1rem;overflow-x:auto;margin-bottom:1.5rem;border:1px solid var(--brd)}
+.mv code{font-family:monospace;font-size:.85em;background:var(--s-h);padding:.2em .4em;border-radius:.25rem}
+.mv pre code{background:transparent;padding:0}
+.mv ul{list-style:disc;padding-left:1.5rem;margin-bottom:1.25rem}
+.mv ol{list-style:decimal;padding-left:1.5rem;margin-bottom:1.25rem}
+.mv input[type="checkbox"]{margin-right:.5rem;accent-color:var(--acc)}
+.mv img,.mv iframe{max-width:100%;border-radius:1rem;margin:1.5rem 0}
+.ad{padding:1rem 1.5rem;border-radius:1rem;margin:1.5rem 0;border-left:4px solid;background:var(--s-h);position:relative}
+.ad-t{font-size:.75rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem;opacity:.8}
+.ad.info{border-color:#3b82f6}.ad.info .ad-t{color:#3b82f6}
+.ad.warn{border-color:#f59e0b}.ad.warn .ad-t{color:#f59e0b}
+.ad.danger,.ad.error{border-color:#ef4444}.ad.danger .ad-t,.ad.error .ad-t{color:#ef4444}
+.ad.announcement{border-color:var(--acc)}.ad.announcement .ad-t{color:var(--acc)}
+.tb{padding:.4rem .6rem;border-radius:.5rem;color:var(--mut);transition:all .2s}
+.tb:hover{background:var(--s-h);color:var(--acc)}
+.mp{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;mask-image:linear-gradient(to bottom,#000 50%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 50%,transparent 100%)}
+.tg{font-size:.75rem;padding:.2rem .6rem;border-radius:999px;background:var(--s-h);color:var(--txt);border:1px solid var(--brd)}
+</style>
 </head>
-<body class="theme-gold-dark">
-    <header class="main-header">
-        <div class="container">
-            <a href="#hero" class="logo">
-                <img src="src/assets/images/orionlabs.png" alt="Orion Labs Logo" onerror="this.onerror=null;this.src='https://placehold.co/100x100/1a1a1a/e0c56e?text=O';">
-                <h1>Orion Labs</h1>
-            </a>
-            <nav class="main-nav">
-                <a href="#about">About</a>
-                <a href="#services">Services</a>
-                <a href="#contact">Contact</a>
-            </nav>
-            <div class="theme-customizer">
-                <button id="theme-toggle-btn" class="theme-button" aria-label="Toggle theme customizer">
-                    <svg class="palette-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
-                    <div id="current-color-preview" class="current-color-preview"></div>
-                </button>
-                <div id="theme-palette" class="theme-palette">
-                    <div class="theme-swatch" data-theme="theme-gold-dark" style="background-color: #e0c56e;"></div>
-                    <div class="theme-swatch" data-theme="theme-nebula-dark" style="background-color: #be93d4;"></div>
-                    <div class="theme-swatch" data-theme="theme-starlight-dark" style="background-color: #63d2d4;"></div>
-                    <div class="theme-swatch" data-theme="theme-nova-dark" style="background-color: #f5a66f;"></div>
-                </div>
-            </div>
+<body class="dark flex flex-col min-h-screen">
+<div class="f-x"></div>
+
+<nav class="w-full fixed top-0 z-50 transition-colors duration-500 border-b" style="background:var(--nav);backdrop-filter:blur(20px);border-color:var(--brd)">
+    <div class="max-w-[1400px] mx-auto px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3 cursor-pointer" onclick="_v('h')">
+            <img src="src/media/branding/icon.png" class="w-10 h-10 rounded-xl object-cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="hidden w-10 h-10 rounded-xl items-center justify-center font-black text-xl" style="background:var(--txt);color:var(--bg)">O</div>
+            <span class="text-xl font-bold tracking-tight">Orion Labs</span>
         </div>
-    </header>
-    <main class="scroll-container">
-        <section id="hero" class="hero-fullscreen scroll-section">
-            <div id="particle-container"></div>
-            <div class="hero-content section-content">
-                <h2>Innovate. Create. Elevate.</h2>
-                <p>Orion Labs is your partner in navigating the digital cosmos. We build stellar solutions for ambitious brands.</p>
-                <a href="#services" class="btn btn-primary">Explore Our Universe</a>
+        <div class="hidden md:flex items-center gap-2">
+            <div id="n-h" class="np ac" onclick="_v('h')">Overview</div>
+            <div id="n-b" class="np" onclick="_v('b')">Blog</div>
+            <a href="https://discord.gg/8q9ntJwA7E" target="_blank" class="np !px-3 hover:!text-[#5865F2]"><i class="fa-brands fa-discord text-xl"></i></a>
+            <button class="np !px-3" onclick="_t()"><i id="t-i" class="fa-solid fa-sun"></i></button>
+        </div>
+        <div class="md:hidden flex items-center gap-2">
+            <button class="np !px-3" onclick="_t()"><i id="t-i-m" class="fa-solid fa-sun"></i></button>
+            <button class="np !px-3" onclick="_e('m-n').classList.toggle('hidden')"><i class="fa-solid fa-bars"></i></button>
+        </div>
+    </div>
+    <div id="m-n" class="hidden md:hidden px-6 py-4 flex flex-col gap-2 border-t" style="border-color:var(--brd);background:var(--surf)">
+        <div class="np ac" onclick="_v('h');this.parentNode.classList.add('hidden')">Overview</div>
+        <div class="np" onclick="_v('b');this.parentNode.classList.add('hidden')">Blog</div>
+        <a href="https://discord.gg/8q9ntJwA7E" target="_blank" class="np" onclick="this.parentNode.classList.add('hidden')"><i class="fa-brands fa-discord"></i> Discord</a>
+    </div>
+</nav>
+
+<main class="w-full max-w-[1400px] mx-auto px-6 pt-32 pb-16 flex flex-col flex-1 relative">
+    <div id="v-h" class="vw flex flex-col gap-32">
+        <section class="rl flex flex-col md:flex-row items-center justify-between min-h-[60vh] gap-12">
+            <div class="flex-1 flex flex-col items-start relative z-10">
+                <h1 class="text-6xl md:text-8xl font-black tracking-tighter mb-6 leading-[1.05]">Redefining<br>The Isle.</h1>
+                <p class="text-lg md:text-xl max-w-xl mb-10 leading-relaxed" style="color:var(--mut)">
+                    Orion Labs engineers premier modifications, advanced structural telemetry, and high-fidelity assets for dynamic ecosystems. We mod in custom maps, server RCON tools, and build the mechanics of tomorrow.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <button class="bt" onclick="_v('b')">Explore Blogs <i class="fa-solid fa-arrow-right"></i></button>
+                    <a href="https://discord.gg/8q9ntJwA7E" target="_blank" class="bt" style="background:#5865F2;color:#fff"><i class="fa-brands fa-discord"></i> Join Orion Labs</a>
+                </div>
             </div>
-            <a href="#about" class="scroll-down-indicator" aria-label="Scroll down"></a>
-        </section>
-        <section id="about" class="scroll-section">
-            <div class="content-card section-content">
-                <h3>About Us</h3>
-                <p>Founded under the guiding light of the Orion constellation, our lab is a nexus of creativity and technology. We are a team of designers, developers, and modders dedicated to launching your ideas into the stratosphere. Our philosophy is simple: combine brilliant design with powerful functionality to create unforgettable digital experiences.</p>
+            <div class="flex-1 flex justify-center items-center w-full relative">
+                <div class="absolute inset-0 bg-[var(--acc)] opacity-10 blur-[100px] rounded-full"></div>
+                <img src="src/media/branding/banner.png" class="w-full max-w-2xl rounded-3xl object-cover shadow-2xl relative z-10" onerror="this.style.display='none'">
             </div>
         </section>
-        <section id="services" class="services-section scroll-section">
-            <div class="section-content">
-                <div class="content-grid">
-                    <h3 class="section-title">Our Services</h3>
-                    <div class="orbit-path path-1">
-                        <div class="orbit-pivot">
-                            <div class="content-card">
-                                <div class="service-card-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-                                </div>
-                                <h4>Web Development</h4>
-                                <p>Crafting high-performance websites and desktop apps.</p>
-                                <div class="icon-bar">
-                                    <div class="icon-wrapper" data-tooltip="JavaScript"><img src="src/assets/images/javascript.svg" alt="JavaScript Icon" /></div>
-                                    <div class="icon-wrapper" data-tooltip="Electron"><img src="src/assets/images/electron.svg" alt="Electron Icon" /></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="orbit-path path-2">
-                        <div class="orbit-pivot">
-                            <div class="content-card">
-                                <div class="service-card-icon"><img src="src/assets/images/gamemodding.svg" alt="Game Modding Icon" /></div>
-                                <h4>Game Modding</h4>
-                                <p>Extending experiences for games on Unreal Engine 5.</p>
-                                <div class="icon-bar">
-                                    <div class="icon-wrapper" data-tooltip="Unreal Engine"><img src="src/assets/images/unrealengine.svg" alt="Unreal Engine Icon" /></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="orbit-path path-3">
-                        <div class="orbit-pivot">
-                            <div class="content-card">
-                                <div class="service-card-icon"><img src="src/assets/images/botservices.svg" alt="Bot Services Icon" /></div>
-                                <h4>Bot Services</h4>
-                                <p>Automating tasks and building communities with custom bots.</p>
-                                <div class="icon-bar">
-                                    <div class="icon-wrapper" data-tooltip="Discord"><img src="src/assets/images/discord.svg" alt="Discord Icon" /></div>
-                                    <div class="icon-wrapper" data-tooltip="RCON"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="orbit-path path-4">
-                        <div class="orbit-pivot">
-                            <div class="content-card">
-                                <div class="service-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></div>
-                                <h4>Applications</h4>
-                                <p>Building intuitive and powerful applications for desktop & web.</p>
-                                <div class="icon-bar">
-                                    <div class="icon-wrapper" data-tooltip="Desktop"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
-                                    <div class="icon-wrapper" data-tooltip="Web"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>
-                                </div>
-                            </div>
-                        </div>
+
+        <section class="rl">
+            <h2 class="text-4xl font-bold mb-12 tracking-tight">Showcase</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="sf sf-h p-8 flex flex-col gap-6">
+                    <div class="h-14 w-14 rounded-2xl flex items-center justify-center text-2xl" style="background:var(--s-h);color:var(--txt)"><i class="fa-solid fa-map-location-dot"></i></div>
+                    <h3 class="text-2xl font-bold">Custom Environments</h3>
+                    <p style="color:var(--mut)" class="leading-relaxed flex-1">High-fidelity topological modifications and custom map integrations designed to expand ecosystem boundaries.</p>
+                </div>
+                <div class="sf sf-h p-8 flex flex-col gap-6">
+                    <div class="h-14 w-14 rounded-2xl flex items-center justify-center text-2xl" style="background:var(--s-h);color:var(--txt)"><i class="fa-solid fa-terminal"></i></div>
+                    <h3 class="text-2xl font-bold">RCON Solutions</h3>
+                    <p style="color:var(--mut)" class="leading-relaxed flex-1">Advanced remote administration tools engineered for rapid response, granular control, and absolute server supremacy.</p>
+                </div>
+                <div class="sf sf-h p-8 flex flex-col gap-6">
+                    <div class="h-14 w-14 rounded-2xl flex items-center justify-center text-2xl" style="background:var(--s-h);color:var(--txt)"><i class="fa-solid fa-microchip"></i></div>
+                    <h3 class="text-2xl font-bold">Dynamic Telemetry</h3>
+                    <p style="color:var(--mut)" class="leading-relaxed flex-1">Behavioral logging protocols and network stabilization models that surface actionable intelligence in real-time.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="rl pb-8">
+            <div class="sf p-10 md:p-16 flex flex-col md:flex-row items-center justify-between gap-12 relative overflow-hidden" style="background:linear-gradient(135deg,var(--surf),var(--s-h));border-color:var(--acc)">
+                <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-[var(--acc)] opacity-[0.05] blur-3xl rounded-full pointer-events-none"></div>
+                <div class="flex-1 relative z-10">
+                    <div class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-6 border" style="background:var(--s-h);border-color:var(--brd);color:var(--acc)">Featured Product</div>
+                    <h2 class="text-4xl md:text-5xl font-black mb-6 tracking-tight">The Athena Mod Framework</h2>
+                    <p class="text-lg leading-relaxed mb-8" style="color:var(--mut)">
+                        The Athena Mod Framework is a comprehensive, server-side modification suite built to solve the biggest challenges facing server owners today: security, management, and customization.<br><br>
+                        By installing Athena, you gain access to powerful tools that run alongside the server, providing advanced control that standard RCON tools simply cannot match.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="https://www.patreon.com/15306522/join" target="_blank" class="bt" style="background:#FF424D;color:#fff"><i class="fa-brands fa-patreon"></i> Join Patreon</a>
+                        <a href="https://www.patreon.com/c/OrionLabs?vanity=OrionLabs" target="_blank" class="bt" style="background:var(--s-h);color:var(--txt);border:1px solid var(--brd)"><i class="fa-solid fa-arrow-up-right-from-square"></i> View Page</a>
                     </div>
                 </div>
             </div>
         </section>
-        <section id="contact" class="scroll-section">
-            <div class="content-card section-content">
-                <h3>Let's Build Together</h3>
-                <p>Have a project in mind? Reach out and let's discuss how we can bring your vision to life.</p>
-                <button id="get-in-touch-btn" class="btn btn-secondary">Get in Touch</button>
+
+        <section class="rl pb-32">
+            <div class="flex justify-between items-end mb-12">
+                <h2 class="text-4xl font-bold tracking-tight">Featured Blogs</h2>
+                <button class="np" onclick="_v('b')">View All <i class="fa-solid fa-arrow-right text-xs"></i></button>
             </div>
+            <div id="f-g" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
         </section>
-    </main>
-    <div id="contact-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-form-view">
-                <h3>Contact Us</h3>
-                <form id="contact-form">
-                    <div class="form-group">
-                        <label for="email">Email <span class="required">*</span></label>
-                        <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="service">Service <span class="required">*</span></label>
-                        <select id="service" name="service" required>
-                            <option value="" disabled selected>Select a service...</option>
-                            <option value="Web Development">Web Development</option>
-                            <option value="Game Modding">Game Modding</option>
-                            <option value="Bot Services">Bot Services</option>
-                            <option value="Applications">Applications</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="subject">Subject <span class="required">*</span></label>
-                        <input type="text" id="subject" name="subject" placeholder="Project Idea" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="summary">Summary <span class="required">*</span></label>
-                        <textarea id="summary" name="summary" rows="4" placeholder="Briefly describe your project or question..." required></textarea>
-                    </div>
-                    <div class="form-button-group">
-                        <button type="button" id="cancel-modal-btn" class="btn btn-cancel">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Confirm</button>
-                    </div>
-                    <p id="form-status"></p>
-                </form>
+    </div>
+
+    <div id="v-b" class="vw hd flex flex-col gap-12 w-full min-h-[60vh]" style="display:none;">
+        <div class="flex justify-between items-end pb-8">
+            <div>
+                <h1 class="text-5xl font-black mb-4 tracking-tight">Blog</h1>
+                <p style="color:var(--mut)" class="text-lg">Development logs, telemetry data, and modding insights.</p>
             </div>
-            <div class="modal-success-view">
-                <h3>Successfully Sent!</h3>
-                <p>We've received your inquiry and will be looking forward to your stellar idea! We'll be in touch soon!</p>
-                <button id="success-ok-btn" class="btn btn-primary">OK</button>
+            <button id="b-n" class="bt hidden" onclick="_oc()"><i class="fa-solid fa-pen-nib"></i> Compose</button>
+        </div>
+        <div id="p-g" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-32"></div>
+    </div>
+</main>
+
+<div class="w-full max-w-[1400px] mx-auto px-6 pb-6 mt-auto relative z-40">
+    <div class="border rounded-[3rem] p-8 md:p-12 relative overflow-hidden shadow-2xl" style="background:var(--surf);border-color:var(--brd)">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-[var(--acc)] opacity-5 blur-[80px] pointer-events-none"></div>
+        <div class="flex flex-col md:flex-row items-start justify-between gap-8 px-2 relative z-10">
+            <div class="space-y-8">
+                <h1 class="text-5xl lg:text-6xl font-black tracking-tighter leading-none">
+                    Orion<br>
+                    <span style="color:var(--acc)">Labs</span>
+                </h1>
+                <div class="flex flex-wrap items-center gap-3 text-gray-500 font-medium text-lg">
+                    <span>© 2026 Orion Labs. All rights reserved.</span>
+                </div>
+            </div>
+            <div class="flex flex-col text-left md:text-right space-y-2 pt-1 w-full md:w-auto">
+                <div class="flex gap-2 justify-start md:justify-end mb-4">
+                    <a href="https://discord.gg/8q9ntJwA7E" target="_blank" class="np !px-3 hover:!text-[#5865F2]"><i class="fa-brands fa-discord text-2xl"></i></a>
+                    <a href="https://www.patreon.com/c/OrionLabs?vanity=OrionLabs" target="_blank" class="np !px-3 hover:!text-[#FF424D]"><i class="fa-brands fa-patreon text-2xl"></i></a>
+                </div>
+                <button onclick="_v('h')" class="text-gray-500 hover:text-gray-300 text-lg lg:text-xl font-medium tracking-wide transition-colors uppercase text-left md:text-right">
+                    Overview
+                </button>
+                <button onclick="_v('b')" class="text-gray-500 hover:text-gray-300 text-lg lg:text-xl font-medium tracking-wide transition-colors uppercase text-left md:text-right">
+                    Blog
+                </button>
             </div>
         </div>
     </div>
-    <script src="script.js"></script>
+</div>
+
+<div id="r-o" class="oy">
+    <div class="oy-c">
+        <button class="np self-start mb-6" onclick="_cr()"><i class="fa-solid fa-arrow-left"></i> Return</button>
+        <div class="sf p-8 md:p-14 shadow-2xl relative overflow-hidden">
+            <img src="src/media/branding/banner.png" class="absolute top-0 left-0 w-full h-64 object-cover opacity-10 pointer-events-none" style="mask-image:linear-gradient(to bottom,#000,transparent);-webkit-mask-image:linear-gradient(to bottom,#000,transparent)" onerror="this.style.display='none'">
+            <div id="r-m" class="flex gap-2 mb-8 relative z-10"></div>
+            <div id="r-c" class="mv relative z-10"></div>
+        </div>
+    </div>
+</div>
+
+<div id="c-o" class="oy">
+    <div class="oy-c h-full flex flex-col py-8">
+        <div class="flex justify-between items-center mb-6 shrink-0">
+            <h2 class="text-3xl font-bold tracking-tight">Compose Log</h2>
+            <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide" style="background:rgba(74,222,128,.1);color:#4ade80">Authorized</span>
+        </div>
+        <div class="sf p-6 shadow-2xl flex flex-col gap-4 flex-1 min-h-[70vh]">
+            <input type="text" id="i-ti" class="ip text-xl font-bold" placeholder="Log Designation">
+            <input type="text" id="i-tg" class="ip" placeholder="Tags (comma separated)">
+            <div class="flex items-center flex-wrap gap-2 border-b pb-4" style="border-color:var(--brd)">
+                <button class="tb" onclick="_f('**','**')" title="Bold"><i class="fa-solid fa-bold"></i></button>
+                <button class="tb" onclick="_f('*','*')" title="Italic"><i class="fa-solid fa-italic"></i></button>
+                <button class="tb" onclick="_f('<u>','</u>')" title="Underline"><i class="fa-solid fa-underline"></i></button>
+                <button class="tb" onclick="_f('~~','~~')" title="Strikethrough"><i class="fa-solid fa-strikethrough"></i></button>
+                <button class="tb" onclick="_f('<span style=\'font-size:24px\'>','</span>')" title="Font Size"><i class="fa-solid fa-text-height"></i></button>
+                <div class="w-px h-6 bg-[var(--brd)] mx-1"></div>
+                <button class="tb" onclick="_f('# ','')" title="H1">H1</button>
+                <button class="tb" onclick="_f('## ','')" title="H2">H2</button>
+                <button class="tb" onclick="_f('- ','')" title="List"><i class="fa-solid fa-list-ul"></i></button>
+                <button class="tb" onclick="_f('1. ','')" title="Num List"><i class="fa-solid fa-list-ol"></i></button>
+                <button class="tb" onclick="_f('- [ ] ','')" title="Check"><i class="fa-solid fa-check-square"></i></button>
+                <div class="w-px h-6 bg-[var(--brd)] mx-1"></div>
+                <button class="tb" onclick="_il()" title="Link"><i class="fa-solid fa-link"></i></button>
+                <button class="tb" onclick="_im()" title="Image"><i class="fa-solid fa-image"></i></button>
+                <button class="tb" onclick="_iv()" title="Video"><i class="fa-solid fa-video"></i></button>
+                <div class="w-px h-6 bg-[var(--brd)] mx-1"></div>
+                <button class="tb" onclick="_f('\n:::info\n','\n:::\n')" title="Info Box"><i class="fa-solid fa-circle-info text-blue-500"></i></button>
+                <button class="tb" onclick="_f('\n:::warn\n','\n:::\n')" title="Warn Box"><i class="fa-solid fa-triangle-exclamation text-yellow-500"></i></button>
+                <button class="tb" onclick="_f('\n:::error\n','\n:::\n')" title="Error Box"><i class="fa-solid fa-skull-crossbones text-red-500"></i></button>
+                <div class="ml-auto flex gap-2">
+                    <button id="t-w" class="np ac !py-1" onclick="_sw(0)">Write</button>
+                    <button id="t-p" class="np !py-1" onclick="_sw(1)">Preview</button>
+                </div>
+            </div>
+            <textarea id="i-bd" class="ip flex-1 font-mono resize-none" placeholder="Markdown telemetry payload..."></textarea>
+            <div id="i-pv" class="ip flex-1 overflow-y-auto mv hidden" style="background:var(--bg)"></div>
+            <div class="flex justify-end gap-4 pt-4 border-t shrink-0" style="border-color:var(--brd)">
+                <button class="np" onclick="_cc()">Abort</button>
+                <button class="bt" id="b-p" onclick="_g.p()">Transmit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="m-a" class="fixed inset-0 z-[200] flex items-center justify-center px-4 transition-all duration-300 opacity-0 pointer-events-none" style="background:rgba(0,0,0,.8);backdrop-filter:blur(8px)">
+    <div class="sf p-8 max-w-md w-full relative transform scale-95 transition-transform duration-300" id="m-a-c">
+        <button class="absolute top-4 right-4 np !p-2" onclick="_m(0)"><i class="fa-solid fa-xmark"></i></button>
+        <h2 class="text-2xl font-bold mb-2">Context Override</h2>
+        <p style="color:var(--mut)" class="mb-6 text-sm">Provide valid GitHub PAT to escalate privileges.</p>
+        <input type="password" id="i-t" class="ip mb-4 font-mono text-center" placeholder="ghp_...">
+        <button class="bt w-full justify-center" onclick="_g.a()">Escalate</button>
+    </div>
+</div>
+
+<script>
+marked.setOptions({gfm:true,breaks:true});
+const _c={u:'YOUR_GITHUB_USERNAME',r:'YOUR_GITHUB_REPO',p:'posts'};
+const _s={t:localStorage.getItem('ol_t'),d:[],th:'dark',cv:'h'};
+const _e=(i)=>document.getElementById(i);
+const _pt=(m)=>{let r=m.replace(/:::(\w+)\n([\s\S]*?)\n:::/g,'<div class="ad $1"><div class="ad-t">$1</div>$2</div>');return DOMPurify.sanitize(marked.parse(r),{ADD_ATTR:['class','style']});};
+const _ex=(c)=>{let m=c.match(/^<!--meta:(.+?)-->\n/);return m?{...JSON.parse(m[1]),b:c.replace(m[0],'')}:{t:[],r:1,ts:Date.now(),b:c};};
+
+const _g={
+    h:()=>_s.t?{'Authorization':`token ${_s.t}`}:{},
+    a:async()=>{
+        const v=_e('i-t').value.trim();if(!v)return;
+        try{const r=await fetch(`https://api.github.com/user`,{headers:{'Authorization':`token ${v}`}});
+        if(r.ok){_s.t=v;localStorage.setItem('ol_t',v);_m(0);_e('b-n').style.display='inline-flex';_g.s();}}catch(e){}
+    },
+    s:async()=>{
+        try{const r=await fetch(`https://api.github.com/repos/${_c.u}/${_c.r}/contents/${_c.p}`,{headers:_g.h()});
+        if(r.status===404)return _r([]);if(!r.ok)return;
+        const f=await r.json(), p=await Promise.all(f.filter(x=>x.name.endsWith('.md')).map(async x=>{
+            const tr=await fetch(x.download_url); return {n:x.name,s:x.sha,c:await tr.text()};
+        }));
+        _s.d=p.reverse();_r(_s.d);}catch(e){}
+    },
+    p:async()=>{
+        if(!_s.t)return;
+        const ti=_e('i-ti').value.trim(),bd=_e('i-bd').value.trim(),tg=_e('i-tg').value.split(',').map(x=>x.trim()).filter(x=>x);
+        if(!ti||!bd)return;
+        const fn=ti.toLowerCase().replace(/[^a-z0-9]+/g,'-')+'-'+Date.now()+'.md';
+        const rt=Math.max(1,Math.ceil(bd.split(/\s+/).length/200));
+        const mt=`<!--meta:${JSON.stringify({t:tg,r:rt,ts:Date.now()})}-->\n# ${ti}\n\n${bd}`;
+        const b64=btoa(unescape(encodeURIComponent(mt)));
+        _e('b-p').disabled=true;
+        try{const r=await fetch(`https://api.github.com/repos/${_c.u}/${_c.r}/contents/${_c.p}/${fn}`,{
+            method:'PUT',headers:{..._g.h(),'Content-Type':'application/json'},body:JSON.stringify({message:`Post: ${ti}`,content:b64})
+        });
+        if(r.ok){_e('i-ti').value='';_e('i-bd').value='';_e('i-tg').value='';await _g.s();_cc();}}catch(e){}
+        _e('b-p').disabled=false;
+    },
+    d:async(n,s,e)=>{
+        e.stopPropagation();if(!_s.t||!confirm('Confirm destruction?'))return;
+        try{await fetch(`https://api.github.com/repos/${_c.u}/${_c.r}/contents/${_c.p}/${n}`,{
+            method:'DELETE',headers:{..._g.h(),'Content-Type':'application/json'},body:JSON.stringify({message:`Del: ${n}`,sha:s})
+        });_g.s();}catch(e){}
+    }
+};
+
+const _v=(t)=>{
+    if(_s.cv===t)return;_s.cv=t;
+    const h=_e('v-h'),b=_e('v-b');
+    h.classList.add('hd');b.classList.add('hd');
+    setTimeout(()=>{
+        if(t==='h'){h.style.display='flex';b.style.display='none';h.offsetHeight;h.classList.remove('hd');}
+        else{h.style.display='none';b.style.display='flex';b.offsetHeight;b.classList.remove('hd');}
+    },400);
+    _e('n-h').className=t==='h'?'np ac':'np';_e('n-b').className=t==='b'?'np ac':'np';
+    window.scrollTo({top:0,behavior:'smooth'});
+};
+
+const _cg=(d, l)=>{
+    if(!d.length) return `<div class="col-span-full py-20 text-center text-lg" style="color:var(--mut)">No repository artifacts resolved.</div>`;
+    return d.slice(0,l).map((x)=>{
+        const m=_ex(x.c); let p=_pt(m.b);
+        const tgs=m.t.map(t=>`<span class="tg">${t}</span>`).join('');
+        return `<div class="sf sf-h flex flex-col overflow-hidden relative group cursor-pointer h-full" onclick="_or('${x.s}')">
+            <div class="p-8 flex-1 flex flex-col relative z-10">
+                <div class="flex justify-between items-center mb-4">
+                    <div class="flex gap-2 flex-wrap">${tgs}</div>
+                    <span class="text-xs font-bold uppercase tracking-widest" style="color:var(--mut)">${m.r}m read</span>
+                </div>
+                <div class="mp mv flex-1 mb-6">${p}</div>
+                <div class="mt-auto flex justify-between items-center pt-4 border-t" style="border-color:var(--brd)">
+                    <span class="text-sm font-bold tracking-wide uppercase" style="color:var(--acc)">${new Date(m.ts).toLocaleDateString()}</span>
+                    ${_s.t?`<button onclick="_g.d('${x.n}','${x.s}',event)" class="np !px-3" style="color:#ef4444;background:rgba(239,68,68,.1)"><i class="fa-solid fa-trash"></i></button>`:''}
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+};
+
+const _r=(d)=>{_e('p-g').innerHTML=_cg(d,99);_e('f-g').innerHTML=_cg(d,3);};
+const _or=(s)=>{
+    const p=_s.d.find(x=>x.s===s);if(!p)return;
+    const m=_ex(p.c); document.body.style.overflow='hidden';
+    _e('r-c').innerHTML=_pt(m.b);
+    _e('r-m').innerHTML=`<span class="tg" style="border-color:var(--acc);color:var(--acc)">${m.r} min read</span>`+m.t.map(t=>`<span class="tg">${t}</span>`).join('');
+    _e('r-o').classList.add('ac');
+};
+const _cr=()=>{document.body.style.overflow='';_e('r-o').classList.remove('ac');setTimeout(()=>_e('r-c').innerHTML='',400);};
+const _oc=()=>{document.body.style.overflow='hidden';_sw(0);_e('c-o').classList.add('ac');};
+const _cc=()=>{document.body.style.overflow='';_e('c-o').classList.remove('ac');};
+const _t=()=>{
+    _s.th=_s.th==='dark'?'lt':'dark';document.body.className=_s.th+' flex flex-col min-h-screen';
+    const i=_s.th==='dark'?'fa-solid fa-sun':'fa-solid fa-moon';
+    _e('t-i').className=i; _e('t-i-m').className=i;
+};
+const _m=(s)=>{
+    const l=_e('m-a'),c=_e('m-a-c');
+    if(s){l.style.display='flex';requestAnimationFrame(()=>{l.style.opacity='1';l.style.pointerEvents='auto';c.style.transform='scale(1)';});_e('i-t').focus();}
+    else{l.style.opacity='0';l.style.pointerEvents='none';c.style.transform='scale(.95)';setTimeout(()=>l.style.display='none',300);}
+};
+
+const _f=(pre,suf)=>{
+    const a=_e('i-bd'),s=a.selectionStart,e=a.selectionEnd,v=a.value;
+    a.value=v.substring(0,s)+pre+v.substring(s,e)+suf+v.substring(e);
+    a.focus();a.selectionStart=s+pre.length;a.selectionEnd=e+pre.length;
+};
+const _il=()=>{const u=prompt('URL:');if(u)_f(`[`,`](${u})`);};
+const _im=()=>{const u=prompt('Image URL:');if(u)_f(`![image](${u})`,'');};
+const _iv=()=>{const u=prompt('Video/Embed URL:');if(u)_f(`<iframe src="${u}" width="100%" height="400" frameborder="0" allowfullscreen></iframe>`,'');};
+const _sw=(p)=>{
+    _e('i-bd').style.display=p?'none':'block';_e('i-pv').style.display=p?'block':'none';
+    _e('t-w').className=p?'np !py-1':'np ac !py-1';_e('t-p').className=p?'np ac !py-1':'np !py-1';
+    if(p){const t=_e('i-ti').value; _e('i-pv').innerHTML=_pt((t?`# ${t}\n\n`:'')+_e('i-bd').value);}
+};
+
+const _obs=new IntersectionObserver((e)=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('ac');});},{threshold:.1,rootMargin:"0px 0px -50px 0px"});
+document.querySelectorAll('.rl').forEach(x=>_obs.observe(x));
+
+document.addEventListener('keydown',(e)=>{
+    if((e.key==='g'||e.key==='G')&&!['INPUT','TEXTAREA'].includes(e.target.tagName)){e.preventDefault();_m(_e('m-a').style.opacity==='0');}
+    if(e.key==='Escape'){_m(0);_cr();_cc();}
+});
+
+if(_s.t)_e('b-n').style.display='inline-flex';
+_g.s();
+</script>
 </body>
 </html>
