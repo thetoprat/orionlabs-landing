@@ -49,11 +49,17 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
 .mv ul{list-style:disc;padding-left:1.5rem;margin-bottom:1.25rem}
 .mv ol{list-style:decimal;padding-left:1.5rem;margin-bottom:1.25rem}
 .mv li{margin-bottom:0.25rem}
-.mv li:has(input[type="checkbox"]) {list-style:none; margin-left:-1.5rem; display:flex; align-items:flex-start; gap:0.5rem;}
+.mv li:has(input[type="checkbox"]){list-style:none;margin-left:-1.5rem;display:flex;align-items:flex-start;gap:0.5rem}
 .mv input[type="checkbox"]{margin-top:0.35rem;margin-right:0;width:1.1em;height:1.1em;accent-color:var(--acc);flex-shrink:0;cursor:pointer}
 .mv img,.mv iframe{max-width:100%;border-radius:1rem;margin:1.5rem 0}
+.mv blockquote{border-left:4px solid var(--acc);padding:.5rem 1.25rem;margin:1rem 0;background:var(--s-h);border-radius:0 1rem 1rem 0;color:var(--mut)}
+.mv table{width:100%;border-collapse:collapse;margin-bottom:1.25rem}
+.mv th{background:var(--s-h);color:var(--txt);font-weight:700;padding:.75rem 1rem;text-align:left;border:1px solid var(--brd)}
+.mv td{padding:.65rem 1rem;border:1px solid var(--brd);color:var(--mut)}
+.mv tr:hover td{background:var(--s-h)}
+.mv hr{border:none;border-top:1px solid var(--brd);margin:2rem 0}
 
-/* Admonitions (Alerts) */
+/* Admonitions */
 .ad{padding:1rem 1.5rem;border-radius:1rem;margin:1.5rem 0;border-left:4px solid;background:var(--s-h);position:relative}
 .ad-t{font-size:.75rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem;opacity:.8}
 .ad.info{border-color:#3b82f6}.ad.info .ad-t{color:#3b82f6}
@@ -61,456 +67,1071 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
 .ad.danger,.ad.error{border-color:#ef4444}.ad.danger .ad-t,.ad.error .ad-t{color:#ef4444}
 .ad.announcement{border-color:var(--acc)}.ad.announcement .ad-t{color:var(--acc)}
 
-.tb{padding:.4rem .6rem;border-radius:.5rem;color:var(--mut);transition:all .2s}
+.tb{padding:.4rem .6rem;border-radius:.5rem;color:var(--mut);transition:all .2s;position:relative}
 .tb:hover{background:var(--s-h);color:var(--acc)}
+.tb.active-fmt{background:var(--s-h);color:var(--acc)}
 .mp{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;mask-image:linear-gradient(to bottom,#000 50%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 50%,transparent 100%)}
 .tg{font-size:.75rem;padding:.2rem .6rem;border-radius:999px;background:var(--s-h);color:var(--txt);border:1px solid var(--brd)}
 
-/* Delete Button Specific */
-.btn-del { color: #ef4444; background: rgba(239, 68, 68, 0.1); border-radius: 999px; padding: 0.35rem 0.65rem; transition: all 0.2s cubic-bezier(0.4,0,0.2,1); border: 1px solid transparent; display: inline-flex; align-items: center; justify-content: center; }
-.btn-del:hover { background: #ef4444; color: #fff; transform: scale(1.1) translateY(-1px); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4); border-color: #ef4444; }
+/* Delete Button */
+.btn-del{color:#ef4444;background:rgba(239,68,68,0.1);border-radius:999px;padding:0.35rem 0.65rem;transition:all 0.2s cubic-bezier(0.4,0,0.2,1);border:1px solid transparent;display:inline-flex;align-items:center;justify-content:center}
+.btn-del:hover{background:#ef4444;color:#fff;transform:scale(1.1) translateY(-1px);box-shadow:0 4px 12px rgba(239,68,68,0.4);border-color:#ef4444}
+
+/* ===== MARKDOWN EDITOR ===== */
+.editor-wrap{position:relative;display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden;border-radius:1rem;border:1px solid var(--brd);background:var(--bg);transition:border-color .3s}
+.editor-wrap:focus-within{border-color:var(--acc);box-shadow:0 0 0 4px var(--gw)}
+.editor-scroll{flex:1;overflow:auto;position:relative;display:flex}
+.editor-lines{padding:.75rem .5rem .75rem 0;text-align:right;font-family:monospace;font-size:.8rem;line-height:1.6rem;color:var(--mut);opacity:.4;user-select:none;min-width:2.5rem;border-right:1px solid var(--brd);flex-shrink:0;background:var(--bg)}
+#i-bd{flex:1;background:transparent;border:none;outline:none;resize:none;font-family:'JetBrains Mono','Fira Code','Cascadia Code',monospace;font-size:.9rem;line-height:1.6rem;color:var(--txt);padding:.75rem 1rem;tab-size:2;white-space:pre-wrap;overflow-wrap:break-word;caret-color:var(--acc)}
+#i-bd::selection{background:rgba(255,252,0,.2)}
+#i-bd::placeholder{color:var(--mut);opacity:.5}
+#i-pv{flex:1;overflow-y:auto;padding:1rem 1.25rem;background:var(--bg)}
+
+/* Word count bar */
+.editor-footer{display:flex;align-items:center;justify-content:space-between;padding:.4rem .8rem;border-top:1px solid var(--brd);background:var(--bg);font-size:.72rem;color:var(--mut);gap:.5rem;border-radius:0 0 1rem 1rem;flex-shrink:0}
+.wc-badge{background:var(--s-h);border-radius:999px;padding:.1rem .6rem;font-size:.65rem;font-weight:700}
+
+/* Toolbar tooltips */
+.tb[title]:hover::after{content:attr(title);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#000;color:#fff;font-size:.65rem;font-weight:600;padding:.25rem .5rem;border-radius:.35rem;white-space:nowrap;pointer-events:none;z-index:99;opacity:.9}
+
+/* Paste notification */
+.paste-toast{position:fixed;bottom:2rem;right:2rem;z-index:9999;background:var(--surf);border:1px solid var(--acc);border-radius:1rem;padding:.75rem 1.25rem;font-size:.85rem;font-weight:600;color:var(--acc);display:flex;align-items:center;gap:.5rem;transform:translateY(120%);opacity:0;transition:all .35s cubic-bezier(.4,0,.2,1);pointer-events:none}
+.paste-toast.show{transform:translateY(0);opacity:1}
+
+/* ===== CUSTOM POPUP / CONFIRM ===== */
+.cp-overlay{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .3s}
+.cp-overlay.ac{opacity:1;pointer-events:auto}
+.cp-box{background:var(--surf);border:1px solid var(--brd);border-radius:1.5rem;padding:2rem;max-width:24rem;width:100%;transform:scale(.92) translateY(12px);transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .3s;opacity:0;position:relative;box-shadow:0 32px 64px rgba(0,0,0,.5)}
+.cp-overlay.ac .cp-box{transform:scale(1) translateY(0);opacity:1}
+.cp-icon{width:3rem;height:3rem;border-radius:1rem;display:flex;align-items:center;justify-content:center;font-size:1.25rem;margin-bottom:1rem}
+
+/* ===== INPUT PROMPT POPUP ===== */
+.ip-overlay{position:fixed;inset:0;z-index:501;display:flex;align-items:center;justify-content:center;padding:1rem;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .3s}
+.ip-overlay.ac{opacity:1;pointer-events:auto}
+.ip-box{background:var(--surf);border:1px solid var(--brd);border-radius:1.5rem;padding:2rem;max-width:26rem;width:100%;transform:scale(.92) translateY(12px);transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .3s;opacity:0;box-shadow:0 32px 64px rgba(0,0,0,.5)}
+.ip-overlay.ac .ip-box{transform:scale(1) translateY(0);opacity:1}
 </style>
 </head>
 <body class="dark flex flex-col min-h-screen">
 <div class="f-x"></div>
 
+<!-- NAV -->
 <div class="fixed top-4 md:top-6 left-0 right-0 z-50 flex justify-center px-4 md:px-6 pointer-events-none">
-    <nav class="w-full max-w-[1400px] transition-colors duration-500 border rounded-full pointer-events-auto shadow-2xl relative" style="background:var(--nav);backdrop-filter:blur(24px);border-color:var(--brd)">
-        <div class="px-6 py-4 flex items-center justify-between relative z-10">
-            <div class="flex items-center gap-3 cursor-pointer" onclick="_v('h')">
-                <img src="src/media/branding/icon.png" class="w-10 h-10 rounded-xl object-cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                <div class="hidden w-10 h-10 rounded-xl items-center justify-center font-black text-xl" style="background:var(--txt);color:var(--bg)">O</div>
-                <span class="text-xl font-bold tracking-tight">Orion Labs</span>
-            </div>
-            <div class="hidden md:flex items-center gap-2">
-                <div id="n-h" class="np ac" onclick="_v('h')">Overview</div>
-                <div id="n-b" class="np" onclick="_v('b')">Blog</div>
-                <a href="https://orionlabs.dev/discord" target="_blank" class="np !px-3 hover:!text-[#5865F2]"><i class="fa-brands fa-discord text-xl"></i></a>
-                <button class="np !px-3" onclick="_t()"><i id="t-i" class="fa-solid fa-sun"></i></button>
-            </div>
-            <div class="md:hidden flex items-center gap-2">
-                <button class="np !px-3" onclick="_t()"><i id="t-i-m" class="fa-solid fa-sun"></i></button>
-                <button class="np !px-3" onclick="_tm(this)"><i class="fa-solid fa-bars transition-transform duration-300"></i></button>
-            </div>
-        </div>
-        <div id="m-n" class="mn md:hidden">
-            <div class="mn-w">
-                <div class="np ac w-full justify-center py-3" onclick="_v('h');_tm(_e('btn-m'))">Overview</div>
-                <div class="np w-full justify-center py-3" onclick="_v('b');_tm(_e('btn-m'))">Blog</div>
-                <a href="https://orionlabs.dev/discord" target="_blank" class="np w-full justify-center py-3" onclick="_tm(_e('btn-m'))"><i class="fa-brands fa-discord"></i> Discord</a>
-            </div>
-        </div>
-    </nav>
+  <nav class="w-full max-w-[1400px] transition-colors duration-500 border rounded-full pointer-events-auto shadow-2xl relative" style="background:var(--nav);backdrop-filter:blur(24px);border-color:var(--brd)">
+    <div class="px-6 py-4 flex items-center justify-between relative z-10">
+      <div class="flex items-center gap-3 cursor-pointer" onclick="_v('h')">
+        <img src="src/media/branding/icon.png" class="w-10 h-10 rounded-xl object-cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="hidden w-10 h-10 rounded-xl items-center justify-center font-black text-xl" style="background:var(--txt);color:var(--bg)">O</div>
+        <span class="text-xl font-bold tracking-tight">Orion Labs</span>
+      </div>
+      <div class="hidden md:flex items-center gap-2">
+        <div id="n-h" class="np ac" onclick="_v('h')">Overview</div>
+        <div id="n-b" class="np" onclick="_v('b')">Blog</div>
+        <a href="https://orionlabs.dev/discord" target="_blank" class="np !px-3 hover:!text-[#5865F2]"><i class="fa-brands fa-discord text-xl"></i></a>
+        <button class="np !px-3" onclick="_t()"><i id="t-i" class="fa-solid fa-sun"></i></button>
+      </div>
+      <div class="md:hidden flex items-center gap-2">
+        <button class="np !px-3" onclick="_t()"><i id="t-i-m" class="fa-solid fa-sun"></i></button>
+        <button id="btn-m" class="np !px-3" onclick="_tm(this)"><i class="fa-solid fa-bars transition-transform duration-300"></i></button>
+      </div>
+    </div>
+    <div id="m-n" class="mn md:hidden">
+      <div class="mn-w">
+        <div class="np ac w-full justify-center py-3" onclick="_v('h');_tm(_e('btn-m'))">Overview</div>
+        <div class="np w-full justify-center py-3" onclick="_v('b');_tm(_e('btn-m'))">Blog</div>
+        <a href="https://orionlabs.dev/discord" target="_blank" class="np w-full justify-center py-3" onclick="_tm(_e('btn-m'))"><i class="fa-brands fa-discord"></i> Discord</a>
+      </div>
+    </div>
+  </nav>
 </div>
 
 <main class="w-full max-w-[1400px] mx-auto px-6 flex flex-col flex-1 relative mt-[100px]">
-    <div id="app-main" class="w-full flex flex-col flex-1 transition-all duration-300 ease-in-out">
-        <div id="v-h" class="flex flex-col gap-32">
-            <section class="rl flex flex-col md:flex-row items-center justify-between min-h-[calc(100vh-100px)] gap-12 pb-16">
-                <div class="flex-1 flex flex-col items-start relative z-10">
-                    <h1 class="text-6xl md:text-8xl font-black tracking-tighter mb-6 leading-[1.05]">Redefining<br>The Isle.</h1>
-                    <p class="text-lg md:text-xl max-w-xl mb-10 leading-relaxed" style="color:var(--mut)">
-                        Orion Labs engineers premier modifications, advanced structural telemetry, and high-fidelity assets for dynamic ecosystems. We mod in custom maps, server RCON tools, and build the mechanics of tomorrow.
-                    </p>
-                    <div class="flex flex-wrap gap-4">
-                        <button class="bt" onclick="_v('b')">Explore Posts <i class="fa-solid fa-arrow-right"></i></button>
-                        <a href="https://orionlabs.dev/discord" target="_blank" class="bt" style="background:#5865F2;color:#fff"><i class="fa-brands fa-discord"></i> Join Orion Labs</a>
-                    </div>
-                </div>
-                <div class="flex-1 flex justify-center items-center w-full relative">
-                    <div class="absolute inset-0 bg-[var(--acc)] opacity-10 blur-[100px] rounded-full"></div>
-                    <img src="src/media/branding/banner.png" class="w-full max-w-2xl rounded-3xl object-cover shadow-2xl relative z-10" onerror="this.style.display='none'">
-                </div>
-            </section>
+  <div id="app-main" class="w-full flex flex-col flex-1 transition-all duration-300 ease-in-out">
 
-            <section class="rl">
-                <h2 class="text-4xl font-bold mb-12 tracking-tight">Showcase</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="sf sf-h p-8 flex flex-col gap-6">
-                        <div class="h-14 w-14 rounded-2xl flex items-center justify-center text-2xl" style="background:var(--s-h);color:var(--txt)"><i class="fa-solid fa-map-location-dot"></i></div>
-                        <h3 class="text-2xl font-bold">Custom Environments</h3>
-                        <p style="color:var(--mut)" class="leading-relaxed flex-1">High-fidelity topological modifications and custom map integrations designed to expand ecosystem boundaries.</p>
-                    </div>
-                    <div class="sf sf-h p-8 flex flex-col gap-6">
-                        <div class="h-14 w-14 rounded-2xl flex items-center justify-center text-2xl" style="background:var(--s-h);color:var(--txt)"><i class="fa-solid fa-terminal"></i></div>
-                        <h3 class="text-2xl font-bold">RCON Solutions</h3>
-                        <p style="color:var(--mut)" class="leading-relaxed flex-1">Advanced remote administration tools engineered for rapid response, granular control, and absolute server supremacy.</p>
-                    </div>
-                    <div class="sf sf-h p-8 flex flex-col gap-6">
-                        <div class="h-14 w-14 rounded-2xl flex items-center justify-center text-2xl" style="background:var(--s-h);color:var(--txt)"><i class="fa-solid fa-microchip"></i></div>
-                        <h3 class="text-2xl font-bold">Dynamic Telemetry</h3>
-                        <p style="color:var(--mut)" class="leading-relaxed flex-1">Behavioral logging protocols and network stabilization models that surface actionable intelligence in real-time.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="rl pb-8">
-                <div class="sf p-10 md:p-16 flex flex-col md:flex-row items-center justify-between gap-12 relative overflow-hidden" style="background:linear-gradient(135deg,var(--surf),var(--s-h));border-color:var(--acc)">
-                    <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-[var(--acc)] opacity-[0.05] blur-3xl rounded-full pointer-events-none"></div>
-                    <div class="flex-1 relative z-10">
-                        <div class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-6 border" style="background:var(--s-h);border-color:var(--brd);color:var(--acc)">Featured Product</div>
-                        <h2 class="text-4xl md:text-5xl font-black mb-6 tracking-tight">The Athena Mod Framework</h2>
-                        <p class="text-lg leading-relaxed mb-8" style="color:var(--mut)">
-                            The Athena Mod Framework is a comprehensive, server-side modification suite built to solve the biggest challenges facing server owners today: security, management, and customization.<br><br>
-                            By installing Athena, you gain access to powerful tools that run alongside the server, providing advanced control that standard RCON tools simply cannot match.
-                        </p>
-                        <div class="flex flex-wrap gap-4">
-                            <a href="https://orionlabs.dev/patreon" target="_blank" class="bt" style="background:#FF424D;color:#fff"><i class="fa-brands fa-patreon"></i> Join Patreon</a>
-                            <a href="https://orionlabs.dev/patreon" target="_blank" class="bt" style="background:var(--s-h);color:var(--txt);border:1px solid var(--brd)"><i class="fa-solid fa-arrow-up-right-from-square"></i> View Page</a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="rl pb-32">
-                <div class="flex justify-between items-end mb-12">
-                    <h2 class="text-4xl font-bold tracking-tight">Featured Posts</h2>
-                    <button class="np" onclick="_v('b')">View All <i class="fa-solid fa-arrow-right text-xs"></i></button>
-                </div>
-                <div id="f-g" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
-            </section>
+    <!-- HOME VIEW -->
+    <div id="v-h" class="flex flex-col gap-32">
+      <section class="rl flex flex-col md:flex-row items-center justify-between min-h-[calc(100vh-100px)] gap-12 pb-16">
+        <div class="flex-1 flex flex-col items-start relative z-10">
+          <h1 class="text-6xl md:text-8xl font-black tracking-tighter mb-6 leading-[1.05]">Redefining<br>The Isle.</h1>
+          <p class="text-lg md:text-xl max-w-xl mb-10 leading-relaxed" style="color:var(--mut)">
+            Orion Labs engineers premier modifications, advanced structural telemetry, and high-fidelity assets for dynamic ecosystems. We mod in custom maps, server RCON tools, and build the mechanics of tomorrow.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <button class="bt" onclick="_v('b')">Explore Posts <i class="fa-solid fa-arrow-right"></i></button>
+            <a href="https://orionlabs.dev/discord" target="_blank" class="bt" style="background:#5865F2;color:#fff"><i class="fa-brands fa-discord"></i> Join Orion Labs</a>
+          </div>
         </div>
+        <div class="flex-1 flex justify-center items-center w-full relative">
+          <div class="absolute inset-0 bg-[var(--acc)] opacity-10 blur-[100px] rounded-full"></div>
+          <img src="src/media/branding/banner.png" class="w-full max-w-2xl rounded-3xl object-cover shadow-2xl relative z-10" onerror="this.style.display='none'">
+        </div>
+      </section>
 
-        <div id="v-b" class="flex flex-col gap-12 w-full min-h-[60vh] pb-32" style="display:none; padding-top:1rem;">
-            <div class="flex justify-between items-end pb-8">
-                <div>
-                    <h1 class="text-5xl font-black mb-4 tracking-tight">Blog</h1>
-                    <p style="color:var(--mut)" class="text-lg">Development updates, announcements, and modding insights.</p>
-                </div>
-                <button id="b-n" class="bt hidden" onclick="_oc()"><i class="fa-solid fa-pen-nib"></i> Compose</button>
+      <section class="rl">
+        <h2 class="text-4xl font-bold mb-12 tracking-tight">Showcase</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="sf sf-h p-8 flex flex-col gap-6">
+            <div class="h-14 w-14 rounded-2xl flex items-center justify-center text-2xl" style="background:var(--s-h);color:var(--txt)"><i class="fa-solid fa-map-location-dot"></i></div>
+            <h3 class="text-2xl font-bold">Custom Environments</h3>
+            <p style="color:var(--mut)" class="leading-relaxed flex-1">High-fidelity topological modifications and custom map integrations designed to expand ecosystem boundaries.</p>
+          </div>
+          <div class="sf sf-h p-8 flex flex-col gap-6">
+            <div class="h-14 w-14 rounded-2xl flex items-center justify-center text-2xl" style="background:var(--s-h);color:var(--txt)"><i class="fa-solid fa-terminal"></i></div>
+            <h3 class="text-2xl font-bold">RCON Solutions</h3>
+            <p style="color:var(--mut)" class="leading-relaxed flex-1">Advanced remote administration tools engineered for rapid response, granular control, and absolute server supremacy.</p>
+          </div>
+          <div class="sf sf-h p-8 flex flex-col gap-6">
+            <div class="h-14 w-14 rounded-2xl flex items-center justify-center text-2xl" style="background:var(--s-h);color:var(--txt)"><i class="fa-solid fa-microchip"></i></div>
+            <h3 class="text-2xl font-bold">Dynamic Telemetry</h3>
+            <p style="color:var(--mut)" class="leading-relaxed flex-1">Behavioral logging protocols and network stabilization models that surface actionable intelligence in real-time.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="rl pb-8">
+        <div class="sf p-10 md:p-16 flex flex-col md:flex-row items-center justify-between gap-12 relative overflow-hidden" style="background:linear-gradient(135deg,var(--surf),var(--s-h));border-color:var(--acc)">
+          <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-[var(--acc)] opacity-[0.05] blur-3xl rounded-full pointer-events-none"></div>
+          <div class="flex-1 relative z-10">
+            <div class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-6 border" style="background:var(--s-h);border-color:var(--brd);color:var(--acc)">Featured Product</div>
+            <h2 class="text-4xl md:text-5xl font-black mb-6 tracking-tight">The Athena Mod Framework</h2>
+            <p class="text-lg leading-relaxed mb-8" style="color:var(--mut)">
+              The Athena Mod Framework is a comprehensive, server-side modification suite built to solve the biggest challenges facing server owners today: security, management, and customization.<br><br>
+              By installing Athena, you gain access to powerful tools that run alongside the server, providing advanced control that standard RCON tools simply cannot match.
+            </p>
+            <div class="flex flex-wrap gap-4">
+              <a href="https://orionlabs.dev/patreon" target="_blank" class="bt" style="background:#FF424D;color:#fff"><i class="fa-brands fa-patreon"></i> Join Patreon</a>
+              <a href="https://orionlabs.dev/patreon" target="_blank" class="bt" style="background:var(--s-h);color:var(--txt);border:1px solid var(--brd)"><i class="fa-solid fa-arrow-up-right-from-square"></i> View Page</a>
             </div>
-            <div id="p-g" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+          </div>
         </div>
+      </section>
 
+      <section class="rl pb-32">
+        <div class="flex justify-between items-end mb-12">
+          <h2 class="text-4xl font-bold tracking-tight">Featured Posts</h2>
+          <button class="np" onclick="_v('b')">View All <i class="fa-solid fa-arrow-right text-xs"></i></button>
+        </div>
+        <div id="f-g" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+      </section>
     </div>
+
+    <!-- BLOG VIEW -->
+    <div id="v-b" class="flex flex-col gap-12 w-full min-h-[60vh] pb-32" style="display:none; padding-top:1rem;">
+      <div class="flex justify-between items-end pb-8">
+        <div>
+          <h1 class="text-5xl font-black mb-4 tracking-tight">Blog</h1>
+          <p style="color:var(--mut)" class="text-lg">Development updates, announcements, and modding insights.</p>
+        </div>
+        <button id="b-n" class="bt hidden" onclick="_oc()"><i class="fa-solid fa-pen-nib"></i> Compose</button>
+      </div>
+      <div id="p-g" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+    </div>
+
+  </div>
 </main>
 
+<!-- FOOTER -->
 <div class="w-full max-w-[1400px] mx-auto px-6 pb-6 mt-auto relative z-40">
-    <div class="bg-black border border-[#222] rounded-[3rem] p-8 md:p-12 relative overflow-hidden shadow-2xl" style="background:var(--surf); border-color:var(--brd);">
-        <div class="absolute top-0 right-0 w-64 h-64 bg-[var(--acc)] opacity-5 blur-[80px] pointer-events-none"></div>
-        <div class="flex flex-col md:flex-row items-start justify-between gap-8 px-2 relative z-10">
-            <div class="space-y-8">
-                <h1 class="text-5xl lg:text-6xl font-black tracking-tighter leading-none" style="color:var(--txt)">
-                    Orion<br>
-                    <span class="text-[#FFFC00]">Labs</span>
-                </h1>
-                <div class="flex flex-wrap items-center gap-3 text-gray-500 font-medium text-lg">
-                    <span>Made by</span>
-                    <span class="font-bold" style="color:var(--txt)">TheTopRat</span>
-                </div>
-            </div>
-            <div class="flex flex-col text-left md:text-right space-y-2 pt-1 w-full md:w-auto">
-                <div class="flex gap-4 justify-start md:justify-end mb-4">
-                    <a href="https://orionlabs.dev/discord" target="_blank" class="text-gray-500 hover:text-[#5865F2] transition"><i class="fa-brands fa-discord text-3xl"></i></a>
-                    <a href="https://orionlabs.dev/patreon" target="_blank" class="text-gray-500 hover:text-[#FF424D] transition"><i class="fa-brands fa-patreon text-3xl"></i></a>
-                </div>
-                <button onclick="_v('h')" class="text-gray-500 hover:text-gray-300 text-lg lg:text-xl font-medium tracking-wide transition-colors uppercase text-left md:text-right">Overview</button>
-                <button onclick="_v('b')" class="text-gray-500 hover:text-gray-300 text-lg lg:text-xl font-medium tracking-wide transition-colors uppercase text-left md:text-right">Blog</button>
-            </div>
+  <div class="bg-black border border-[#222] rounded-[3rem] p-8 md:p-12 relative overflow-hidden shadow-2xl" style="background:var(--surf);border-color:var(--brd)">
+    <div class="absolute top-0 right-0 w-64 h-64 bg-[var(--acc)] opacity-5 blur-[80px] pointer-events-none"></div>
+    <div class="flex flex-col md:flex-row items-start justify-between gap-8 px-2 relative z-10">
+      <div class="space-y-8">
+        <h1 class="text-5xl lg:text-6xl font-black tracking-tighter leading-none" style="color:var(--txt)">Orion<br><span class="text-[#FFFC00]">Labs</span></h1>
+        <div class="flex flex-wrap items-center gap-3 text-gray-500 font-medium text-lg">
+          <span>Made by</span><span class="font-bold" style="color:var(--txt)">TheTopRat</span>
         </div>
+      </div>
+      <div class="flex flex-col text-left md:text-right space-y-2 pt-1 w-full md:w-auto">
+        <div class="flex gap-4 justify-start md:justify-end mb-4">
+          <a href="https://orionlabs.dev/discord" target="_blank" class="text-gray-500 hover:text-[#5865F2] transition"><i class="fa-brands fa-discord text-3xl"></i></a>
+          <a href="https://orionlabs.dev/patreon" target="_blank" class="text-gray-500 hover:text-[#FF424D] transition"><i class="fa-brands fa-patreon text-3xl"></i></a>
+        </div>
+        <button onclick="_v('h')" class="text-gray-500 hover:text-gray-300 text-lg lg:text-xl font-medium tracking-wide transition-colors uppercase text-left md:text-right">Overview</button>
+        <button onclick="_v('b')" class="text-gray-500 hover:text-gray-300 text-lg lg:text-xl font-medium tracking-wide transition-colors uppercase text-left md:text-right">Blog</button>
+      </div>
     </div>
+  </div>
 </div>
 
+<!-- READ POST OVERLAY -->
 <div id="r-o" class="oy">
-    <div class="oy-c">
-        <button class="np self-start mb-6" onclick="_cr()"><i class="fa-solid fa-arrow-left"></i> Return</button>
-        <div class="sf relative overflow-hidden flex flex-col" style="min-height:50vh; padding:0;">
-            <div id="r-th" class="w-full h-48 md:h-72 bg-cover bg-center bg-no-repeat relative" style="mask-image:linear-gradient(to bottom,#000 50%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 50%,transparent 100%);background-image:url('src/media/branding/banner.png')"></div>
-            <div class="px-8 md:px-14 pb-14 -mt-24 relative z-10">
-                <div class="flex flex-col items-center text-center mb-8">
-                    <div id="r-tgs" class="flex gap-2 flex-wrap justify-center mb-4"></div>
-                    <h1 id="r-ti" class="text-4xl md:text-5xl font-black mb-6 leading-tight" style="color:var(--txt)"></h1>
-                    <div id="r-auths" class="flex flex-wrap gap-4 justify-center items-center"></div>
-                </div>
-                <div class="w-full h-px bg-[var(--brd)] mb-8"></div>
-                <div id="r-c" class="mv max-w-4xl mx-auto w-full"></div>
-            </div>
+  <div class="oy-c">
+    <button class="np self-start mb-6" onclick="_cr()"><i class="fa-solid fa-arrow-left"></i> Return</button>
+    <div class="sf relative overflow-hidden flex flex-col" style="min-height:50vh;padding:0">
+      <div id="r-th" class="w-full h-48 md:h-72 bg-cover bg-center bg-no-repeat relative" style="mask-image:linear-gradient(to bottom,#000 50%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 50%,transparent 100%);background-image:url('src/media/branding/banner.png')"></div>
+      <div class="px-8 md:px-14 pb-14 -mt-24 relative z-10">
+        <div class="flex flex-col items-center text-center mb-8">
+          <div id="r-tgs" class="flex gap-2 flex-wrap justify-center mb-4"></div>
+          <h1 id="r-ti" class="text-4xl md:text-5xl font-black mb-6 leading-tight" style="color:var(--txt)"></h1>
+          <div id="r-auths" class="flex flex-wrap gap-4 justify-center items-center"></div>
         </div>
+        <div class="w-full h-px bg-[var(--brd)] mb-8"></div>
+        <div id="r-c" class="mv max-w-4xl mx-auto w-full"></div>
+      </div>
     </div>
+  </div>
 </div>
 
-<div id="c-o" class="oy">
-    <div class="oy-c h-full flex flex-col py-8 max-w-[1400px]">
-        <div class="flex justify-between items-center mb-6 shrink-0">
-            <h2 class="text-3xl font-bold tracking-tight">Compose Post</h2>
-            <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide" style="background:rgba(74,222,128,.1);color:#4ade80">Authorized</span>
-        </div>
-        <div class="sf p-6 shadow-2xl flex flex-col md:flex-row gap-8 flex-1 min-h-[70vh]">
-            <!-- Editor side -->
-            <div class="flex-1 flex flex-col gap-4 min-w-0">
-                <input type="text" id="i-ti" class="ip text-2xl font-bold !py-3" placeholder="Post Title">
-                <div class="flex items-center flex-wrap gap-2 border-b pb-4" style="border-color:var(--brd)">
-                    <button class="tb" onclick="_f('**','**')" title="Bold"><i class="fa-solid fa-bold"></i></button>
-                    <button class="tb" onclick="_f('*','*')" title="Italic"><i class="fa-solid fa-italic"></i></button>
-                    <button class="tb" onclick="_f('<u>','</u>')" title="Underline"><i class="fa-solid fa-underline"></i></button>
-                    <button class="tb" onclick="_f('~~','~~')" title="Strikethrough"><i class="fa-solid fa-strikethrough"></i></button>
-                    <button class="tb" onclick="_f('<span style=\'font-size:24px\'>','</span>')" title="Font Size"><i class="fa-solid fa-text-height"></i></button>
-                    <div class="w-px h-6 bg-[var(--brd)] mx-1"></div>
-                    <button class="tb" onclick="_f('# ','')" title="H1">H1</button>
-                    <button class="tb" onclick="_f('## ','')" title="H2">H2</button>
-                    <button class="tb" onclick="_f('- ','')" title="List"><i class="fa-solid fa-list-ul"></i></button>
-                    <button class="tb" onclick="_f('1. ','')" title="Num List"><i class="fa-solid fa-list-ol"></i></button>
-                    <button class="tb" onclick="_f('- [ ] ','')" title="Check"><i class="fa-solid fa-check-square"></i></button>
-                    <div class="w-px h-6 bg-[var(--brd)] mx-1"></div>
-                    <button class="tb" onclick="_il()" title="Link"><i class="fa-solid fa-link"></i></button>
-                    <button class="tb" onclick="_im()" title="Image"><i class="fa-solid fa-image"></i></button>
-                    <button class="tb" onclick="_iv()" title="Video"><i class="fa-solid fa-video"></i></button>
-                    <div class="w-px h-6 bg-[var(--brd)] mx-1"></div>
-                    <button class="tb" onclick="_f('\n:::info\n','\n:::\n')" title="Info Box"><i class="fa-solid fa-circle-info text-blue-500"></i></button>
-                    <button class="tb" onclick="_f('\n:::warn\n','\n:::\n')" title="Warn Box"><i class="fa-solid fa-triangle-exclamation text-yellow-500"></i></button>
-                    <button class="tb" onclick="_f('\n:::error\n','\n:::\n')" title="Error Box"><i class="fa-solid fa-skull-crossbones text-red-500"></i></button>
-                    <div class="ml-auto flex gap-2">
-                        <button id="t-w" class="np ac !py-1" onclick="_sw(0)">Write</button>
-                        <button id="t-p" class="np !py-1" onclick="_sw(1)">Preview</button>
-                    </div>
-                </div>
-                <textarea id="i-bd" class="ip flex-1 font-mono resize-none" placeholder="Markdown post content... (@username mentions are supported)"></textarea>
-                <div id="i-pv" class="ip flex-1 overflow-y-auto mv hidden" style="background:var(--bg)"></div>
-            </div>
-            
-            <!-- Settings Side -->
-            <div class="w-full md:w-72 flex flex-col gap-5 shrink-0 md:border-l md:pl-8 border-t md:border-t-0 pt-6 md:pt-0" style="border-color:var(--brd)">
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-widest mb-2" style="color:var(--mut)">Thumbnail URL</label>
-                    <input type="text" id="i-th" class="ip !py-2.5 !px-3 text-sm" placeholder="https://...">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-widest mb-2" style="color:var(--mut)">Tags</label>
-                    <input type="text" id="i-tg" class="ip !py-2.5 !px-3 text-sm" placeholder="update, event, etc.">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-widest mb-2" style="color:var(--mut)">Contributors</label>
-                    <input type="text" id="i-co" class="ip !py-2.5 !px-3 text-sm" placeholder="GitHub usernames (csv)">
-                </div>
-                
-                <div class="mt-auto flex flex-col gap-3 pt-6 border-t" style="border-color:var(--brd)">
-                    <button class="np w-full justify-center" onclick="_cc()">Abort</button>
-                    <button class="bt w-full justify-center" id="b-p" onclick="_g.p()">Publish</button>
-                </div>
-            </div>
-        </div>
+<!-- COMPOSE OVERLAY -->
+<div id="c-o" class="oy" style="padding:1rem">
+  <div class="oy-c h-full flex flex-col py-6 max-w-[1400px]" style="max-width:1200px">
+    <div class="flex justify-between items-center mb-4 shrink-0">
+      <h2 class="text-3xl font-bold tracking-tight">Compose Post</h2>
+      <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide" style="background:rgba(74,222,128,.1);color:#4ade80">Authorized</span>
     </div>
+    <div class="sf p-5 shadow-2xl flex flex-col md:flex-row gap-6 flex-1" style="min-height:0;overflow:hidden">
+
+      <!-- Editor side -->
+      <div class="flex-1 flex flex-col gap-3 min-w-0 min-h-0">
+        <input type="text" id="i-ti" class="ip text-2xl font-bold !py-3 shrink-0" placeholder="Post Title">
+
+        <!-- Toolbar -->
+        <div class="flex items-center flex-wrap gap-1 pb-3 border-b shrink-0" style="border-color:var(--brd)">
+          <!-- Text formatting -->
+          <button class="tb" onclick="ED.fmt('**','**')" title="Bold"><i class="fa-solid fa-bold fa-sm"></i></button>
+          <button class="tb" onclick="ED.fmt('*','*')" title="Italic"><i class="fa-solid fa-italic fa-sm"></i></button>
+          <button class="tb" onclick="ED.fmt('<u>','</u>')" title="Underline"><i class="fa-solid fa-underline fa-sm"></i></button>
+          <button class="tb" onclick="ED.fmt('~~','~~')" title="Strikethrough"><i class="fa-solid fa-strikethrough fa-sm"></i></button>
+          <button class="tb" onclick="ED.fmt('`','`')" title="Inline code"><i class="fa-solid fa-code fa-sm"></i></button>
+          <div class="w-px h-5 mx-0.5" style="background:var(--brd)"></div>
+          <!-- Headings -->
+          <button class="tb text-xs font-black" onclick="ED.fmtLine('# ')" title="Heading 1">H1</button>
+          <button class="tb text-xs font-black" onclick="ED.fmtLine('## ')" title="Heading 2">H2</button>
+          <button class="tb text-xs font-black" onclick="ED.fmtLine('### ')" title="Heading 3">H3</button>
+          <div class="w-px h-5 mx-0.5" style="background:var(--brd)"></div>
+          <!-- Lists -->
+          <button class="tb" onclick="ED.fmtLine('- ')" title="Bullet list"><i class="fa-solid fa-list-ul fa-sm"></i></button>
+          <button class="tb" onclick="ED.fmtLine('1. ')" title="Numbered list"><i class="fa-solid fa-list-ol fa-sm"></i></button>
+          <button class="tb" onclick="ED.fmtLine('- [ ] ')" title="Checklist"><i class="fa-solid fa-check-square fa-sm"></i></button>
+          <button class="tb" onclick="ED.fmtLine('> ')" title="Blockquote"><i class="fa-solid fa-quote-left fa-sm"></i></button>
+          <div class="w-px h-5 mx-0.5" style="background:var(--brd)"></div>
+          <!-- Insert -->
+          <button class="tb" onclick="ED.insertLink()" title="Insert link"><i class="fa-solid fa-link fa-sm"></i></button>
+          <button class="tb" onclick="ED.insertImage()" title="Insert image"><i class="fa-solid fa-image fa-sm"></i></button>
+          <button class="tb" onclick="ED.insertVideo()" title="Insert embed"><i class="fa-solid fa-video fa-sm"></i></button>
+          <button class="tb" onclick="ED.fmtBlock('```\n','\n```')" title="Code block"><i class="fa-solid fa-terminal fa-sm"></i></button>
+          <button class="tb" onclick="ED.insertHr()" title="Horizontal rule"><i class="fa-solid fa-minus fa-sm"></i></button>
+          <div class="w-px h-5 mx-0.5" style="background:var(--brd)"></div>
+          <!-- Admonitions -->
+          <button class="tb" onclick="ED.insertAdmonition('info')" title="Info callout"><i class="fa-solid fa-circle-info fa-sm text-blue-400"></i></button>
+          <button class="tb" onclick="ED.insertAdmonition('warn')" title="Warning callout"><i class="fa-solid fa-triangle-exclamation fa-sm text-yellow-400"></i></button>
+          <button class="tb" onclick="ED.insertAdmonition('error')" title="Error callout"><i class="fa-solid fa-skull-crossbones fa-sm text-red-400"></i></button>
+          <!-- Undo/Redo -->
+          <div class="w-px h-5 mx-0.5" style="background:var(--brd)"></div>
+          <button class="tb" onclick="document.execCommand('undo')" title="Undo (Ctrl+Z)"><i class="fa-solid fa-rotate-left fa-sm"></i></button>
+          <button class="tb" onclick="document.execCommand('redo')" title="Redo (Ctrl+Y)"><i class="fa-solid fa-rotate-right fa-sm"></i></button>
+          <!-- View toggle -->
+          <div class="ml-auto flex gap-1">
+            <button id="t-w" class="np ac !py-1 !text-xs" onclick="_sw(0)">Write</button>
+            <button id="t-p" class="np !py-1 !text-xs" onclick="_sw(1)">Preview</button>
+          </div>
+        </div>
+
+        <!-- Editor / Preview container -->
+        <div class="editor-wrap flex-1 min-h-0">
+          <div class="editor-scroll h-full">
+            <div id="ed-lines" class="editor-lines" aria-hidden="true">1</div>
+            <textarea id="i-bd" spellcheck="true" autocomplete="off" placeholder="Write your post in Markdown...&#10;&#10;Paste from Claude, ChatGPT, Gemini — it just works.&#10;&#10;Tab indents · Ctrl+Z undoes · Auto-pairs brackets & quotes"></textarea>
+            <div id="i-pv" class="mv hidden"></div>
+          </div>
+          <div class="editor-footer">
+            <div class="flex items-center gap-2">
+              <span id="ed-wc" class="wc-badge">0 words</span>
+              <span id="ed-lc" class="wc-badge">1 line</span>
+              <span id="ed-pos" class="wc-badge">Ln 1, Col 1</span>
+            </div>
+            <div class="flex items-center gap-2" style="color:var(--mut)">
+              <span class="text-[10px]">Markdown</span>
+              <span id="ed-paste-info" class="text-[10px] hidden" style="color:var(--acc)"><i class="fa-solid fa-paste mr-1"></i>Smart paste active</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings Side -->
+      <div class="w-full md:w-64 flex flex-col gap-4 shrink-0 md:border-l md:pl-6 border-t md:border-t-0 pt-4 md:pt-0" style="border-color:var(--brd)">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-widest mb-2" style="color:var(--mut)">Thumbnail URL</label>
+          <input type="text" id="i-th" class="ip !py-2 !px-3 text-sm" placeholder="https://...">
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-widest mb-2" style="color:var(--mut)">Tags</label>
+          <input type="text" id="i-tg" class="ip !py-2 !px-3 text-sm" placeholder="update, event, etc.">
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-widest mb-2" style="color:var(--mut)">Contributors</label>
+          <input type="text" id="i-co" class="ip !py-2 !px-3 text-sm" placeholder="GitHub usernames (csv)">
+        </div>
+
+        <!-- Markdown cheatsheet -->
+        <div class="rounded-xl p-3 text-[11px] leading-relaxed" style="background:var(--s-h);color:var(--mut)">
+          <div class="font-bold mb-2 text-xs uppercase tracking-widest" style="color:var(--txt)">Quick Reference</div>
+          <div class="grid grid-cols-2 gap-x-3 gap-y-1">
+            <span><code class="text-[10px]">**bold**</code></span><span>Bold</span>
+            <span><code class="text-[10px]">*italic*</code></span><span>Italic</span>
+            <span><code class="text-[10px)"># H1</code></span><span>Heading</span>
+            <span><code class="text-[10px]">- item</code></span><span>List</span>
+            <span><code class="text-[10px]">[txt](url)</code></span><span>Link</span>
+            <span><code class="text-[10px]">:::info</code></span><span>Callout</span>
+          </div>
+        </div>
+
+        <div class="mt-auto flex flex-col gap-2 pt-4 border-t" style="border-color:var(--brd)">
+          <button class="np w-full justify-center" onclick="_cc()">Abort</button>
+          <button class="bt w-full justify-center" id="b-p" onclick="_g.p()">Publish</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
+<!-- ADMIN LOGIN MODAL -->
 <div id="m-a" class="fixed inset-0 z-[200] flex items-center justify-center px-4 transition-all duration-300 opacity-0 pointer-events-none" style="background:rgba(0,0,0,.8);backdrop-filter:blur(8px)">
-    <div class="sf p-8 max-w-md w-full relative transform scale-95 transition-transform duration-300" id="m-a-c">
-        <button class="absolute top-4 right-4 np !p-2" onclick="_m(0)"><i class="fa-solid fa-xmark"></i></button>
-        <h2 class="text-2xl font-bold mb-2">Admin Login</h2>
-        <p style="color:var(--mut)" class="mb-6 text-sm">Provide valid GitHub PAT to authenticate.</p>
-        <input type="password" id="i-t" class="ip mb-4 font-mono text-center" placeholder="ghp_...">
-        <button class="bt w-full justify-center" onclick="_g.a()">Login</button>
+  <div class="sf p-8 max-w-md w-full relative transform scale-95 transition-transform duration-300" id="m-a-c">
+    <button class="absolute top-4 right-4 np !p-2" onclick="_m(0)"><i class="fa-solid fa-xmark"></i></button>
+    <h2 class="text-2xl font-bold mb-2">Admin Login</h2>
+    <p style="color:var(--mut)" class="mb-6 text-sm">Provide valid GitHub PAT to authenticate.</p>
+    <input type="password" id="i-t" class="ip mb-4 font-mono text-center" placeholder="ghp_...">
+    <button class="bt w-full justify-center" onclick="_g.a()">Login</button>
+  </div>
+</div>
+
+<!-- CUSTOM CONFIRM POPUP -->
+<div id="cp-overlay" class="cp-overlay">
+  <div class="cp-box" id="cp-box">
+    <div id="cp-icon" class="cp-icon" style="background:rgba(239,68,68,0.15)">
+      <i id="cp-icon-i" class="fa-solid fa-trash" style="color:#ef4444"></i>
     </div>
+    <h3 id="cp-title" class="text-xl font-bold mb-2">Delete Post?</h3>
+    <p id="cp-msg" class="text-sm mb-6" style="color:var(--mut)">This action cannot be undone.</p>
+    <div class="flex gap-3">
+      <button class="np flex-1 justify-center" onclick="CP.cancel()">Cancel</button>
+      <button id="cp-confirm" class="bt flex-1 justify-center" style="background:#ef4444;color:#fff" onclick="CP.confirm()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- CUSTOM INPUT PROMPT -->
+<div id="ip-overlay" class="ip-overlay">
+  <div class="ip-box" id="ip-box">
+    <h3 id="ip-title" class="text-xl font-bold mb-2">Enter URL</h3>
+    <p id="ip-msg" class="text-sm mb-4" style="color:var(--mut)"></p>
+    <input type="text" id="ip-input" class="ip mb-4 text-sm" placeholder="">
+    <div class="flex gap-3">
+      <button class="np flex-1 justify-center" onclick="IP.cancel()">Cancel</button>
+      <button class="bt flex-1 justify-center" onclick="IP.confirm()">Insert</button>
+    </div>
+  </div>
+</div>
+
+<!-- PASTE TOAST -->
+<div id="paste-toast" class="paste-toast">
+  <i class="fa-solid fa-paste"></i>
+  <span id="paste-toast-msg">Markdown pasted & cleaned</span>
 </div>
 
 <script>
+// ==================== MARKED CONFIG ====================
 marked.setOptions({gfm:true,breaks:true});
+
+// ==================== APP STATE ====================
 const _c={u:'thetoprat',r:'orionlabs-landing',p:'posts'};
 const _s={t:localStorage.getItem('ol_t'),u:null,a:null,d:[],th:'dark',cv:'h'};
 const _e=(i)=>document.getElementById(i);
 
-// Advanced Markdown pre-processing & parsing
-const _pt=(m)=>{
-    // Convert Admonitions (info, warn, danger, error, announcement) using a robust carriage-return safe regex
-    let p = m.replace(/:::\s*(info|warn|danger|error|announcement)[^\n]*\n([\s\S]*?)\n:::/gi, (match, type, content) => {
-        return `\n<div class="ad ${type.toLowerCase()}"><div class="ad-t">${type.toUpperCase()}</div>\n\n${content}\n\n</div>\n`;
-    });
-    // Convert @mentions
-    p = p.replace(/(^|\s)@([a-zA-Z0-9-]+)/g, '$1<a href="https://github.com/$2" target="_blank" style="color:var(--acc);font-weight:bold">@$2</a>');
-    
-    return DOMPurify.sanitize(marked.parse(p),{ADD_ATTR:['class','style','target','allowfullscreen','frameborder'],ADD_TAGS:['iframe']});
-};
-
-const _ex=(c)=>{
-    let m=c.match(/^<!--meta:(.+?)-->\n/);
-    let tiMatch=c.match(/^#\s+(.+)/m);
-    let ti=tiMatch?tiMatch[1]:'Untitled Post';
-    return m?{...JSON.parse(m[1]),b:c.replace(m[0],''),ti}:{t:[],r:1,ts:Date.now(),b:c,ti,a:['thetoprat'],th:''};
-};
-
-const _tm=(b)=>{
-    const m=_e('m-n'),i=b?.querySelector('i');
-    if(!m)return;
-    const o=m.classList.toggle('ac');
-    if(i){i.className=o?'fa-solid fa-xmark transition-transform duration-300':'fa-solid fa-bars transition-transform duration-300';}
-};
-
-const _g={
-    h:()=>_s.t?{'Authorization':`token ${_s.t}`}:{},
-    a:async(token)=>{
-        const v=token||_e('i-t').value.trim();if(!v)return;
-        try{
-            const r=await fetch(`https://api.github.com/user`,{headers:{'Authorization':`token ${v}`}});
-            if(r.ok){
-                const d=await r.json();
-                _s.t=v; _s.u=d.login; _s.a=d.avatar_url;
-                localStorage.setItem('ol_t',v);
-                localStorage.setItem('ol_u',JSON.stringify({l:d.login, a:d.avatar_url}));
-                _m(0);_e('b-n').style.display='inline-flex';
-                if(!token) _g.s();
-            } else if(token) {
-                localStorage.removeItem('ol_t'); _s.t=null;
-            }
-        }catch(e){}
+// ==================== CUSTOM CONFIRM POPUP ====================
+const CP = (() => {
+  let _resolve = null;
+  return {
+    show(opts = {}) {
+      return new Promise(res => {
+        _resolve = res;
+        _e('cp-title').textContent = opts.title || 'Are you sure?';
+        _e('cp-msg').textContent = opts.msg || 'This action cannot be undone.';
+        _e('cp-icon-i').className = opts.icon || 'fa-solid fa-trash';
+        _e('cp-icon-i').style.color = opts.color || '#ef4444';
+        _e('cp-icon').style.background = opts.bgColor || 'rgba(239,68,68,0.15)';
+        _e('cp-confirm').style.background = opts.color || '#ef4444';
+        _e('cp-confirm').textContent = opts.confirmText || 'Delete';
+        _e('cp-overlay').classList.add('ac');
+      });
     },
-    s:async()=>{
-        if(_c.u === 'YOUR_GITHUB_USERNAME') { console.warn("GitHub config not set. Edit _c variables at the bottom of the code."); return _r([]); }
-        try{const r=await fetch(`https://api.github.com/repos/${_c.u}/${_c.r}/contents/${_c.p}`,{headers:_g.h()});
-        if(!r.ok) { if(r.status===404) return _r([]); return; }
-        const f=await r.json(); if(!Array.isArray(f)) return _r([]);
-        const p=await Promise.all(f.filter(x=>x.name.endsWith('.md')).map(async x=>{
-            const tr=await fetch(x.download_url); return {n:x.name,s:x.sha,c:await tr.text()};
-        }));
-        _s.d=p.reverse();_r(_s.d);}catch(e){console.error(e)}
+    confirm() { _e('cp-overlay').classList.remove('ac'); if (_resolve) { _resolve(true); _resolve = null; } },
+    cancel()  { _e('cp-overlay').classList.remove('ac'); if (_resolve) { _resolve(false); _resolve = null; } }
+  };
+})();
+
+// ==================== CUSTOM INPUT PROMPT ====================
+const IP = (() => {
+  let _resolve = null;
+  return {
+    show(title, placeholder = '', msg = '') {
+      return new Promise(res => {
+        _resolve = res;
+        _e('ip-title').textContent = title;
+        _e('ip-msg').textContent = msg;
+        _e('ip-input').placeholder = placeholder;
+        _e('ip-input').value = '';
+        _e('ip-overlay').classList.add('ac');
+        setTimeout(() => _e('ip-input').focus(), 50);
+      });
     },
-    p:async()=>{
-        if(!_s.t)return;
-        const ti=_e('i-ti').value.trim(),bd=_e('i-bd').value.trim(),tg=_e('i-tg').value.split(',').map(x=>x.trim()).filter(x=>x);
-        const th=_e('i-th').value.trim(),co=_e('i-co').value.split(',').map(x=>x.trim()).filter(x=>x);
-        if(!ti||!bd)return;
-        
-        let authors = [_s.u || 'thetoprat', ...co];
-        authors = [...new Set(authors)]; // Remove duplicates
-        
-        const fn=ti.toLowerCase().replace(/[^a-z0-9]+/g,'-')+'-'+Date.now()+'.md';
-        const rt=Math.max(1,Math.ceil(bd.split(/\s+/).length/200));
-        const mt=`<!--meta:${JSON.stringify({t:tg,r:rt,ts:Date.now(),th:th,a:authors})}-->\n# ${ti}\n\n${bd}`;
-        const b64=btoa(unescape(encodeURIComponent(mt)));
-        _e('b-p').disabled=true;
-        try{const r=await fetch(`https://api.github.com/repos/${_c.u}/${_c.r}/contents/${_c.p}/${fn}`,{
-            method:'PUT',headers:{..._g.h(),'Content-Type':'application/json'},body:JSON.stringify({message:`Post: ${ti}`,content:b64})
-        });
-        if(r.ok){
-            _e('i-ti').value='';_e('i-bd').value='';_e('i-tg').value='';_e('i-th').value='';_e('i-co').value='';
-            await _g.s();_cc();
-        }}catch(e){}
-        _e('b-p').disabled=false;
+    confirm() {
+      const v = _e('ip-input').value.trim();
+      _e('ip-overlay').classList.remove('ac');
+      if (_resolve) { _resolve(v || null); _resolve = null; }
     },
-    d:async(n,s,e)=>{
-        e.stopPropagation();if(!_s.t||!confirm('Confirm deletion?'))return;
-        try{await fetch(`https://api.github.com/repos/${_c.u}/${_c.r}/contents/${_c.p}/${n}`,{
-            method:'DELETE',headers:{..._g.h(),'Content-Type':'application/json'},body:JSON.stringify({message:`Del: ${n}`,sha:s})
-        });_g.s();}catch(e){}
+    cancel() {
+      _e('ip-overlay').classList.remove('ac');
+      if (_resolve) { _resolve(null); _resolve = null; }
     }
+  };
+})();
+
+// Enter key in IP input
+_e('ip-input').addEventListener('keydown', e => { if (e.key === 'Enter') IP.confirm(); if (e.key === 'Escape') IP.cancel(); });
+_e('cp-overlay').addEventListener('click', e => { if (e.target === _e('cp-overlay')) CP.cancel(); });
+_e('ip-overlay').addEventListener('click', e => { if (e.target === _e('ip-overlay')) IP.cancel(); });
+
+// ==================== PASTE TOAST ====================
+function showToast(msg, dur = 2500) {
+  const t = _e('paste-toast');
+  _e('paste-toast-msg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._tid);
+  t._tid = setTimeout(() => t.classList.remove('show'), dur);
+}
+
+// ==================== MARKDOWN PROCESSING ====================
+const _pt = (m) => {
+  let p = m.replace(/:::\s*(info|warn|danger|error|announcement)[^\n]*\n([\s\S]*?)\n:::/gi, (_, type, content) => {
+    return `\n<div class="ad ${type.toLowerCase()}"><div class="ad-t">${type.toUpperCase()}</div>\n\n${content}\n\n</div>\n`;
+  });
+  p = p.replace(/(^|\s)@([a-zA-Z0-9-]+)/g, '$1<a href="https://github.com/$2" target="_blank" style="color:var(--acc);font-weight:bold">@$2</a>');
+  return DOMPurify.sanitize(marked.parse(p), {ADD_ATTR:['class','style','target','allowfullscreen','frameborder'],ADD_TAGS:['iframe']});
 };
 
-const _v=(t)=>{
-    if(_s.cv===t)return;_s.cv=t;
-    const m=_e('app-main');
-    m.style.opacity='0'; m.style.transform='translateY(10px)';
-    setTimeout(()=>{
-        _e('v-h').style.display=t==='h'?'flex':'none';
-        _e('v-b').style.display=t==='b'?'flex':'none';
-        window.scrollTo({top:0,behavior:'instant'});
-        setTimeout(()=>{ m.style.opacity='1'; m.style.transform='translateY(0)'; }, 50);
-    }, 300);
-    _e('n-h').className=t==='h'?'np ac':'np';_e('n-b').className=t==='b'?'np ac':'np';
+const _ex = (c) => {
+  let m = c.match(/^<!--meta:(.+?)-->\n/);
+  let tiMatch = c.match(/^#\s+(.+)/m);
+  let ti = tiMatch ? tiMatch[1] : 'Untitled Post';
+  return m ? {...JSON.parse(m[1]), b:c.replace(m[0],''), ti} : {t:[],r:1,ts:Date.now(),b:c,ti,a:['thetoprat'],th:''};
 };
 
-const _cg=(d, l)=>{
-    if(!d.length) return `<div class="col-span-full py-20 text-center text-lg" style="color:var(--mut)">No repository posts resolved.</div>`;
-    return d.slice(0,l).map((x)=>{
-        const m=_ex(x.c); let p=_pt(m.b);
-        let tmp = document.createElement('div');
-        tmp.innerHTML = p;
-        let plainText = tmp.textContent || tmp.innerText || '';
-        
-        const tgs=m.t.map(t=>`<span class="tg">${t}</span>`).join('');
-        const aHtml = (m.a || []).map(u => `
-            <a href="https://github.com/${u}" target="_blank" class="flex items-center gap-1.5 hover:opacity-80 transition" onclick="event.stopPropagation()" title="@${u}">
-                <img src="https://github.com/${u}.png" class="w-6 h-6 rounded-full bg-[var(--brd)] border border-[var(--brd)]" onerror="this.style.display='none'">
-                <span class="text-xs font-bold hidden sm:block" style="color:var(--txt)">@${u}</span>
-            </a>
-        `).join('');
+// ==================== SMART PASTE NORMALIZER ====================
+// Cleans up pasted text from Claude, ChatGPT, Gemini, etc.
+// Converts HTML→Markdown when rich text is pasted, fixes common artifacts.
+function normalizeMarkdownPaste(text) {
+  let out = text;
 
-        // Generate fallback block if image fails to load
-        const fbImg = `onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'100\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%23111\\' /></svg>'"`;
+  // Remove zero-width chars and BOM
+  out = out.replace(/[\u200B\u200C\u200D\uFEFF]/g, '');
 
-        return `<div class="sf sf-h flex flex-col overflow-hidden relative group cursor-pointer h-full" onclick="_or('${x.s}')">
-            <div class="h-52 w-full relative overflow-hidden shrink-0" style="mask-image: linear-gradient(to bottom, black 50%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);">
-                <img src="${m.th || 'src/media/branding/banner.png'}" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-105" ${fbImg}>
-            </div>
-            <div class="px-6 pb-6 flex-1 flex flex-col relative z-10 -mt-16">
-                <div class="flex gap-2 flex-wrap mb-4">${tgs}</div>
-                <h3 class="text-2xl font-bold mb-3 leading-tight" style="color:var(--txt)">${m.ti}</h3>
-                <div class="mp mv flex-1 mb-6 text-sm" style="color:var(--mut)">${plainText}</div>
-                <div class="mt-auto flex justify-between items-center pt-4 border-t" style="border-color:var(--brd)">
-                    <div class="flex items-center gap-2 flex-wrap">
-                        ${aHtml}
-                    </div>
-                    <div class="flex items-center gap-3 shrink-0 ml-2">
-                        <span class="text-[10px] font-bold uppercase tracking-widest" style="color:var(--mut)">${m.r}m read</span>
-                        ${_s.t?`<button onclick="_g.d('${x.n}','${x.s}',event)" class="btn-del" title="Delete Post"><i class="fa-solid fa-trash text-xs"></i></button>`:''}
-                    </div>
-                </div>
-            </div>
-        </div>`;
-    }).join('');
+  // Normalize line endings
+  out = out.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
+  // Fix "smart" quotes → standard
+  out = out.replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"');
+
+  // Fix em/en dashes that look like list items (e.g. "– item")
+  out = out.replace(/^[–—]\s+/gm, '- ');
+
+  // Fix bullet chars → markdown list
+  out = out.replace(/^[•·▪▸►▶‣]\s*/gm, '- ');
+
+  // Normalize consecutive blank lines (max 2)
+  out = out.replace(/\n{3,}/g, '\n\n');
+
+  // Trim trailing whitespace per line
+  out = out.split('\n').map(l => l.trimEnd()).join('\n');
+
+  // Trim overall
+  out = out.trim();
+
+  return out;
+}
+
+// Converts HTML (from rich text clipboard) to Markdown
+function htmlToMarkdown(html) {
+  const div = document.createElement('div');
+  div.innerHTML = html;
+
+  function walk(node) {
+    if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+    const tag = node.tagName?.toLowerCase();
+    const inner = Array.from(node.childNodes).map(walk).join('');
+
+    switch (tag) {
+      case 'h1': return `\n# ${inner.trim()}\n`;
+      case 'h2': return `\n## ${inner.trim()}\n`;
+      case 'h3': return `\n### ${inner.trim()}\n`;
+      case 'h4': return `\n#### ${inner.trim()}\n`;
+      case 'h5': return `\n##### ${inner.trim()}\n`;
+      case 'h6': return `\n###### ${inner.trim()}\n`;
+      case 'strong': case 'b': return `**${inner}**`;
+      case 'em': case 'i': return `*${inner}*`;
+      case 's': case 'del': case 'strike': return `~~${inner}~~`;
+      case 'code': return node.closest('pre') ? inner : `\`${inner}\``;
+      case 'pre': {
+        const codeEl = node.querySelector('code');
+        const lang = codeEl?.className?.match(/language-(\w+)/)?.[1] || '';
+        const code = (codeEl ? codeEl.textContent : node.textContent).trim();
+        return `\n\`\`\`${lang}\n${code}\n\`\`\`\n`;
+      }
+      case 'blockquote': return `\n${inner.trim().split('\n').map(l => `> ${l}`).join('\n')}\n`;
+      case 'a': {
+        const href = node.getAttribute('href') || '';
+        return href && href !== inner ? `[${inner}](${href})` : inner;
+      }
+      case 'img': {
+        const src = node.getAttribute('src') || '';
+        const alt = node.getAttribute('alt') || 'image';
+        return `![${alt}](${src})`;
+      }
+      case 'ul': return '\n' + Array.from(node.children).map(li => {
+        const cb = li.querySelector('input[type="checkbox"]');
+        const txt = Array.from(li.childNodes).filter(n => n.tagName?.toLowerCase() !== 'input' && n.tagName?.toLowerCase() !== 'ul').map(walk).join('').trim();
+        const nested = li.querySelector('ul') ? '\n' + walk(li.querySelector('ul')).split('\n').filter(Boolean).map(l => '  ' + l).join('\n') : '';
+        return cb ? `- [${cb.checked ? 'x' : ' '}] ${txt}${nested}` : `- ${txt}${nested}`;
+      }).join('\n') + '\n';
+      case 'ol': return '\n' + Array.from(node.children).map((li, i) => {
+        const txt = Array.from(li.childNodes).map(walk).join('').trim();
+        return `${i + 1}. ${txt}`;
+      }).join('\n') + '\n';
+      case 'li': return inner; // handled by ul/ol
+      case 'hr': return '\n---\n';
+      case 'br': return '\n';
+      case 'p': return `\n${inner.trim()}\n`;
+      case 'div': case 'section': case 'article': return `\n${inner.trim()}\n`;
+      case 'table': {
+        const rows = Array.from(node.querySelectorAll('tr'));
+        if (!rows.length) return inner;
+        const headerRow = rows[0];
+        const headers = Array.from(headerRow.querySelectorAll('th,td')).map(c => c.textContent.trim());
+        const sep = headers.map(() => '---');
+        const bodyRows = rows.slice(1).map(r =>
+          Array.from(r.querySelectorAll('td,th')).map(c => c.textContent.trim())
+        );
+        return '\n' + [
+          '| ' + headers.join(' | ') + ' |',
+          '| ' + sep.join(' | ') + ' |',
+          ...bodyRows.map(r => '| ' + r.join(' | ') + ' |')
+        ].join('\n') + '\n';
+      }
+      case 'script': case 'style': case 'head': return '';
+      default: return inner;
+    }
+  }
+
+  let md = walk(div);
+  // Normalize blank lines
+  md = md.replace(/\n{3,}/g, '\n\n').trim();
+  return md;
+}
+
+// ==================== MARKDOWN EDITOR ENGINE ====================
+const ED = (() => {
+  const ta = () => _e('i-bd');
+  const lines = () => _e('ed-lines');
+
+  function updateStats() {
+    const t = ta();
+    const txt = t.value;
+    const words = txt.trim() ? txt.trim().split(/\s+/).length : 0;
+    const lineArr = txt.split('\n');
+    const lineCount = lineArr.length;
+
+    // Cursor position
+    const pos = t.selectionStart;
+    const before = txt.substring(0, pos);
+    const ln = before.split('\n').length;
+    const col = pos - before.lastIndexOf('\n');
+
+    _e('ed-wc').textContent = words + (words === 1 ? ' word' : ' words');
+    _e('ed-lc').textContent = lineCount + (lineCount === 1 ? ' line' : ' lines');
+    _e('ed-pos').textContent = `Ln ${ln}, Col ${col}`;
+
+    // Update line numbers
+    const lnEl = lines();
+    const needed = lineCount;
+    const existing = lnEl.childNodes.length;
+    if (needed > existing) {
+      const frag = document.createDocumentFragment();
+      for (let i = existing + 1; i <= needed; i++) {
+        const span = document.createElement('div');
+        span.textContent = i;
+        frag.appendChild(span);
+      }
+      lnEl.appendChild(frag);
+    } else if (needed < existing) {
+      while (lnEl.childNodes.length > needed) lnEl.removeChild(lnEl.lastChild);
+    }
+
+    // Sync line number scroll
+    lnEl.scrollTop = t.scrollTop;
+  }
+
+  function syncScroll() {
+    lines().scrollTop = ta().scrollTop;
+  }
+
+  // Insert text at cursor, restore selection
+  function insert(before, after = '', placeholder = '') {
+    const t = ta();
+    const start = t.selectionStart, end = t.selectionEnd;
+    const sel = t.value.substring(start, end) || placeholder;
+    const newVal = t.value.substring(0, start) + before + sel + after + t.value.substring(end);
+    t.value = newVal;
+    const newStart = start + before.length;
+    const newEnd = newStart + sel.length;
+    t.setSelectionRange(newStart, newEnd);
+    t.focus();
+    updateStats();
+  }
+
+  // Public API
+  return {
+    init() {
+      const t = ta();
+
+      // Line number scroll sync
+      t.addEventListener('scroll', syncScroll);
+
+      // Stats on every input/click/key
+      t.addEventListener('input', updateStats);
+      t.addEventListener('click', updateStats);
+      t.addEventListener('keyup', updateStats);
+
+      // Smart keyboard handling
+      t.addEventListener('keydown', e => {
+        const start = t.selectionStart, end = t.selectionEnd;
+        const val = t.value;
+        const before = val.substring(0, start);
+        const lineStart = before.lastIndexOf('\n') + 1;
+        const currentLine = before.substring(lineStart);
+
+        // Tab → 2 spaces (or indent selection)
+        if (e.key === 'Tab') {
+          e.preventDefault();
+          if (start !== end) {
+            // Multi-line indent
+            const selText = val.substring(start, end);
+            const indented = e.shiftKey
+              ? selText.replace(/^ {1,2}/gm, '')
+              : selText.replace(/^/gm, '  ');
+            t.value = val.substring(0, start) + indented + val.substring(end);
+            t.setSelectionRange(start, start + indented.length);
+          } else {
+            t.value = val.substring(0, start) + '  ' + val.substring(end);
+            t.setSelectionRange(start + 2, start + 2);
+          }
+          updateStats();
+          return;
+        }
+
+        // Enter → smart continuation of lists
+        if (e.key === 'Enter' && !e.shiftKey) {
+          const listMatch = currentLine.match(/^(\s*)([-*+]|\d+\.)\s+(\[[ x]\]\s+)?/);
+          if (listMatch) {
+            const [fullMatch, indent, bullet, check] = listMatch;
+            const lineContent = currentLine.substring(fullMatch.length);
+            if (!lineContent.trim()) {
+              // Empty list item → exit list
+              e.preventDefault();
+              const removeFrom = start - fullMatch.length;
+              t.value = val.substring(0, removeFrom) + '\n' + val.substring(end);
+              t.setSelectionRange(removeFrom + 1, removeFrom + 1);
+              updateStats();
+              return;
+            }
+            e.preventDefault();
+            let nextBullet = bullet;
+            if (/^\d+$/.test(bullet)) {
+              nextBullet = (parseInt(bullet) + 1) + '.';
+            }
+            const continuation = '\n' + indent + nextBullet + ' ' + (check ? '[ ] ' : '');
+            t.value = val.substring(0, start) + continuation + val.substring(end);
+            t.setSelectionRange(start + continuation.length, start + continuation.length);
+            updateStats();
+            return;
+          }
+        }
+
+        // Auto-pair: (, [, {, ", '
+        const pairs = {'(':')', '[':']', '{':'}', '"':'"'};
+        if (pairs[e.key] && start === end) {
+          e.preventDefault();
+          const close = pairs[e.key];
+          t.value = val.substring(0, start) + e.key + close + val.substring(end);
+          t.setSelectionRange(start + 1, start + 1);
+          updateStats();
+          return;
+        }
+
+        // Skip over closing pair
+        const closers = [')', ']', '}', '"'];
+        if (closers.includes(e.key) && val[start] === e.key && start === end) {
+          e.preventDefault();
+          t.setSelectionRange(start + 1, start + 1);
+          return;
+        }
+
+        // Backspace: delete pair
+        if (e.key === 'Backspace' && start === end && start > 0) {
+          const pairMap = {'(':')', '[':']', '{':'}', '"':'"', "'":'\'', '`':'`'};
+          const charBefore = val[start - 1];
+          if (pairMap[charBefore] && val[start] === pairMap[charBefore]) {
+            e.preventDefault();
+            t.value = val.substring(0, start - 1) + val.substring(start + 1);
+            t.setSelectionRange(start - 1, start - 1);
+            updateStats();
+            return;
+          }
+        }
+
+        updateStats();
+      });
+
+      // Smart paste
+      t.addEventListener('paste', async e => {
+        // Check for HTML in clipboard (from rich text sources)
+        const html = e.clipboardData?.getData('text/html');
+        const plain = e.clipboardData?.getData('text/plain') || '';
+
+        let finalText = plain;
+        let wasHtml = false;
+
+        if (html && html.trim()) {
+          // Check if there's actual formatting worth converting
+          // (skip if it's just whitespace HTML wrapper with no tags)
+          const stripped = html.replace(/<[^>]+>/g, '').trim();
+          const hasMeaningfulTags = /<(h[1-6]|strong|em|ul|ol|li|pre|code|blockquote|table|a|img|hr)[^>]*>/i.test(html);
+
+          if (hasMeaningfulTags) {
+            e.preventDefault();
+            finalText = htmlToMarkdown(html);
+            wasHtml = true;
+          }
+        }
+
+        if (!wasHtml) {
+          // Still normalize plain text
+          e.preventDefault();
+          finalText = plain;
+        }
+
+        finalText = normalizeMarkdownPaste(finalText);
+
+        // Insert at cursor
+        const start = t.selectionStart, end = t.selectionEnd;
+        t.value = t.value.substring(0, start) + finalText + t.value.substring(end);
+        const newPos = start + finalText.length;
+        t.setSelectionRange(newPos, newPos);
+        t.focus();
+        updateStats();
+
+        if (wasHtml || finalText !== plain.trim()) {
+          showToast(wasHtml ? 'Rich text converted to Markdown' : 'Markdown pasted & cleaned');
+        }
+      });
+
+      updateStats();
+    },
+
+    fmt(before, after) { insert(before, after, 'text'); },
+
+    fmtLine(prefix) {
+      const t = ta();
+      const start = t.selectionStart;
+      const val = t.value;
+      const lineStart = val.lastIndexOf('\n', start - 1) + 1;
+      const lineEnd = val.indexOf('\n', start);
+      const line = val.substring(lineStart, lineEnd === -1 ? val.length : lineEnd);
+
+      // Toggle: if already prefixed, remove; otherwise add
+      if (line.startsWith(prefix)) {
+        t.value = val.substring(0, lineStart) + line.substring(prefix.length) + val.substring(lineEnd === -1 ? val.length : lineEnd);
+        t.setSelectionRange(Math.max(lineStart, start - prefix.length), Math.max(lineStart, start - prefix.length));
+      } else {
+        t.value = val.substring(0, lineStart) + prefix + line + val.substring(lineEnd === -1 ? val.length : lineEnd);
+        t.setSelectionRange(start + prefix.length, start + prefix.length);
+      }
+      t.focus();
+      updateStats();
+    },
+
+    fmtBlock(before, after) { insert(before, after, 'code here'); },
+
+    async insertLink() {
+      const url = await IP.show('Insert Link', 'https://example.com', 'Paste the destination URL');
+      if (url) insert('[', `](${url})`, 'link text');
+    },
+
+    async insertImage() {
+      const url = await IP.show('Image URL', 'https://...', 'Paste a direct image URL');
+      if (url) insert(`![`, `](${url})`, 'alt text');
+    },
+
+    async insertVideo() {
+      const url = await IP.show('Embed URL', 'https://...', 'YouTube, Vimeo, or any embeddable URL');
+      if (url) {
+        const t = ta();
+        const pos = t.selectionStart;
+        const embed = `\n<iframe src="${url}" width="100%" height="400" frameborder="0" allowfullscreen></iframe>\n`;
+        t.value = t.value.substring(0, pos) + embed + t.value.substring(pos);
+        t.setSelectionRange(pos + embed.length, pos + embed.length);
+        t.focus();
+        updateStats();
+      }
+    },
+
+    insertHr() {
+      const t = ta();
+      const pos = t.selectionStart;
+      const hr = '\n\n---\n\n';
+      t.value = t.value.substring(0, pos) + hr + t.value.substring(pos);
+      t.setSelectionRange(pos + hr.length, pos + hr.length);
+      t.focus();
+      updateStats();
+    },
+
+    insertAdmonition(type) {
+      const t = ta();
+      const start = t.selectionStart, end = t.selectionEnd;
+      const selected = t.value.substring(start, end) || 'Your content here.';
+      const block = `\n:::${type}\n${selected}\n:::\n`;
+      t.value = t.value.substring(0, start) + block + t.value.substring(end);
+      t.setSelectionRange(start + block.length, start + block.length);
+      t.focus();
+      updateStats();
+    },
+
+    getValue() { return ta().value; },
+    setValue(v) { ta().value = v; updateStats(); },
+    clear() { ta().value = ''; updateStats(); }
+  };
+})();
+
+// ==================== MARKDOWN METADATA ====================
+const _tm_fn = (b) => {
+  const m = _e('m-n'), i = b?.querySelector('i');
+  if (!m) return;
+  const o = m.classList.toggle('ac');
+  if (i) { i.className = o ? 'fa-solid fa-xmark transition-transform duration-300' : 'fa-solid fa-bars transition-transform duration-300'; }
 };
 
-const _r=(d)=>{_e('p-g').innerHTML=_cg(d,99);_e('f-g').innerHTML=_cg(d,3);};
-const _or=(s)=>{
-    const p=_s.d.find(x=>x.s===s);if(!p)return;
-    const m=_ex(p.c);document.body.style.overflow='hidden';
-    
-    _e('r-th').style.backgroundImage = `url('${m.th || 'src/media/branding/banner.png'}')`;
-    _e('r-ti').innerText = m.ti;
-    _e('r-c').innerHTML=_pt(m.b);
-    
+// ==================== GITHUB API ====================
+const _g = {
+  h: () => _s.t ? {'Authorization': `token ${_s.t}`} : {},
+  a: async (token) => {
+    const v = token || _e('i-t').value.trim(); if (!v) return;
+    try {
+      const r = await fetch('https://api.github.com/user', {headers: {'Authorization': `token ${v}`}});
+      if (r.ok) {
+        const d = await r.json();
+        _s.t = v; _s.u = d.login; _s.a = d.avatar_url;
+        localStorage.setItem('ol_t', v);
+        localStorage.setItem('ol_u', JSON.stringify({l: d.login, a: d.avatar_url}));
+        _m(0); _e('b-n').style.display = 'inline-flex';
+        if (!token) _g.s();
+      } else if (token) {
+        localStorage.removeItem('ol_t'); _s.t = null;
+      }
+    } catch(e) {}
+  },
+  s: async () => {
+    if (_c.u === 'YOUR_GITHUB_USERNAME') { console.warn("GitHub config not set."); return _r([]); }
+    try {
+      const r = await fetch(`https://api.github.com/repos/${_c.u}/${_c.r}/contents/${_c.p}`, {headers: _g.h()});
+      if (!r.ok) { if (r.status === 404) return _r([]); return; }
+      const f = await r.json(); if (!Array.isArray(f)) return _r([]);
+      const p = await Promise.all(f.filter(x => x.name.endsWith('.md')).map(async x => {
+        const tr = await fetch(x.download_url); return {n: x.name, s: x.sha, c: await tr.text()};
+      }));
+      _s.d = p.reverse(); _r(_s.d);
+    } catch(e) { console.error(e); }
+  },
+  p: async () => {
+    if (!_s.t) return;
+    const ti = _e('i-ti').value.trim(), bd = ED.getValue().trim();
+    const tg = _e('i-tg').value.split(',').map(x => x.trim()).filter(x => x);
+    const th = _e('i-th').value.trim();
+    const co = _e('i-co').value.split(',').map(x => x.trim()).filter(x => x);
+    if (!ti || !bd) return;
+    let authors = [_s.u || 'thetoprat', ...co];
+    authors = [...new Set(authors)];
+    const fn = ti.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Date.now() + '.md';
+    const rt = Math.max(1, Math.ceil(bd.split(/\s+/).length / 200));
+    const mt = `<!--meta:${JSON.stringify({t:tg,r:rt,ts:Date.now(),th,a:authors})}-->\n# ${ti}\n\n${bd}`;
+    const b64 = btoa(unescape(encodeURIComponent(mt)));
+    _e('b-p').disabled = true;
+    try {
+      const r = await fetch(`https://api.github.com/repos/${_c.u}/${_c.r}/contents/${_c.p}/${fn}`, {
+        method: 'PUT', headers: {..._g.h(), 'Content-Type': 'application/json'},
+        body: JSON.stringify({message: `Post: ${ti}`, content: b64})
+      });
+      if (r.ok) { ED.clear(); _e('i-ti').value = ''; _e('i-tg').value = ''; _e('i-th').value = ''; _e('i-co').value = ''; await _g.s(); _cc(); }
+    } catch(e) {}
+    _e('b-p').disabled = false;
+  },
+  d: async (n, s, ev) => {
+    ev.stopPropagation();
+    if (!_s.t) return;
+    const ok = await CP.show({
+      title: 'Delete Post?',
+      msg: `"${n.replace(/-/g,' ').replace('.md','')}" will be permanently removed.`,
+      icon: 'fa-solid fa-trash',
+      color: '#ef4444',
+      bgColor: 'rgba(239,68,68,0.15)',
+      confirmText: 'Delete'
+    });
+    if (!ok) return;
+    try {
+      await fetch(`https://api.github.com/repos/${_c.u}/${_c.r}/contents/${_c.p}/${n}`, {
+        method: 'DELETE', headers: {..._g.h(), 'Content-Type': 'application/json'},
+        body: JSON.stringify({message: `Del: ${n}`, sha: s})
+      });
+      _g.s();
+    } catch(e) {}
+  }
+};
+
+// ==================== VIEW SWITCHER ====================
+const _v = (t) => {
+  if (_s.cv === t) return; _s.cv = t;
+  const m = _e('app-main');
+  m.style.opacity = '0'; m.style.transform = 'translateY(10px)';
+  setTimeout(() => {
+    _e('v-h').style.display = t === 'h' ? 'flex' : 'none';
+    _e('v-b').style.display = t === 'b' ? 'flex' : 'none';
+    window.scrollTo({top: 0, behavior: 'instant'});
+    setTimeout(() => { m.style.opacity = '1'; m.style.transform = 'translateY(0)'; }, 50);
+  }, 300);
+  _e('n-h').className = t === 'h' ? 'np ac' : 'np';
+  _e('n-b').className = t === 'b' ? 'np ac' : 'np';
+};
+
+// ==================== CARD GRID RENDERER ====================
+const _cg = (d, l) => {
+  if (!d.length) return `<div class="col-span-full py-20 text-center text-lg" style="color:var(--mut)">No repository posts resolved.</div>`;
+  return d.slice(0, l).map(x => {
+    const m = _ex(x.c); let p = _pt(m.b);
+    let tmp = document.createElement('div'); tmp.innerHTML = p;
+    let plainText = tmp.textContent || tmp.innerText || '';
+    const tgs = m.t.map(t => `<span class="tg">${t}</span>`).join('');
     const aHtml = (m.a || []).map(u => `
-        <a href="https://github.com/${u}" target="_blank" class="flex items-center gap-2 hover:opacity-80 transition bg-[var(--s-h)] px-3 py-1.5 rounded-full border" style="border-color:var(--brd)">
-            <img src="https://github.com/${u}.png" class="w-6 h-6 rounded-full bg-[var(--brd)]" onerror="this.style.display='none'">
-            <span class="text-sm font-bold" style="color:var(--txt)">@${u}</span>
-        </a>
-    `).join('');
-    
-    _e('r-tgs').innerHTML=`<span class="tg" style="border-color:var(--acc);color:var(--acc)">${m.r} min read</span>`+m.t.map(t=>`<span class="tg">${t}</span>`).join('');
-    _e('r-auths').innerHTML = aHtml;
-    _e('r-o').classList.add('ac');
-};
-const _cr=()=>{document.body.style.overflow='';_e('r-o').classList.remove('ac');setTimeout(()=>{_e('r-c').innerHTML='';_e('r-ti').innerText='';},400);};
-const _oc=()=>{document.body.style.overflow='hidden';_sw(0);_e('c-o').classList.add('ac');};
-const _cc=()=>{document.body.style.overflow='';_e('c-o').classList.remove('ac');};
-const _t=()=>{
-    _s.th=_s.th==='dark'?'lt':'dark';document.body.className=_s.th+' flex flex-col min-h-screen';
-    const i=_s.th==='dark'?'fa-solid fa-sun':'fa-solid fa-moon';
-    _e('t-i').className=i; _e('t-i-m').className=i;
-};
-const _m=(s)=>{
-    const l=_e('m-a'),c=_e('m-a-c');
-    if(s){l.style.display='flex';requestAnimationFrame(()=>{l.style.opacity='1';l.style.pointerEvents='auto';c.style.transform='scale(1)';});_e('i-t').focus();}
-    else{l.style.opacity='0';l.style.pointerEvents='none';c.style.transform='scale(.95)';setTimeout(()=>l.style.display='none',300);}
-};
-
-const _f=(pre,suf)=>{
-    const a=_e('i-bd'),s=a.selectionStart,e=a.selectionEnd,v=a.value;
-    a.value=v.substring(0,s)+pre+v.substring(s,e)+suf+v.substring(e);
-    a.focus();a.selectionStart=s+pre.length;a.selectionEnd=e+pre.length;
-};
-const _il=()=>{const u=prompt('URL:');if(u)_f(`[`,`](${u})`);};
-const _im=()=>{const u=prompt('Image URL:');if(u)_f(`![image](${u})`,'');};
-const _iv=()=>{const u=prompt('Video/Embed URL:');if(u)_f(`<iframe src="${u}" width="100%" height="400" frameborder="0" allowfullscreen></iframe>`,'');};
-const _sw=(p)=>{
-    _e('i-bd').style.display=p?'none':'block';_e('i-pv').style.display=p?'block':'none';
-    _e('t-w').className=p?'np !py-1':'np ac !py-1';_e('t-p').className=p?'np ac !py-1':'np !py-1';
-    if(p){const t=_e('i-ti').value; _e('i-pv').innerHTML=_pt((t?`# ${t}\n\n`:'')+_e('i-bd').value);}
+      <a href="https://github.com/${u}" target="_blank" class="flex items-center gap-1.5 hover:opacity-80 transition" onclick="event.stopPropagation()" title="@${u}">
+        <img src="https://github.com/${u}.png" class="w-6 h-6 rounded-full bg-[var(--brd)] border border-[var(--brd)]" onerror="this.style.display='none'">
+        <span class="text-xs font-bold hidden sm:block" style="color:var(--txt)">@${u}</span>
+      </a>`).join('');
+    const fbImg = `onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'100\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%23111\\'/></svg>'"`;
+    return `<div class="sf sf-h flex flex-col overflow-hidden relative group cursor-pointer h-full" onclick="_or('${x.s}')">
+      <div class="h-52 w-full relative overflow-hidden shrink-0" style="mask-image:linear-gradient(to bottom,black 50%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,black 50%,transparent 100%)">
+        <img src="${m.th || 'src/media/branding/banner.png'}" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-105" ${fbImg}>
+      </div>
+      <div class="px-6 pb-6 flex-1 flex flex-col relative z-10 -mt-16">
+        <div class="flex gap-2 flex-wrap mb-4">${tgs}</div>
+        <h3 class="text-2xl font-bold mb-3 leading-tight" style="color:var(--txt)">${m.ti}</h3>
+        <div class="mp mv flex-1 mb-6 text-sm" style="color:var(--mut)">${plainText}</div>
+        <div class="mt-auto flex justify-between items-center pt-4 border-t" style="border-color:var(--brd)">
+          <div class="flex items-center gap-2 flex-wrap">${aHtml}</div>
+          <div class="flex items-center gap-3 shrink-0 ml-2">
+            <span class="text-[10px] font-bold uppercase tracking-widest" style="color:var(--mut)">${m.r}m read</span>
+            ${_s.t ? `<button onclick="_g.d('${x.n}','${x.s}',event)" class="btn-del" title="Delete Post"><i class="fa-solid fa-trash text-xs"></i></button>` : ''}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
 };
 
-const _obs=new IntersectionObserver((e)=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('ac');});},{threshold:.1,rootMargin:"0px 0px -50px 0px"});
-document.querySelectorAll('.rl').forEach(x=>_obs.observe(x));
+const _r = (d) => { _e('p-g').innerHTML = _cg(d, 99); _e('f-g').innerHTML = _cg(d, 3); };
 
-document.addEventListener('keydown',(e)=>{
-    if((e.key==='g'||e.key==='G')&&!['INPUT','TEXTAREA'].includes(e.target.tagName)){e.preventDefault();_m(_e('m-a').style.opacity==='0');}
-    if(e.key==='Escape'){_m(0);_cr();_cc();}
+// ==================== POST READ ====================
+const _or = (s) => {
+  const p = _s.d.find(x => x.s === s); if (!p) return;
+  const m = _ex(p.c); document.body.style.overflow = 'hidden';
+  _e('r-th').style.backgroundImage = `url('${m.th || 'src/media/branding/banner.png'}')`;
+  _e('r-ti').innerText = m.ti;
+  _e('r-c').innerHTML = _pt(m.b);
+  const aHtml = (m.a || []).map(u => `
+    <a href="https://github.com/${u}" target="_blank" class="flex items-center gap-2 hover:opacity-80 transition bg-[var(--s-h)] px-3 py-1.5 rounded-full border" style="border-color:var(--brd)">
+      <img src="https://github.com/${u}.png" class="w-6 h-6 rounded-full bg-[var(--brd)]" onerror="this.style.display='none'">
+      <span class="text-sm font-bold" style="color:var(--txt)">@${u}</span>
+    </a>`).join('');
+  _e('r-tgs').innerHTML = `<span class="tg" style="border-color:var(--acc);color:var(--acc)">${m.r} min read</span>` + m.t.map(t => `<span class="tg">${t}</span>`).join('');
+  _e('r-auths').innerHTML = aHtml;
+  _e('r-o').classList.add('ac');
+};
+const _cr = () => { document.body.style.overflow = ''; _e('r-o').classList.remove('ac'); setTimeout(() => { _e('r-c').innerHTML = ''; _e('r-ti').innerText = ''; }, 400); };
+const _oc = () => { document.body.style.overflow = 'hidden'; _sw(0); _e('c-o').classList.add('ac'); };
+const _cc = () => { document.body.style.overflow = ''; _e('c-o').classList.remove('ac'); };
+
+// ==================== THEME ====================
+const _t = () => {
+  _s.th = _s.th === 'dark' ? 'lt' : 'dark';
+  document.body.className = _s.th + ' flex flex-col min-h-screen';
+  const i = _s.th === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+  _e('t-i').className = i; _e('t-i-m').className = i;
+};
+
+// ==================== ADMIN MODAL ====================
+const _m = (s) => {
+  const l = _e('m-a'), c = _e('m-a-c');
+  if (s) {
+    l.style.display = 'flex';
+    requestAnimationFrame(() => { l.style.opacity = '1'; l.style.pointerEvents = 'auto'; c.style.transform = 'scale(1)'; });
+    _e('i-t').focus();
+  } else {
+    l.style.opacity = '0'; l.style.pointerEvents = 'none'; c.style.transform = 'scale(.95)';
+    setTimeout(() => l.style.display = 'none', 300);
+  }
+};
+
+// ==================== EDITOR VIEW TOGGLE ====================
+const _sw = (p) => {
+  const ta = _e('i-bd'), pv = _e('i-pv'), lines = _e('ed-lines');
+  ta.style.display = p ? 'none' : '';
+  lines.style.display = p ? 'none' : '';
+  pv.style.display = p ? 'block' : 'none';
+  pv.classList.toggle('hidden', !p);
+  _e('t-w').className = p ? 'np !py-1 !text-xs' : 'np ac !py-1 !text-xs';
+  _e('t-p').className = p ? 'np ac !py-1 !text-xs' : 'np !py-1 !text-xs';
+  if (p) {
+    const ti = _e('i-ti').value;
+    _e('i-pv').innerHTML = _pt((ti ? `# ${ti}\n\n` : '') + ED.getValue());
+  }
+};
+
+// ==================== NAV MOBILE TOGGLE ====================
+const _tm = (b) => {
+  const m = _e('m-n'), i = b?.querySelector('i');
+  if (!m) return;
+  const o = m.classList.toggle('ac');
+  if (i) { i.className = o ? 'fa-solid fa-xmark transition-transform duration-300' : 'fa-solid fa-bars transition-transform duration-300'; }
+};
+
+// ==================== SCROLL ANIMATION ====================
+const _obs = new IntersectionObserver((e) => {
+  e.forEach(x => { if (x.isIntersecting) x.target.classList.add('ac'); });
+}, {threshold: .1, rootMargin: "0px 0px -50px 0px"});
+document.querySelectorAll('.rl').forEach(x => _obs.observe(x));
+
+// ==================== KEYBOARD SHORTCUTS ====================
+document.addEventListener('keydown', (e) => {
+  // G to open admin login (when not in input)
+  if ((e.key === 'g' || e.key === 'G') && !['INPUT','TEXTAREA'].includes(e.target.tagName)) {
+    e.preventDefault(); _m(_e('m-a').style.opacity === '0');
+  }
+  if (e.key === 'Escape') { _m(0); _cr(); _cc(); CP.cancel(); IP.cancel(); }
 });
 
-// Setup auth from cache on start
+// ==================== INIT ====================
 const savedUser = localStorage.getItem('ol_u');
-if(savedUser){
-    const parsed = JSON.parse(savedUser);
-    _s.u = parsed.l; _s.a = parsed.a;
-}
-if(_s.t) { _g.a(_s.t); }
+if (savedUser) { const p = JSON.parse(savedUser); _s.u = p.l; _s.a = p.a; }
+if (_s.t) { _g.a(_s.t); }
 
+ED.init();
 _g.s();
 </script>
 </body>
