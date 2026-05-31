@@ -32,11 +32,13 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
 .oy.ac{opacity:1;pointer-events:auto}
 .oy-c{width:100%;max-width:64rem;transform:translateY(20px) scale(.98);transition:all .4s;opacity:0}
 .oy.ac .oy-c{transform:translateY(0) scale(1);opacity:1}
-.mn{transform-origin:top;transform:scaleY(0);opacity:0;transition:all .4s cubic-bezier(.4,0,.2,1);position:absolute;top:100%;left:0;width:100%;background:var(--surf);border-bottom:1px solid var(--brd);pointer-events:none}
+.mn{transform-origin:top;transform:scaleY(0);opacity:0;transition:all .4s cubic-bezier(.4,0,.2,1);position:absolute;top:100%;left:0;width:100%;background:var(--surf);border-bottom:1px solid var(--brd);border-radius:0 0 2rem 2rem;pointer-events:none}
 .mn.ac{transform:scaleY(1);opacity:1;box-shadow:0 20px 40px var(--sc);pointer-events:auto}
 .mn-w{padding:1.5rem;display:flex;flex-direction:column;gap:.75rem}
+
+/* Markdown Styles */
 .mv{color:var(--mut);line-height:1.8;font-size:1.05rem}
-.mv h1,.mv h2,.mv h3,.mv h4{color:var(--txt);font-weight:800;margin:2rem 0 1rem}
+.mv h1,.mv h2,.mv h3,.mv h4{color:var(--txt);font-weight:800;margin:2rem 0 1rem;line-height:1.2}
 .mv h1{font-size:2.5rem}.mv h2{font-size:2rem}.mv h3{font-size:1.5rem}
 .mv p{margin-bottom:1.25rem}
 .mv a{color:var(--acc);text-decoration:none;font-weight:600}
@@ -47,16 +49,18 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
 .mv ul{list-style:disc;padding-left:1.5rem;margin-bottom:1.25rem}
 .mv ol{list-style:decimal;padding-left:1.5rem;margin-bottom:1.25rem}
 .mv li{margin-bottom:0.25rem}
-.mv li.task-list-item{list-style:none;display:flex;align-items:flex-start;gap:0.6rem}
-.mv li.task-list-item input[type="checkbox"]{margin-top:0.35rem;margin-right:0;width:1.1em;height:1.1em;accent-color:var(--acc);flex-shrink:0;cursor:pointer}
-.mv ul:has(> li.task-list-item){padding-left:0}
+.mv li:has(input[type="checkbox"]) {list-style:none; margin-left:-1.5rem; display:flex; align-items:flex-start; gap:0.5rem;}
+.mv input[type="checkbox"]{margin-top:0.35rem;margin-right:0;width:1.1em;height:1.1em;accent-color:var(--acc);flex-shrink:0;cursor:pointer}
 .mv img,.mv iframe{max-width:100%;border-radius:1rem;margin:1.5rem 0}
+
+/* Admonitions (Alerts) */
 .ad{padding:1rem 1.5rem;border-radius:1rem;margin:1.5rem 0;border-left:4px solid;background:var(--s-h);position:relative}
 .ad-t{font-size:.75rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem;opacity:.8}
 .ad.info{border-color:#3b82f6}.ad.info .ad-t{color:#3b82f6}
 .ad.warn{border-color:#f59e0b}.ad.warn .ad-t{color:#f59e0b}
 .ad.danger,.ad.error{border-color:#ef4444}.ad.danger .ad-t,.ad.error .ad-t{color:#ef4444}
 .ad.announcement{border-color:var(--acc)}.ad.announcement .ad-t{color:var(--acc)}
+
 .tb{padding:.4rem .6rem;border-radius:.5rem;color:var(--mut);transition:all .2s}
 .tb:hover{background:var(--s-h);color:var(--acc)}
 .mp{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;mask-image:linear-gradient(to bottom,#000 50%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 50%,transparent 100%)}
@@ -66,37 +70,39 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
 <body class="dark flex flex-col min-h-screen">
 <div class="f-x"></div>
 
-<nav class="w-full fixed top-0 z-50 transition-colors duration-500 border-b" style="background:var(--nav);backdrop-filter:blur(24px);border-color:var(--brd)">
-    <div class="max-w-[1400px] mx-auto px-6 py-4 flex items-center justify-between relative z-10">
-        <div class="flex items-center gap-3 cursor-pointer" onclick="_v('h')">
-            <img src="src/media/branding/icon.png" class="w-10 h-10 rounded-xl object-cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-            <div class="hidden w-10 h-10 rounded-xl items-center justify-center font-black text-xl" style="background:var(--txt);color:var(--bg)">O</div>
-            <span class="text-xl font-bold tracking-tight">Orion Labs</span>
+<div class="fixed top-4 md:top-6 left-0 right-0 z-50 flex justify-center px-4 md:px-6 pointer-events-none">
+    <nav class="w-full max-w-[1400px] transition-colors duration-500 border rounded-full pointer-events-auto shadow-2xl relative" style="background:var(--nav);backdrop-filter:blur(24px);border-color:var(--brd)">
+        <div class="px-6 py-4 flex items-center justify-between relative z-10">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="_v('h')">
+                <img src="src/media/branding/icon.png" class="w-10 h-10 rounded-xl object-cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="hidden w-10 h-10 rounded-xl items-center justify-center font-black text-xl" style="background:var(--txt);color:var(--bg)">O</div>
+                <span class="text-xl font-bold tracking-tight">Orion Labs</span>
+            </div>
+            <div class="hidden md:flex items-center gap-2">
+                <div id="n-h" class="np ac" onclick="_v('h')">Overview</div>
+                <div id="n-b" class="np" onclick="_v('b')">Blog</div>
+                <a href="https://discord.gg/8q9ntJwA7E" target="_blank" class="np !px-3 hover:!text-[#5865F2]"><i class="fa-brands fa-discord text-xl"></i></a>
+                <button class="np !px-3" onclick="_t()"><i id="t-i" class="fa-solid fa-sun"></i></button>
+            </div>
+            <div class="md:hidden flex items-center gap-2">
+                <button class="np !px-3" onclick="_t()"><i id="t-i-m" class="fa-solid fa-sun"></i></button>
+                <button class="np !px-3" onclick="_tm(this)"><i class="fa-solid fa-bars transition-transform duration-300"></i></button>
+            </div>
         </div>
-        <div class="hidden md:flex items-center gap-2">
-            <div id="n-h" class="np ac" onclick="_v('h')">Overview</div>
-            <div id="n-b" class="np" onclick="_v('b')">Blog</div>
-            <a href="https://discord.gg/8q9ntJwA7E" target="_blank" class="np !px-3 hover:!text-[#5865F2]"><i class="fa-brands fa-discord text-xl"></i></a>
-            <button class="np !px-3" onclick="_t()"><i id="t-i" class="fa-solid fa-sun"></i></button>
+        <div id="m-n" class="mn md:hidden">
+            <div class="mn-w">
+                <div class="np ac w-full justify-center py-3" onclick="_v('h');_tm(_e('btn-m'))">Overview</div>
+                <div class="np w-full justify-center py-3" onclick="_v('b');_tm(_e('btn-m'))">Blog</div>
+                <a href="https://discord.gg/8q9ntJwA7E" target="_blank" class="np w-full justify-center py-3" onclick="_tm(_e('btn-m'))"><i class="fa-brands fa-discord"></i> Discord</a>
+            </div>
         </div>
-        <div class="md:hidden flex items-center gap-2">
-            <button class="np !px-3" onclick="_t()"><i id="t-i-m" class="fa-solid fa-sun"></i></button>
-            <button class="np !px-3" onclick="_tm(this)"><i class="fa-solid fa-bars transition-transform duration-300"></i></button>
-        </div>
-    </div>
-    <div id="m-n" class="mn md:hidden">
-        <div class="mn-w">
-            <div class="np ac w-full justify-center py-3" onclick="_v('h');_tm(_e('btn-m'))">Overview</div>
-            <div class="np w-full justify-center py-3" onclick="_v('b');_tm(_e('btn-m'))">Blog</div>
-            <a href="https://discord.gg/8q9ntJwA7E" target="_blank" class="np w-full justify-center py-3" onclick="_tm(_e('btn-m'))"><i class="fa-brands fa-discord"></i> Discord</a>
-        </div>
-    </div>
-</nav>
+    </nav>
+</div>
 
-<main class="w-full max-w-[1400px] mx-auto px-6 pt-24 flex flex-col flex-1 relative">
+<main class="w-full max-w-[1400px] mx-auto px-6 flex flex-col flex-1 relative mt-[100px]">
     <div id="app-main" class="w-full flex flex-col flex-1 transition-all duration-300 ease-in-out">
         <div id="v-h" class="flex flex-col gap-32">
-            <section class="rl flex flex-col md:flex-row items-center justify-between min-h-[calc(100vh-8rem)] gap-12 pb-16">
+            <section class="rl flex flex-col md:flex-row items-center justify-between min-h-[calc(100vh-100px)] gap-12 pb-16">
                 <div class="flex-1 flex flex-col items-start relative z-10">
                     <h1 class="text-6xl md:text-8xl font-black tracking-tighter mb-6 leading-[1.05]">Redefining<br>The Isle.</h1>
                     <p class="text-lg md:text-xl max-w-xl mb-10 leading-relaxed" style="color:var(--mut)">
@@ -161,7 +167,7 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
             </section>
         </div>
 
-        <div id="v-b" class="flex flex-col gap-12 w-full min-h-[60vh] pb-32" style="display:none; padding-top:2rem;">
+        <div id="v-b" class="flex flex-col gap-12 w-full min-h-[60vh] pb-32" style="display:none; padding-top:1rem;">
             <div class="flex justify-between items-end pb-8">
                 <div>
                     <h1 class="text-5xl font-black mb-4 tracking-tight">Blog</h1>
@@ -204,53 +210,81 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
 <div id="r-o" class="oy">
     <div class="oy-c">
         <button class="np self-start mb-6" onclick="_cr()"><i class="fa-solid fa-arrow-left"></i> Return</button>
-        <div class="sf p-8 md:p-14 shadow-2xl relative overflow-hidden">
-            <img src="src/media/branding/banner.png" class="absolute top-0 left-0 w-full h-64 object-cover opacity-10 pointer-events-none" style="mask-image:linear-gradient(to bottom,#000,transparent);-webkit-mask-image:linear-gradient(to bottom,#000,transparent)" onerror="this.style.display='none'">
-            <div id="r-m" class="flex gap-2 mb-8 relative z-10"></div>
-            <div id="r-c" class="mv relative z-10"></div>
+        <div class="sf relative overflow-hidden flex flex-col" style="min-height:50vh; padding:0;">
+            <div id="r-th" class="w-full h-48 md:h-72 bg-cover bg-center bg-no-repeat relative border-b" style="border-color:var(--brd);background-image:url('src/media/branding/banner.png')">
+                <div class="absolute inset-0 bg-gradient-to-t from-[var(--surf)] to-transparent"></div>
+            </div>
+            <div class="px-8 md:px-14 pb-14 -mt-16 relative z-10">
+                <div class="flex flex-col items-center text-center mb-8">
+                    <div id="r-tgs" class="flex gap-2 flex-wrap justify-center mb-4"></div>
+                    <h1 id="r-ti" class="text-4xl md:text-5xl font-black text-white mb-6 leading-tight"></h1>
+                    <div id="r-auths" class="flex flex-wrap gap-4 justify-center items-center"></div>
+                </div>
+                <div class="w-full h-px bg-[var(--brd)] mb-8"></div>
+                <div id="r-c" class="mv max-w-4xl mx-auto w-full"></div>
+            </div>
         </div>
     </div>
 </div>
 
 <div id="c-o" class="oy">
-    <div class="oy-c h-full flex flex-col py-8">
+    <div class="oy-c h-full flex flex-col py-8 max-w-[1400px]">
         <div class="flex justify-between items-center mb-6 shrink-0">
             <h2 class="text-3xl font-bold tracking-tight">Compose Post</h2>
             <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide" style="background:rgba(74,222,128,.1);color:#4ade80">Authorized</span>
         </div>
-        <div class="sf p-6 shadow-2xl flex flex-col gap-4 flex-1 min-h-[70vh]">
-            <input type="text" id="i-ti" class="ip text-xl font-bold" placeholder="Post Title">
-            <input type="text" id="i-tg" class="ip" placeholder="Tags (comma separated)">
-            <div class="flex items-center flex-wrap gap-2 border-b pb-4" style="border-color:var(--brd)">
-                <button class="tb" onclick="_f('**','**')" title="Bold"><i class="fa-solid fa-bold"></i></button>
-                <button class="tb" onclick="_f('*','*')" title="Italic"><i class="fa-solid fa-italic"></i></button>
-                <button class="tb" onclick="_f('<u>','</u>')" title="Underline"><i class="fa-solid fa-underline"></i></button>
-                <button class="tb" onclick="_f('~~','~~')" title="Strikethrough"><i class="fa-solid fa-strikethrough"></i></button>
-                <button class="tb" onclick="_f('<span style=\'font-size:24px\'>','</span>')" title="Font Size"><i class="fa-solid fa-text-height"></i></button>
-                <div class="w-px h-6 bg-[var(--brd)] mx-1"></div>
-                <button class="tb" onclick="_f('# ','')" title="H1">H1</button>
-                <button class="tb" onclick="_f('## ','')" title="H2">H2</button>
-                <button class="tb" onclick="_f('- ','')" title="List"><i class="fa-solid fa-list-ul"></i></button>
-                <button class="tb" onclick="_f('1. ','')" title="Num List"><i class="fa-solid fa-list-ol"></i></button>
-                <button class="tb" onclick="_f('- [ ] ','')" title="Check"><i class="fa-solid fa-check-square"></i></button>
-                <div class="w-px h-6 bg-[var(--brd)] mx-1"></div>
-                <button class="tb" onclick="_il()" title="Link"><i class="fa-solid fa-link"></i></button>
-                <button class="tb" onclick="_im()" title="Image"><i class="fa-solid fa-image"></i></button>
-                <button class="tb" onclick="_iv()" title="Video"><i class="fa-solid fa-video"></i></button>
-                <div class="w-px h-6 bg-[var(--brd)] mx-1"></div>
-                <button class="tb" onclick="_f('\n:::info\n','\n:::\n')" title="Info Box"><i class="fa-solid fa-circle-info text-blue-500"></i></button>
-                <button class="tb" onclick="_f('\n:::warn\n','\n:::\n')" title="Warn Box"><i class="fa-solid fa-triangle-exclamation text-yellow-500"></i></button>
-                <button class="tb" onclick="_f('\n:::error\n','\n:::\n')" title="Error Box"><i class="fa-solid fa-skull-crossbones text-red-500"></i></button>
-                <div class="ml-auto flex gap-2">
-                    <button id="t-w" class="np ac !py-1" onclick="_sw(0)">Write</button>
-                    <button id="t-p" class="np !py-1" onclick="_sw(1)">Preview</button>
+        <div class="sf p-6 shadow-2xl flex flex-col md:flex-row gap-8 flex-1 min-h-[70vh]">
+            <!-- Editor side -->
+            <div class="flex-1 flex flex-col gap-4 min-w-0">
+                <input type="text" id="i-ti" class="ip text-2xl font-bold !py-3" placeholder="Post Title">
+                <div class="flex items-center flex-wrap gap-2 border-b pb-4" style="border-color:var(--brd)">
+                    <button class="tb" onclick="_f('**','**')" title="Bold"><i class="fa-solid fa-bold"></i></button>
+                    <button class="tb" onclick="_f('*','*')" title="Italic"><i class="fa-solid fa-italic"></i></button>
+                    <button class="tb" onclick="_f('<u>','</u>')" title="Underline"><i class="fa-solid fa-underline"></i></button>
+                    <button class="tb" onclick="_f('~~','~~')" title="Strikethrough"><i class="fa-solid fa-strikethrough"></i></button>
+                    <button class="tb" onclick="_f('<span style=\'font-size:24px\'>','</span>')" title="Font Size"><i class="fa-solid fa-text-height"></i></button>
+                    <div class="w-px h-6 bg-[var(--brd)] mx-1"></div>
+                    <button class="tb" onclick="_f('# ','')" title="H1">H1</button>
+                    <button class="tb" onclick="_f('## ','')" title="H2">H2</button>
+                    <button class="tb" onclick="_f('- ','')" title="List"><i class="fa-solid fa-list-ul"></i></button>
+                    <button class="tb" onclick="_f('1. ','')" title="Num List"><i class="fa-solid fa-list-ol"></i></button>
+                    <button class="tb" onclick="_f('- [ ] ','')" title="Check"><i class="fa-solid fa-check-square"></i></button>
+                    <div class="w-px h-6 bg-[var(--brd)] mx-1"></div>
+                    <button class="tb" onclick="_il()" title="Link"><i class="fa-solid fa-link"></i></button>
+                    <button class="tb" onclick="_im()" title="Image"><i class="fa-solid fa-image"></i></button>
+                    <button class="tb" onclick="_iv()" title="Video"><i class="fa-solid fa-video"></i></button>
+                    <div class="w-px h-6 bg-[var(--brd)] mx-1"></div>
+                    <button class="tb" onclick="_f('\n:::info\n','\n:::\n')" title="Info Box"><i class="fa-solid fa-circle-info text-blue-500"></i></button>
+                    <button class="tb" onclick="_f('\n:::warn\n','\n:::\n')" title="Warn Box"><i class="fa-solid fa-triangle-exclamation text-yellow-500"></i></button>
+                    <button class="tb" onclick="_f('\n:::error\n','\n:::\n')" title="Error Box"><i class="fa-solid fa-skull-crossbones text-red-500"></i></button>
+                    <div class="ml-auto flex gap-2">
+                        <button id="t-w" class="np ac !py-1" onclick="_sw(0)">Write</button>
+                        <button id="t-p" class="np !py-1" onclick="_sw(1)">Preview</button>
+                    </div>
                 </div>
+                <textarea id="i-bd" class="ip flex-1 font-mono resize-none" placeholder="Markdown post content... (@username mentions are supported)"></textarea>
+                <div id="i-pv" class="ip flex-1 overflow-y-auto mv hidden" style="background:var(--bg)"></div>
             </div>
-            <textarea id="i-bd" class="ip flex-1 font-mono resize-none" placeholder="Markdown post content..."></textarea>
-            <div id="i-pv" class="ip flex-1 overflow-y-auto mv hidden" style="background:var(--bg)"></div>
-            <div class="flex justify-end gap-4 pt-4 border-t shrink-0" style="border-color:var(--brd)">
-                <button class="np" onclick="_cc()">Abort</button>
-                <button class="bt" id="b-p" onclick="_g.p()">Publish</button>
+            
+            <!-- Settings Side -->
+            <div class="w-full md:w-72 flex flex-col gap-5 shrink-0 md:border-l md:pl-8 border-t md:border-t-0 pt-6 md:pt-0" style="border-color:var(--brd)">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-widest mb-2" style="color:var(--mut)">Thumbnail URL</label>
+                    <input type="text" id="i-th" class="ip !py-2.5 !px-3 text-sm" placeholder="https://...">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-widest mb-2" style="color:var(--mut)">Tags</label>
+                    <input type="text" id="i-tg" class="ip !py-2.5 !px-3 text-sm" placeholder="update, event, etc.">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-widest mb-2" style="color:var(--mut)">Contributors</label>
+                    <input type="text" id="i-co" class="ip !py-2.5 !px-3 text-sm" placeholder="GitHub usernames (csv)">
+                </div>
+                
+                <div class="mt-auto flex flex-col gap-3 pt-6 border-t" style="border-color:var(--brd)">
+                    <button class="np w-full justify-center" onclick="_cc()">Abort</button>
+                    <button class="bt w-full justify-center" id="b-p" onclick="_g.p()">Publish</button>
+                </div>
             </div>
         </div>
     </div>
@@ -269,25 +303,48 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
 <script>
 marked.setOptions({gfm:true,breaks:true});
 const _c={u:'thetoprat',r:'orionlabs-landing',p:'posts'};
-const _s={t:localStorage.getItem('ol_t'),d:[],th:'dark',cv:'h'};
+const _s={t:localStorage.getItem('ol_t'),u:null,a:null,d:[],th:'dark',cv:'h'};
 const _e=(i)=>document.getElementById(i);
+
+// Advanced Markdown pre-processing & parsing
 const _pt=(m)=>{
-    let p=m.replace(/:::(\w+)\s*\n([\s\S]*?)\n:::/g,(m,t,c)=>`<div class="ad ${t}"><div class="ad-t">${t.toUpperCase()}</div>\n\n${c}\n\n</div>`);
+    // Convert @mentions first
+    let p = m.replace(/(^|\s)@([a-zA-Z0-9-]+)/g, '$1<a href="https://github.com/$2" target="_blank" style="color:var(--acc);font-weight:bold">@$2</a>');
+    // Convert admonitions
+    p = p.replace(/:::(\w+)\s*\r?\n([\s\S]*?)\r?\n:::/g,(m,t,c)=>`<div class="ad ${t.toLowerCase()}"><div class="ad-t">${t.toUpperCase()}</div>\n\n${c}\n\n</div>`);
     return DOMPurify.sanitize(marked.parse(p),{ADD_ATTR:['class','style','target','allowfullscreen','frameborder'],ADD_TAGS:['iframe']});
 };
-const _ex=(c)=>{let m=c.match(/^<!--meta:(.+?)-->\n/);return m?{...JSON.parse(m[1]),b:c.replace(m[0],'')}:{t:[],r:1,ts:Date.now(),b:c};};
+const _ex=(c)=>{
+    let m=c.match(/^<!--meta:(.+?)-->\n/);
+    let tiMatch=c.match(/^#\s+(.+)/m);
+    let ti=tiMatch?tiMatch[1]:'Untitled Post';
+    return m?{...JSON.parse(m[1]),b:c.replace(m[0],''),ti}:{t:[],r:1,ts:Date.now(),b:c,ti,a:['thetoprat'],th:''};
+};
+
 const _tm=(b)=>{
     const m=_e('m-n'),i=b?.querySelector('i');
     if(!m)return;
     const o=m.classList.toggle('ac');
     if(i){i.className=o?'fa-solid fa-xmark transition-transform duration-300':'fa-solid fa-bars transition-transform duration-300';}
 };
+
 const _g={
     h:()=>_s.t?{'Authorization':`token ${_s.t}`}:{},
-    a:async()=>{
-        const v=_e('i-t').value.trim();if(!v)return;
-        try{const r=await fetch(`https://api.github.com/user`,{headers:{'Authorization':`token ${v}`}});
-        if(r.ok){_s.t=v;localStorage.setItem('ol_t',v);_m(0);_e('b-n').style.display='inline-flex';_g.s();}}catch(e){}
+    a:async(token)=>{
+        const v=token||_e('i-t').value.trim();if(!v)return;
+        try{
+            const r=await fetch(`https://api.github.com/user`,{headers:{'Authorization':`token ${v}`}});
+            if(r.ok){
+                const d=await r.json();
+                _s.t=v; _s.u=d.login; _s.a=d.avatar_url;
+                localStorage.setItem('ol_t',v);
+                localStorage.setItem('ol_u',JSON.stringify({l:d.login, a:d.avatar_url}));
+                _m(0);_e('b-n').style.display='inline-flex';
+                if(!token) _g.s();
+            } else if(token) {
+                localStorage.removeItem('ol_t'); _s.t=null;
+            }
+        }catch(e){}
     },
     s:async()=>{
         try{const r=await fetch(`https://api.github.com/repos/${_c.u}/${_c.r}/contents/${_c.p}`,{headers:_g.h()});
@@ -301,16 +358,24 @@ const _g={
     p:async()=>{
         if(!_s.t)return;
         const ti=_e('i-ti').value.trim(),bd=_e('i-bd').value.trim(),tg=_e('i-tg').value.split(',').map(x=>x.trim()).filter(x=>x);
+        const th=_e('i-th').value.trim(),co=_e('i-co').value.split(',').map(x=>x.trim()).filter(x=>x);
         if(!ti||!bd)return;
+        
+        let authors = [_s.u || 'thetoprat', ...co];
+        authors = [...new Set(authors)]; // Remove duplicates
+        
         const fn=ti.toLowerCase().replace(/[^a-z0-9]+/g,'-')+'-'+Date.now()+'.md';
         const rt=Math.max(1,Math.ceil(bd.split(/\s+/).length/200));
-        const mt=`<!--meta:${JSON.stringify({t:tg,r:rt,ts:Date.now()})}-->\n# ${ti}\n\n${bd}`;
+        const mt=`<!--meta:${JSON.stringify({t:tg,r:rt,ts:Date.now(),th:th,a:authors})}-->\n# ${ti}\n\n${bd}`;
         const b64=btoa(unescape(encodeURIComponent(mt)));
         _e('b-p').disabled=true;
         try{const r=await fetch(`https://api.github.com/repos/${_c.u}/${_c.r}/contents/${_c.p}/${fn}`,{
             method:'PUT',headers:{..._g.h(),'Content-Type':'application/json'},body:JSON.stringify({message:`Post: ${ti}`,content:b64})
         });
-        if(r.ok){_e('i-ti').value='';_e('i-bd').value='';_e('i-tg').value='';await _g.s();_cc();}}catch(e){}
+        if(r.ok){
+            _e('i-ti').value='';_e('i-bd').value='';_e('i-tg').value='';_e('i-th').value='';_e('i-co').value='';
+            await _g.s();_cc();
+        }}catch(e){}
         _e('b-p').disabled=false;
     },
     d:async(n,s,e)=>{
@@ -337,18 +402,40 @@ const _v=(t)=>{
 const _cg=(d, l)=>{
     if(!d.length)return `<div class="col-span-full py-20 text-center text-lg" style="color:var(--mut)">No repository posts resolved.</div>`;
     return d.slice(0,l).map((x)=>{
-        const m=_ex(x.c);let p=_pt(m.b);
+        const m=_ex(x.c);
+        let p=_pt(m.b);
+        let tmp = document.createElement('div');
+        tmp.innerHTML = p;
+        let plainText = tmp.textContent || tmp.innerText || '';
+        
         const tgs=m.t.map(t=>`<span class="tg">${t}</span>`).join('');
+        const aHtml = (m.a || []).map(u => `
+            <a href="https://github.com/${u}" target="_blank" class="flex items-center gap-1.5 hover:opacity-80 transition" onclick="event.stopPropagation()" title="@${u}">
+                <img src="https://github.com/${u}.png" class="w-6 h-6 rounded-full bg-[var(--brd)] border border-[var(--brd)]" onerror="this.style.display='none'">
+                <span class="text-xs font-bold text-white hidden sm:block">@${u}</span>
+            </a>
+        `).join('');
+
+        // Generate fallback block if image fails to load
+        const fbImg = `onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'100\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%23111\\' /></svg>'"`;
+
         return `<div class="sf sf-h flex flex-col overflow-hidden relative group cursor-pointer h-full" onclick="_or('${x.s}')">
-            <div class="p-8 flex-1 flex flex-col relative z-10">
-                <div class="flex justify-between items-center mb-4">
-                    <div class="flex gap-2 flex-wrap">${tgs}</div>
-                    <span class="text-xs font-bold uppercase tracking-widest" style="color:var(--mut)">${m.r}m read</span>
-                </div>
-                <div class="mp mv flex-1 mb-6">${p}</div>
+            <div class="h-56 w-full bg-[var(--brd)] relative overflow-hidden shrink-0">
+                <img src="${m.th || 'src/media/branding/banner.png'}" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-105" ${fbImg}>
+                <div class="absolute inset-0 bg-gradient-to-t from-[var(--surf)] via-transparent to-transparent opacity-90"></div>
+            </div>
+            <div class="px-6 pb-6 pt-4 flex-1 flex flex-col relative z-10 -mt-10">
+                <div class="flex gap-2 flex-wrap mb-4">${tgs}</div>
+                <h3 class="text-2xl font-bold mb-3 text-white leading-tight">${m.ti}</h3>
+                <div class="mp mv flex-1 mb-6 text-sm" style="color:var(--mut)">${plainText}</div>
                 <div class="mt-auto flex justify-between items-center pt-4 border-t" style="border-color:var(--brd)">
-                    <span class="text-sm font-bold tracking-wide uppercase" style="color:var(--acc)">${new Date(m.ts).toLocaleDateString()}</span>
-                    ${_s.t?`<button onclick="_g.d('${x.n}','${x.s}',event)" class="np !px-3" style="color:#ef4444;background:rgba(239,68,68,.1)"><i class="fa-solid fa-trash"></i></button>`:''}
+                    <div class="flex items-center gap-2 flex-wrap">
+                        ${aHtml}
+                    </div>
+                    <div class="flex items-center gap-3 shrink-0 ml-2">
+                        <span class="text-[10px] font-bold uppercase tracking-widest" style="color:var(--mut)">${m.r}m read</span>
+                        ${_s.t?`<button onclick="_g.d('${x.n}','${x.s}',event)" class="np !px-2 !py-1" style="color:#ef4444;background:rgba(239,68,68,.1)"><i class="fa-solid fa-trash text-xs"></i></button>`:''}
+                    </div>
                 </div>
             </div>
         </div>`;
@@ -359,11 +446,23 @@ const _r=(d)=>{_e('p-g').innerHTML=_cg(d,99);_e('f-g').innerHTML=_cg(d,3);};
 const _or=(s)=>{
     const p=_s.d.find(x=>x.s===s);if(!p)return;
     const m=_ex(p.c);document.body.style.overflow='hidden';
+    
+    _e('r-th').style.backgroundImage = `url('${m.th || 'src/media/branding/banner.png'}')`;
+    _e('r-ti').innerText = m.ti;
     _e('r-c').innerHTML=_pt(m.b);
+    
+    const aHtml = (m.a || []).map(u => `
+        <a href="https://github.com/${u}" target="_blank" class="flex items-center gap-2 hover:opacity-80 transition bg-[var(--s-h)] px-3 py-1.5 rounded-full border" style="border-color:var(--brd)">
+            <img src="https://github.com/${u}.png" class="w-6 h-6 rounded-full bg-[var(--brd)]" onerror="this.style.display='none'">
+            <span class="text-sm font-bold text-white">@${u}</span>
+        </a>
+    `).join('');
+    
     _e('r-m').innerHTML=`<span class="tg" style="border-color:var(--acc);color:var(--acc)">${m.r} min read</span>`+m.t.map(t=>`<span class="tg">${t}</span>`).join('');
+    _e('r-auths').innerHTML = aHtml;
     _e('r-o').classList.add('ac');
 };
-const _cr=()=>{document.body.style.overflow='';_e('r-o').classList.remove('ac');setTimeout(()=>_e('r-c').innerHTML='',400);};
+const _cr=()=>{document.body.style.overflow='';_e('r-o').classList.remove('ac');setTimeout(()=>{_e('r-c').innerHTML='';_e('r-ti').innerText='';},400);};
 const _oc=()=>{document.body.style.overflow='hidden';_sw(0);_e('c-o').classList.add('ac');};
 const _cc=()=>{document.body.style.overflow='';_e('c-o').classList.remove('ac');};
 const _t=()=>{
@@ -399,7 +498,14 @@ document.addEventListener('keydown',(e)=>{
     if(e.key==='Escape'){_m(0);_cr();_cc();}
 });
 
-if(_s.t)_e('b-n').style.display='inline-flex';
+// Setup auth from cache on start
+const savedUser = localStorage.getItem('ol_u');
+if(savedUser){
+    const parsed = JSON.parse(savedUser);
+    _s.u = parsed.l; _s.a = parsed.a;
+}
+if(_s.t) { _g.a(_s.t); }
+
 _g.s();
 </script>
 </body>
