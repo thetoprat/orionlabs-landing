@@ -85,7 +85,7 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
             <div class="hidden md:flex items-center gap-2">
                 <div id="n-h" class="np ac" onclick="_v('h')">Overview</div>
                 <div id="n-b" class="np" onclick="_v('b')">Blog</div>
-                <a href="https://discord.gg/8q9ntJwA7E" target="_blank" class="np !px-3 hover:!text-[#5865F2]"><i class="fa-brands fa-discord text-xl"></i></a>
+                <a href="https://orionlabs.dev/discord" target="_blank" class="np !px-3 hover:!text-[#5865F2]"><i class="fa-brands fa-discord text-xl"></i></a>
                 <button class="np !px-3" onclick="_t()"><i id="t-i" class="fa-solid fa-sun"></i></button>
             </div>
             <div class="md:hidden flex items-center gap-2">
@@ -97,7 +97,7 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
             <div class="mn-w">
                 <div class="np ac w-full justify-center py-3" onclick="_v('h');_tm(_e('btn-m'))">Overview</div>
                 <div class="np w-full justify-center py-3" onclick="_v('b');_tm(_e('btn-m'))">Blog</div>
-                <a href="https://discord.gg/8q9ntJwA7E" target="_blank" class="np w-full justify-center py-3" onclick="_tm(_e('btn-m'))"><i class="fa-brands fa-discord"></i> Discord</a>
+                <a href="https://orionlabs.dev/discord" target="_blank" class="np w-full justify-center py-3" onclick="_tm(_e('btn-m'))"><i class="fa-brands fa-discord"></i> Discord</a>
             </div>
         </div>
     </nav>
@@ -114,7 +114,7 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
                     </p>
                     <div class="flex flex-wrap gap-4">
                         <button class="bt" onclick="_v('b')">Explore Posts <i class="fa-solid fa-arrow-right"></i></button>
-                        <a href="https://discord.gg/8q9ntJwA7E" target="_blank" class="bt" style="background:#5865F2;color:#fff"><i class="fa-brands fa-discord"></i> Join Orion Labs</a>
+                        <a href="https://orionlabs.dev/discord" target="_blank" class="bt" style="background:#5865F2;color:#fff"><i class="fa-brands fa-discord"></i> Join Orion Labs</a>
                     </div>
                 </div>
                 <div class="flex-1 flex justify-center items-center w-full relative">
@@ -155,8 +155,8 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
                             By installing Athena, you gain access to powerful tools that run alongside the server, providing advanced control that standard RCON tools simply cannot match.
                         </p>
                         <div class="flex flex-wrap gap-4">
-                            <a href="https://www.patreon.com/15306522/join" target="_blank" class="bt" style="background:#FF424D;color:#fff"><i class="fa-brands fa-patreon"></i> Join Patreon</a>
-                            <a href="https://www.patreon.com/c/OrionLabs?vanity=OrionLabs" target="_blank" class="bt" style="background:var(--s-h);color:var(--txt);border:1px solid var(--brd)"><i class="fa-solid fa-arrow-up-right-from-square"></i> View Page</a>
+                            <a href="https://orionlabs.dev/patreon" target="_blank" class="bt" style="background:#FF424D;color:#fff"><i class="fa-brands fa-patreon"></i> Join Patreon</a>
+                            <a href="https://orionlabs.dev/patreon" target="_blank" class="bt" style="background:var(--s-h);color:var(--txt);border:1px solid var(--brd)"><i class="fa-solid fa-arrow-up-right-from-square"></i> View Page</a>
                         </div>
                     </div>
                 </div>
@@ -196,13 +196,13 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
                 </h1>
                 <div class="flex flex-wrap items-center gap-3 text-gray-500 font-medium text-lg">
                     <span>Made by</span>
-                    <span class="text-white font-bold" style="color:var(--txt)">TheTopRat</span>
+                    <span class="font-bold" style="color:var(--txt)">TheTopRat</span>
                 </div>
             </div>
             <div class="flex flex-col text-left md:text-right space-y-2 pt-1 w-full md:w-auto">
                 <div class="flex gap-4 justify-start md:justify-end mb-4">
-                    <a href="https://discord.gg/8q9ntJwA7E" target="_blank" class="text-gray-500 hover:text-[#5865F2] transition"><i class="fa-brands fa-discord text-3xl"></i></a>
-                    <a href="https://www.patreon.com/c/OrionLabs?vanity=OrionLabs" target="_blank" class="text-gray-500 hover:text-[#FF424D] transition"><i class="fa-brands fa-patreon text-3xl"></i></a>
+                    <a href="https://orionlabs.dev/discord" target="_blank" class="text-gray-500 hover:text-[#5865F2] transition"><i class="fa-brands fa-discord text-3xl"></i></a>
+                    <a href="https://orionlabs.dev/patreon" target="_blank" class="text-gray-500 hover:text-[#FF424D] transition"><i class="fa-brands fa-patreon text-3xl"></i></a>
                 </div>
                 <button onclick="_v('h')" class="text-gray-500 hover:text-gray-300 text-lg lg:text-xl font-medium tracking-wide transition-colors uppercase text-left md:text-right">Overview</button>
                 <button onclick="_v('b')" class="text-gray-500 hover:text-gray-300 text-lg lg:text-xl font-medium tracking-wide transition-colors uppercase text-left md:text-right">Blog</button>
@@ -215,13 +215,11 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
     <div class="oy-c">
         <button class="np self-start mb-6" onclick="_cr()"><i class="fa-solid fa-arrow-left"></i> Return</button>
         <div class="sf relative overflow-hidden flex flex-col" style="min-height:50vh; padding:0;">
-            <div id="r-th" class="w-full h-48 md:h-72 bg-cover bg-center bg-no-repeat relative border-b" style="border-color:var(--brd);background-image:url('src/media/branding/banner.png')">
-                <div class="absolute inset-0 bg-gradient-to-t from-[var(--surf)] to-transparent"></div>
-            </div>
-            <div class="px-8 md:px-14 pb-14 -mt-16 relative z-10">
+            <div id="r-th" class="w-full h-48 md:h-72 bg-cover bg-center bg-no-repeat relative" style="mask-image:linear-gradient(to bottom,#000 50%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 50%,transparent 100%);background-image:url('src/media/branding/banner.png')"></div>
+            <div class="px-8 md:px-14 pb-14 -mt-24 relative z-10">
                 <div class="flex flex-col items-center text-center mb-8">
                     <div id="r-tgs" class="flex gap-2 flex-wrap justify-center mb-4"></div>
-                    <h1 id="r-ti" class="text-4xl md:text-5xl font-black text-white mb-6 leading-tight"></h1>
+                    <h1 id="r-ti" class="text-4xl md:text-5xl font-black mb-6 leading-tight" style="color:var(--txt)"></h1>
                     <div id="r-auths" class="flex flex-wrap gap-4 justify-center items-center"></div>
                 </div>
                 <div class="w-full h-px bg-[var(--brd)] mb-8"></div>
@@ -313,8 +311,8 @@ const _e=(i)=>document.getElementById(i);
 // Advanced Markdown pre-processing & parsing
 const _pt=(m)=>{
     // Convert Admonitions (info, warn, danger, error, announcement) using a robust carriage-return safe regex
-    let p = m.replace(/::: *(info|warn|danger|error|announcement) *[\r\n]+([\s\S]*?)[\r\n]+:::/gi, (match, type, content) => {
-        return `<div class="ad ${type.toLowerCase()}"><div class="ad-t">${type.toUpperCase()}</div>\n\n${content}\n\n</div>`;
+    let p = m.replace(/:::\s*(info|warn|danger|error|announcement)[^\n]*\n([\s\S]*?)\n:::/gi, (match, type, content) => {
+        return `\n<div class="ad ${type.toLowerCase()}"><div class="ad-t">${type.toUpperCase()}</div>\n\n${content}\n\n</div>\n`;
     });
     // Convert @mentions
     p = p.replace(/(^|\s)@([a-zA-Z0-9-]+)/g, '$1<a href="https://github.com/$2" target="_blank" style="color:var(--acc);font-weight:bold">@$2</a>');
@@ -420,7 +418,7 @@ const _cg=(d, l)=>{
         const aHtml = (m.a || []).map(u => `
             <a href="https://github.com/${u}" target="_blank" class="flex items-center gap-1.5 hover:opacity-80 transition" onclick="event.stopPropagation()" title="@${u}">
                 <img src="https://github.com/${u}.png" class="w-6 h-6 rounded-full bg-[var(--brd)] border border-[var(--brd)]" onerror="this.style.display='none'">
-                <span class="text-xs font-bold text-white hidden sm:block">@${u}</span>
+                <span class="text-xs font-bold hidden sm:block" style="color:var(--txt)">@${u}</span>
             </a>
         `).join('');
 
@@ -428,13 +426,12 @@ const _cg=(d, l)=>{
         const fbImg = `onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'100\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%23111\\' /></svg>'"`;
 
         return `<div class="sf sf-h flex flex-col overflow-hidden relative group cursor-pointer h-full" onclick="_or('${x.s}')">
-            <div class="h-56 w-full bg-[var(--brd)] relative overflow-hidden shrink-0">
+            <div class="h-52 w-full relative overflow-hidden shrink-0" style="mask-image: linear-gradient(to bottom, black 50%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);">
                 <img src="${m.th || 'src/media/branding/banner.png'}" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-105" ${fbImg}>
-                <div class="absolute inset-0" style="background: linear-gradient(to top, var(--surf) 0%, transparent 100%);"></div>
             </div>
-            <div class="px-6 pb-6 pt-4 flex-1 flex flex-col relative z-10 -mt-10">
+            <div class="px-6 pb-6 flex-1 flex flex-col relative z-10 -mt-16">
                 <div class="flex gap-2 flex-wrap mb-4">${tgs}</div>
-                <h3 class="text-2xl font-bold mb-3 text-white leading-tight">${m.ti}</h3>
+                <h3 class="text-2xl font-bold mb-3 leading-tight" style="color:var(--txt)">${m.ti}</h3>
                 <div class="mp mv flex-1 mb-6 text-sm" style="color:var(--mut)">${plainText}</div>
                 <div class="mt-auto flex justify-between items-center pt-4 border-t" style="border-color:var(--brd)">
                     <div class="flex items-center gap-2 flex-wrap">
@@ -462,11 +459,11 @@ const _or=(s)=>{
     const aHtml = (m.a || []).map(u => `
         <a href="https://github.com/${u}" target="_blank" class="flex items-center gap-2 hover:opacity-80 transition bg-[var(--s-h)] px-3 py-1.5 rounded-full border" style="border-color:var(--brd)">
             <img src="https://github.com/${u}.png" class="w-6 h-6 rounded-full bg-[var(--brd)]" onerror="this.style.display='none'">
-            <span class="text-sm font-bold text-white">@${u}</span>
+            <span class="text-sm font-bold" style="color:var(--txt)">@${u}</span>
         </a>
     `).join('');
     
-    _e('r-m').innerHTML=`<span class="tg" style="border-color:var(--acc);color:var(--acc)">${m.r} min read</span>`+m.t.map(t=>`<span class="tg">${t}</span>`).join('');
+    _e('r-tgs').innerHTML=`<span class="tg" style="border-color:var(--acc);color:var(--acc)">${m.r} min read</span>`+m.t.map(t=>`<span class="tg">${t}</span>`).join('');
     _e('r-auths').innerHTML = aHtml;
     _e('r-o').classList.add('ac');
 };
