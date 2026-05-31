@@ -72,10 +72,10 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
 
 <div class="fixed top-4 md:top-6 left-0 right-0 z-50 flex justify-center px-4 md:px-6 pointer-events-none">
     <nav class="w-full max-w-[1400px] transition-colors duration-500 border rounded-full pointer-events-auto shadow-2xl relative" style="background:var(--nav);backdrop-filter:blur(24px);border-color:var(--brd)">
-        <div class="px-6 py-4 flex items-center justify-between relative z-10">
-            <div class="flex items-center gap-3 cursor-pointer" onclick="_v('h')">
-                <img src="src/media/branding/icon.png" class="w-10 h-10 rounded-xl object-cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                <div class="hidden w-10 h-10 rounded-xl items-center justify-center font-black text-xl" style="background:var(--txt);color:var(--bg)">O</div>
+    <div class="px-6 py-4 flex items-center justify-between relative z-10">
+        <div class="flex items-center gap-3 cursor-pointer" onclick="_v('h')">
+            <img src="src/media/branding/orionlabs.png" class="w-10 h-10 rounded-xl object-cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="hidden w-10 h-10 rounded-xl items-center justify-center font-black text-xl" style="background:var(--txt);color:var(--bg)">O</div>
                 <span class="text-xl font-bold tracking-tight">Orion Labs</span>
             </div>
             <div class="hidden md:flex items-center gap-2">
@@ -109,15 +109,15 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
                         Orion Labs engineers premier modifications, advanced structural telemetry, and high-fidelity assets for dynamic ecosystems. We mod in custom maps, server RCON tools, and build the mechanics of tomorrow.
                     </p>
                     <div class="flex flex-wrap gap-4">
-                        <button class="bt" onclick="_v('b')">Explore Posts <i class="fa-solid fa-arrow-right"></i></button>
-                        <a href="https://discord.gg/8q9ntJwA7E" target="_blank" class="bt" style="background:#5865F2;color:#fff"><i class="fa-brands fa-discord"></i> Join Orion Labs</a>
-                    </div>
+                    <button class="bt" onclick="_v('b')">Explore Posts <i class="fa-solid fa-arrow-right"></i></button>
+                    <a href="https://discord.gg/8q9ntJwA7E" target="_blank" class="bt" style="background:#5865F2;color:#fff"><i class="fa-brands fa-discord"></i> Join Orion Labs</a>
                 </div>
-                <div class="flex-1 flex justify-center items-center w-full relative">
-                    <div class="absolute inset-0 bg-[var(--acc)] opacity-10 blur-[100px] rounded-full"></div>
-                    <img src="src/media/branding/banner.png" class="w-full max-w-2xl rounded-3xl object-cover shadow-2xl relative z-10" onerror="this.style.display='none'">
-                </div>
-            </section>
+            </div>
+            <div class="flex-1 flex justify-center items-center w-full relative">
+                <div class="absolute inset-0 bg-[var(--acc)] opacity-10 blur-[100px] rounded-full"></div>
+                <img src="src/media/branding/orionbanner.png" class="w-full max-w-2xl rounded-3xl object-cover shadow-2xl relative z-10" onerror="this.style.display='none'">
+            </div>
+        </section>
 
             <section class="rl">
                 <h2 class="text-4xl font-bold mb-12 tracking-tight">Showcase</h2>
@@ -211,7 +211,7 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
     <div class="oy-c">
         <button class="np self-start mb-6" onclick="_cr()"><i class="fa-solid fa-arrow-left"></i> Return</button>
         <div class="sf relative overflow-hidden flex flex-col" style="min-height:50vh; padding:0;">
-            <div id="r-th" class="w-full h-48 md:h-72 bg-cover bg-center bg-no-repeat relative border-b" style="border-color:var(--brd);background-image:url('src/media/branding/banner.png')">
+            <div id="r-th" class="w-full h-48 md:h-72 bg-cover bg-center bg-no-repeat relative border-b" style="border-color:var(--brd);background-image:url('src/media/branding/orionbanner.png')">
                 <div class="absolute inset-0 bg-gradient-to-t from-[var(--surf)] to-transparent"></div>
             </div>
             <div class="px-8 md:px-14 pb-14 -mt-16 relative z-10">
@@ -300,6 +300,18 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
     </div>
 </div>
 
+<div id="m-d" class="fixed inset-0 z-[200] flex items-center justify-center px-4 transition-all duration-300 opacity-0 pointer-events-none" style="background:rgba(0,0,0,.8);backdrop-filter:blur(8px)">
+    <div class="sf p-8 max-w-sm w-full relative transform scale-95 transition-transform duration-300 text-center" id="m-d-c">
+        <div class="w-16 h-16 rounded-full bg-red-500/20 text-red-500 flex items-center justify-center text-3xl mx-auto mb-4"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <h2 class="text-2xl font-bold mb-2">Delete Post?</h2>
+        <p style="color:var(--mut)" class="mb-8 text-sm">This action cannot be undone. Are you sure you want to permanently delete this transmission?</p>
+        <div class="flex gap-4">
+            <button class="np flex-1 justify-center" onclick="_md(0)">Cancel</button>
+            <button class="bt flex-1 justify-center !bg-red-500 !text-white" id="b-c-d">Delete</button>
+        </div>
+    </div>
+</div>
+
 <script>
 marked.setOptions({gfm:true,breaks:true});
 const _c={u:'thetoprat',r:'orionlabs-landing',p:'posts'};
@@ -378,16 +390,39 @@ const _g={
         }}catch(e){}
         _e('b-p').disabled=false;
     },
-    d:async(n,s,e)=>{
-        e.stopPropagation();if(!_s.t||!confirm('Confirm deletion?'))return;
+    d:async(n,s)=>{
+        if(!_s.t)return;
         try{await fetch(`https://api.github.com/repos/${_c.u}/${_c.r}/contents/${_c.p}/${n}`,{
             method:'DELETE',headers:{..._g.h(),'Content-Type':'application/json'},body:JSON.stringify({message:`Del: ${n}`,sha:s})
         });_g.s();}catch(e){}
     }
 };
 
+let _delTarget = null;
+const _md = (show, n=null, s=null) => {
+    const el = _e('m-d'), c = _e('m-d-c');
+    if(show) {
+        _delTarget = {n, s};
+        el.style.display='flex';
+        requestAnimationFrame(()=>{el.style.opacity='1';el.style.pointerEvents='auto';c.style.transform='scale(1)';});
+    } else {
+        _delTarget = null;
+        el.style.opacity='0';el.style.pointerEvents='none';c.style.transform='scale(.95)';
+        setTimeout(()=>el.style.display='none',300);
+    }
+};
+
+_e('b-c-d').onclick = async () => {
+    if(!_delTarget) return;
+    _e('b-c-d').disabled = true; _e('b-c-d').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+    await _g.d(_delTarget.n, _delTarget.s);
+    _e('b-c-d').disabled = false; _e('b-c-d').innerText = 'Delete';
+    _md(0);
+};
+
 const _v=(t)=>{
     if(_s.cv===t)return;_s.cv=t;
+    document.body.style.overflow = ''; // Reset overflow to ensure scrolling
     const m=_e('app-main');
     m.style.opacity='0';m.style.transform='translateY(10px)';
     setTimeout(()=>{
@@ -421,7 +456,7 @@ const _cg=(d, l)=>{
 
         return `<div class="sf sf-h flex flex-col overflow-hidden relative group cursor-pointer h-full" onclick="_or('${x.s}')">
             <div class="h-56 w-full bg-[var(--brd)] relative overflow-hidden shrink-0">
-                <img src="${m.th || 'src/media/branding/banner.png'}" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-105" ${fbImg}>
+                <img src="${m.th || 'src/media/branding/orionbanner.png'}" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-105" ${fbImg}>
                 <div class="absolute inset-0 bg-gradient-to-t from-[var(--surf)] via-transparent to-transparent opacity-90"></div>
             </div>
             <div class="px-6 pb-6 pt-4 flex-1 flex flex-col relative z-10 -mt-10">
@@ -434,7 +469,7 @@ const _cg=(d, l)=>{
                     </div>
                     <div class="flex items-center gap-3 shrink-0 ml-2">
                         <span class="text-[10px] font-bold uppercase tracking-widest" style="color:var(--mut)">${m.r}m read</span>
-                        ${_s.t?`<button onclick="_g.d('${x.n}','${x.s}',event)" class="np !px-2 !py-1" style="color:#ef4444;background:rgba(239,68,68,.1)"><i class="fa-solid fa-trash text-xs"></i></button>`:''}
+                        ${_s.t?`<button onclick="event.stopPropagation(); _md(1, '${x.n}', '${x.s}')" class="np !px-2 !py-1" style="color:#ef4444;background:rgba(239,68,68,.1)"><i class="fa-solid fa-trash text-xs"></i></button>`:''}
                     </div>
                 </div>
             </div>
@@ -447,8 +482,8 @@ const _or=(s)=>{
     const p=_s.d.find(x=>x.s===s);if(!p)return;
     const m=_ex(p.c);document.body.style.overflow='hidden';
     
-    _e('r-th').style.backgroundImage = `url('${m.th || 'src/media/branding/banner.png'}')`;
-    _e('r-ti').innerText = m.ti;
+    _e('r-th').style.backgroundImage = `url('${m.th || 'src/media/branding/orionbanner.png'}')`;
+    _e('r-ti').innerText = m.ti || 'Untitled Post';
     _e('r-c').innerHTML=_pt(m.b);
     
     const aHtml = (m.a || []).map(u => `
@@ -458,7 +493,7 @@ const _or=(s)=>{
         </a>
     `).join('');
     
-    _e('r-m').innerHTML=`<span class="tg" style="border-color:var(--acc);color:var(--acc)">${m.r} min read</span>`+m.t.map(t=>`<span class="tg">${t}</span>`).join('');
+    _e('r-tgs').innerHTML=`<span class="tg" style="border-color:var(--acc);color:var(--acc)">${m.r} min read</span>`+m.t.map(t=>`<span class="tg">${t}</span>`).join('');
     _e('r-auths').innerHTML = aHtml;
     _e('r-o').classList.add('ac');
 };
