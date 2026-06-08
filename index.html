@@ -9,8 +9,8 @@
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
 <style>
-:root{--bg:#09090b;--surf:#18181b;--s-h:rgba(39,39,42,0.5);--txt:#ffffff;--mut:#a1a1aa;--acc:#FFFC00;--brd:rgba(255,255,255,0.08);--btn:#FFFC00;--btnt:#000000;--nav:rgba(9,9,11,0.85);--sc:rgba(0,0,0,0.6);--gw:rgba(255,252,0,0.15)}
-.lt{--bg:#f8f9fa;--surf:#ffffff;--s-h:rgba(244,244,245,0.5);--txt:#18181b;--mut:#5f6368;--acc:#d4d100;--brd:rgba(0,0,0,0.08);--btn:#18181b;--btnt:#ffffff;--nav:rgba(255,255,255,0.85);--sc:rgba(0,0,0,0.15);--gw:rgba(0,0,0,0.05)}
+:root{--bg:#09090b;--surf:#18181b;--s-h:rgba(39,39,42,0.5);--txt:#ffffff;--mut:#a1a1aa;--acc:#FFFC00;--brd:rgba(255,255,255,0.08);--btn:#FFFC00;--btnt:#000000;--nav:rgba(9,9,11,0.85);--sc:rgba(0,0,0,0.6);--gw:rgba(255,252,0,0.15);--nav-glass:rgba(0,0,0,0.25)}
+.lt{--bg:#f8f9fa;--surf:#ffffff;--s-h:rgba(244,244,245,0.5);--txt:#18181b;--mut:#5f6368;--acc:#d4d100;--brd:rgba(0,0,0,0.08);--btn:#18181b;--btnt:#ffffff;--nav:rgba(255,255,255,0.85);--sc:rgba(0,0,0,0.15);--gw:rgba(0,0,0,0.05);--nav-glass:rgba(255,255,255,0.35)}
 body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background-color .5s,color .5s}
 ::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--mut);border-radius:10px}
 .f-x{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background-image:radial-gradient(circle at 15% 50%,var(--gw),transparent 25%),radial-gradient(circle at 85% 30%,var(--gw),transparent 25%),linear-gradient(var(--brd) 1px,transparent 1px),linear-gradient(90deg,var(--brd) 1px,transparent 1px);background-size:100% 100%,100% 100%,40px 40px,40px 40px;background-position:0 0,0 0,-1px -1px,-1px -1px;animation:p 20s linear infinite}
@@ -110,6 +110,19 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
 .ip-overlay.ac{opacity:1;pointer-events:auto}
 .ip-box{background:var(--surf);border:1px solid var(--brd);border-radius:1.5rem;padding:2rem;max-width:26rem;width:100%;transform:scale(.92) translateY(12px);transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .3s;opacity:0;box-shadow:0 32px 64px rgba(0,0,0,.5)}
 .ip-overlay.ac .ip-box{transform:scale(1) translateY(0);opacity:1}
+
+/* ===== LIQUID GLASS NAV ===== */
+.glass-bg {
+  overflow: hidden;
+  background: var(--nav-glass);
+  backdrop-filter: url(#liquid-nav) saturate(1.2);
+  -webkit-backdrop-filter: url(#liquid-nav) saturate(1.2);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  contain: layout style paint;
+  will-change: backdrop-filter, transform;
+  box-shadow: rgba(255, 255, 255, 0.1) 0px 0px 0px 0.5px inset, rgba(0, 0, 0, 0.1) 0px 4px 16px, rgba(0, 0, 0, 0.08) 0px 8px 24px;
+}
 </style>
 </head>
 <body class="dark flex flex-col min-h-screen">
@@ -117,7 +130,29 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
 
 <!-- NAV -->
 <div class="fixed top-4 md:top-6 left-0 right-0 z-50 flex justify-center px-4 md:px-6 pointer-events-none">
-  <nav class="w-full max-w-[1400px] transition-colors duration-500 border rounded-full pointer-events-auto shadow-2xl relative" style="background:var(--nav);backdrop-filter:blur(24px);border-color:var(--brd)">
+  <nav class="w-full max-w-[1400px] pointer-events-auto relative">
+    
+    <!-- Liquid Glass Background Layer -->
+    <div id="glass-nav" class="absolute inset-0 z-0 glass-bg rounded-full transition-colors duration-500 border border-[var(--brd)]">
+      <!-- Embedded SVG Refraction Engine (Perfect ShuttleTV Logic) -->
+      <svg class="w-full h-full pointer-events-none absolute inset-0 opacity-0 -z-10" xmlns="http://www.w3.org/2000/svg" style="transform: translateZ(0); will-change: transform;">
+        <defs>
+          <filter id="liquid-nav" color-interpolation-filters="sRGB" x="0%" y="0%" width="100%" height="100%">
+            <feImage id="mapNav" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="map" href=""/>
+            <feDisplacementMap in="SourceGraphic" in2="map" id="redchannel" result="dispRed" scale="-180" xChannelSelector="R" yChannelSelector="G"/>
+            <feColorMatrix in="dispRed" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="red"/>
+            <feDisplacementMap in="SourceGraphic" in2="map" id="greenchannel" result="dispGreen" scale="-170" xChannelSelector="R" yChannelSelector="G"/>
+            <feColorMatrix in="dispGreen" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="green"/>
+            <feDisplacementMap in="SourceGraphic" in2="map" id="bluechannel" result="dispBlue" scale="-160" xChannelSelector="R" yChannelSelector="G"/>
+            <feColorMatrix in="dispBlue" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="blue"/>
+            <feBlend in="red" in2="green" mode="screen" result="rg"/>
+            <feBlend in="rg" in2="blue" mode="screen" result="output"/>
+            <feGaussianBlur in="output" stdDeviation="0.5"/>
+          </filter>
+        </defs>
+      </svg>
+    </div>
+    
     <div class="px-6 py-4 flex items-center justify-between relative z-10">
       <div class="flex items-center gap-3 cursor-pointer" onclick="_v('h')">
         <img src="src/media/branding/icon.png" class="w-10 h-10 rounded-xl object-cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -431,6 +466,72 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
 </div>
 
 <script>
+// ==================== LIQUID GLASS NAV SCRIPT ====================
+function updateNavMap() {
+  const navEl = document.getElementById('glass-nav');
+  let mapNav = document.getElementById('mapNav');
+  if (!navEl || !mapNav) return;
+  const r = navEl.getBoundingClientRect();
+  if (r.width === 0 || r.height === 0) return;
+  
+  const w = r.width;
+  const h = r.height;
+  const rx = h / 2; // Pill shape fully rounded
+  
+  // Exact ShuttleTV Displacement SVG Generation
+  const svgStr = `
+    <svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="redG" x1="100%" y1="0%" x2="0%" y2="0%">
+          <stop offset="0%" stop-color="#0000"/>
+          <stop offset="100%" stop-color="red"/>
+        </linearGradient>
+        <linearGradient id="blueG" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#0000"/>
+          <stop offset="100%" stop-color="blue"/>
+        </linearGradient>
+      </defs>
+      <rect x="0" y="0" width="${w}" height="${h}" fill="black" />
+      <rect x="0" y="0" width="${w}" height="${h}" rx="${rx}" fill="url(#redG)" />
+      <rect x="0" y="0" width="${w}" height="${h}" rx="${rx}" fill="url(#blueG)" style="mix-blend-mode: screen" />
+      <rect x="1.68" y="1.68" width="${w - 3.36}" height="${h - 3.36}" rx="${Math.max(0, rx - 1.68)}" fill="hsl(0 0% 50% / 0.93)" style="filter:blur(7px)" />
+    </svg>
+  `.trim().replace(/\n/g, '').replace(/\s+/g, ' ');
+
+  const navMapUri = 'data:image/svg+xml,' + encodeURIComponent(svgStr);
+  
+  // Replace FEImage to bypass Chromium's cached layout updates
+  const fresh = document.createElementNS('http://www.w3.org/2000/svg', 'feImage');
+  fresh.setAttribute('id', 'mapNav');
+  fresh.setAttribute('x', '0');
+  fresh.setAttribute('y', '0');
+  fresh.setAttribute('width', '100%');
+  fresh.setAttribute('height', '100%');
+  fresh.setAttribute('preserveAspectRatio', 'none');
+  fresh.setAttribute('result', 'map');
+  fresh.setAttribute('href', navMapUri);
+  
+  mapNav.parentNode.replaceChild(fresh, mapNav);
+}
+
+let navRaf = 0;
+function scheduleNavUpdate() {
+  if (navRaf) return;
+  navRaf = requestAnimationFrame(() => {
+    navRaf = 0;
+    updateNavMap();
+  });
+}
+
+// Give layout time to settle
+setTimeout(() => {
+  const navEl = document.getElementById('glass-nav');
+  if (navEl) {
+    new ResizeObserver(scheduleNavUpdate).observe(navEl);
+    scheduleNavUpdate();
+  }
+}, 100);
+
 // ==================== MARKED CONFIG ====================
 marked.setOptions({gfm:true,breaks:true});
 
