@@ -111,12 +111,24 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
 .ip-box{background:var(--surf);border:1px solid var(--brd);border-radius:1.5rem;padding:2rem;max-width:26rem;width:100%;transform:scale(.92) translateY(12px);transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .3s;opacity:0;box-shadow:0 32px 64px rgba(0,0,0,.5)}
 .ip-overlay.ac .ip-box{transform:scale(1) translateY(0);opacity:1}
 
-/* ===== LIQUID GLASS NAV ===== */
+/* ===== LIQUID GLASS (shared) ===== */
 .glass-bg {
   overflow: hidden;
   background: var(--nav-glass);
   backdrop-filter: url(#liquid-nav) saturate(1.2);
   -webkit-backdrop-filter: url(#liquid-nav) saturate(1.2);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  contain: layout style paint;
+  will-change: backdrop-filter, transform;
+  box-shadow: rgba(255, 255, 255, 0.1) 0px 0px 0px 0.5px inset, rgba(0, 0, 0, 0.1) 0px 4px 16px, rgba(0, 0, 0, 0.08) 0px 8px 24px;
+}
+
+.glass-footer {
+  overflow: hidden;
+  background: var(--nav-glass);
+  backdrop-filter: url(#liquid-footer) saturate(1.2);
+  -webkit-backdrop-filter: url(#liquid-footer) saturate(1.2);
   transform: translateZ(0);
   backface-visibility: hidden;
   contain: layout style paint;
@@ -131,10 +143,10 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
 <!-- NAV -->
 <div class="fixed top-4 md:top-6 left-0 right-0 z-50 flex justify-center px-4 md:px-6 pointer-events-none">
   <nav class="w-full max-w-[1400px] pointer-events-auto relative">
-    
+
     <!-- Liquid Glass Background Layer -->
     <div id="glass-nav" class="absolute inset-0 z-0 glass-bg rounded-full transition-colors duration-500 border border-[var(--brd)]">
-      <!-- Embedded SVG Refraction Engine (Perfect ShuttleTV Logic) -->
+      <!-- Embedded SVG Refraction Engine (Nav) -->
       <svg class="w-full h-full pointer-events-none absolute inset-0 opacity-0 -z-10" xmlns="http://www.w3.org/2000/svg" style="transform: translateZ(0); will-change: transform;">
         <defs>
           <filter id="liquid-nav" color-interpolation-filters="sRGB" x="0%" y="0%" width="100%" height="100%">
@@ -152,7 +164,7 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
         </defs>
       </svg>
     </div>
-    
+
     <div class="px-6 py-4 flex items-center justify-between relative z-10">
       <div class="flex items-center gap-3 cursor-pointer" onclick="_v('h')">
         <img src="src/media/branding/icon.png" class="w-10 h-10 rounded-xl object-cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -267,7 +279,26 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
 
 <!-- FOOTER -->
 <div class="w-full max-w-[1400px] mx-auto px-6 pb-6 mt-auto relative z-40">
-  <div class="bg-black border border-[#222] rounded-[3rem] p-8 md:p-12 relative overflow-hidden shadow-2xl" style="background:var(--surf);border-color:var(--brd)">
+  <div id="glass-footer" class="glass-footer rounded-[3rem] p-8 md:p-12 relative overflow-hidden border" style="border-color:var(--brd)">
+
+    <!-- Embedded SVG Refraction Engine (Footer) -->
+    <svg class="w-full h-full pointer-events-none absolute inset-0 opacity-0 -z-10" xmlns="http://www.w3.org/2000/svg" style="transform:translateZ(0);will-change:transform;">
+      <defs>
+        <filter id="liquid-footer" color-interpolation-filters="sRGB" x="0%" y="0%" width="100%" height="100%">
+          <feImage id="mapFooter" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="map" href=""/>
+          <feDisplacementMap in="SourceGraphic" in2="map" result="dispRed" scale="-180" xChannelSelector="R" yChannelSelector="G"/>
+          <feColorMatrix in="dispRed" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="red"/>
+          <feDisplacementMap in="SourceGraphic" in2="map" result="dispGreen" scale="-170" xChannelSelector="R" yChannelSelector="G"/>
+          <feColorMatrix in="dispGreen" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="green"/>
+          <feDisplacementMap in="SourceGraphic" in2="map" result="dispBlue" scale="-160" xChannelSelector="R" yChannelSelector="G"/>
+          <feColorMatrix in="dispBlue" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="blue"/>
+          <feBlend in="red" in2="green" mode="screen" result="rg"/>
+          <feBlend in="rg" in2="blue" mode="screen" result="output"/>
+          <feGaussianBlur in="output" stdDeviation="0.5"/>
+        </filter>
+      </defs>
+    </svg>
+
     <div class="absolute top-0 right-0 w-64 h-64 bg-[var(--acc)] opacity-5 blur-[80px] pointer-events-none"></div>
     <div class="flex flex-col md:flex-row items-start justify-between gap-8 px-2 relative z-10">
       <div class="space-y-8">
@@ -466,19 +497,18 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
 </div>
 
 <script>
-// ==================== LIQUID GLASS NAV SCRIPT ====================
+// ==================== LIQUID GLASS — NAV ====================
 function updateNavMap() {
   const navEl = document.getElementById('glass-nav');
   let mapNav = document.getElementById('mapNav');
   if (!navEl || !mapNav) return;
   const r = navEl.getBoundingClientRect();
   if (r.width === 0 || r.height === 0) return;
-  
+
   const w = r.width;
   const h = r.height;
   const rx = h / 2; // Pill shape fully rounded
-  
-  // Exact ShuttleTV Displacement SVG Generation
+
   const svgStr = `
     <svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -499,8 +529,7 @@ function updateNavMap() {
   `.trim().replace(/\n/g, '').replace(/\s+/g, ' ');
 
   const navMapUri = 'data:image/svg+xml,' + encodeURIComponent(svgStr);
-  
-  // Replace FEImage to bypass Chromium's cached layout updates
+
   const fresh = document.createElementNS('http://www.w3.org/2000/svg', 'feImage');
   fresh.setAttribute('id', 'mapNav');
   fresh.setAttribute('x', '0');
@@ -510,25 +539,81 @@ function updateNavMap() {
   fresh.setAttribute('preserveAspectRatio', 'none');
   fresh.setAttribute('result', 'map');
   fresh.setAttribute('href', navMapUri);
-  
+
   mapNav.parentNode.replaceChild(fresh, mapNav);
 }
 
 let navRaf = 0;
 function scheduleNavUpdate() {
   if (navRaf) return;
-  navRaf = requestAnimationFrame(() => {
-    navRaf = 0;
-    updateNavMap();
-  });
+  navRaf = requestAnimationFrame(() => { navRaf = 0; updateNavMap(); });
 }
 
-// Give layout time to settle
 setTimeout(() => {
   const navEl = document.getElementById('glass-nav');
   if (navEl) {
     new ResizeObserver(scheduleNavUpdate).observe(navEl);
     scheduleNavUpdate();
+  }
+}, 100);
+
+// ==================== LIQUID GLASS — FOOTER ====================
+function updateFooterMap() {
+  const el = document.getElementById('glass-footer');
+  let mapEl = document.getElementById('mapFooter');
+  if (!el || !mapEl) return;
+  const r = el.getBoundingClientRect();
+  if (r.width === 0 || r.height === 0) return;
+
+  const w = r.width;
+  const h = r.height;
+  const rx = 48; // matches rounded-[3rem] = 48px
+
+  const svgStr = `
+    <svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="fRedG" x1="100%" y1="0%" x2="0%" y2="0%">
+          <stop offset="0%" stop-color="#0000"/>
+          <stop offset="100%" stop-color="red"/>
+        </linearGradient>
+        <linearGradient id="fBlueG" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#0000"/>
+          <stop offset="100%" stop-color="blue"/>
+        </linearGradient>
+      </defs>
+      <rect x="0" y="0" width="${w}" height="${h}" fill="black"/>
+      <rect x="0" y="0" width="${w}" height="${h}" rx="${rx}" fill="url(#fRedG)"/>
+      <rect x="0" y="0" width="${w}" height="${h}" rx="${rx}" fill="url(#fBlueG)" style="mix-blend-mode:screen"/>
+      <rect x="1.68" y="1.68" width="${w - 3.36}" height="${h - 3.36}" rx="${Math.max(0, rx - 1.68)}" fill="hsl(0 0% 50% / 0.93)" style="filter:blur(7px)"/>
+    </svg>
+  `.trim().replace(/\n/g, '').replace(/\s+/g, ' ');
+
+  const uri = 'data:image/svg+xml,' + encodeURIComponent(svgStr);
+
+  const fresh = document.createElementNS('http://www.w3.org/2000/svg', 'feImage');
+  fresh.setAttribute('id', 'mapFooter');
+  fresh.setAttribute('x', '0');
+  fresh.setAttribute('y', '0');
+  fresh.setAttribute('width', '100%');
+  fresh.setAttribute('height', '100%');
+  fresh.setAttribute('preserveAspectRatio', 'none');
+  fresh.setAttribute('result', 'map');
+  fresh.setAttribute('href', uri);
+
+  mapEl.parentNode.replaceChild(fresh, mapEl);
+}
+
+let footerRaf = 0;
+function scheduleFooterUpdate() {
+  if (footerRaf) return;
+  footerRaf = requestAnimationFrame(() => { footerRaf = 0; updateFooterMap(); });
+}
+
+setTimeout(() => {
+  const footerEl = document.getElementById('glass-footer');
+  if (footerEl) {
+    new ResizeObserver(scheduleFooterUpdate).observe(footerEl);
+    scheduleFooterUpdate();
   }
 }, 100);
 
@@ -589,7 +674,6 @@ const IP = (() => {
   };
 })();
 
-// Enter key in IP input
 _e('ip-input').addEventListener('keydown', e => { if (e.key === 'Enter') IP.confirm(); if (e.key === 'Escape') IP.cancel(); });
 _e('cp-overlay').addEventListener('click', e => { if (e.target === _e('cp-overlay')) CP.cancel(); });
 _e('ip-overlay').addEventListener('click', e => { if (e.target === _e('ip-overlay')) IP.cancel(); });
@@ -620,39 +704,19 @@ const _ex = (c) => {
 };
 
 // ==================== SMART PASTE NORMALIZER ====================
-// Cleans up pasted text from Claude, ChatGPT, Gemini, etc.
-// Converts HTML→Markdown when rich text is pasted, fixes common artifacts.
 function normalizeMarkdownPaste(text) {
   let out = text;
-
-  // Remove zero-width chars and BOM
   out = out.replace(/[\u200B\u200C\u200D\uFEFF]/g, '');
-
-  // Normalize line endings
   out = out.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
-
-  // Fix "smart" quotes → standard
   out = out.replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"');
-
-  // Fix em/en dashes that look like list items (e.g. "– item")
   out = out.replace(/^[–—]\s+/gm, '- ');
-
-  // Fix bullet chars → markdown list
   out = out.replace(/^[•·▪▸►▶‣]\s*/gm, '- ');
-
-  // Normalize consecutive blank lines (max 2)
   out = out.replace(/\n{3,}/g, '\n\n');
-
-  // Trim trailing whitespace per line
   out = out.split('\n').map(l => l.trimEnd()).join('\n');
-
-  // Trim overall
   out = out.trim();
-
   return out;
 }
 
-// Converts HTML (from rich text clipboard) to Markdown
 function htmlToMarkdown(html) {
   const div = document.createElement('div');
   div.innerHTML = html;
@@ -699,7 +763,7 @@ function htmlToMarkdown(html) {
         const txt = Array.from(li.childNodes).map(walk).join('').trim();
         return `${i + 1}. ${txt}`;
       }).join('\n') + '\n';
-      case 'li': return inner; // handled by ul/ol
+      case 'li': return inner;
       case 'hr': return '\n---\n';
       case 'br': return '\n';
       case 'p': return `\n${inner.trim()}\n`;
@@ -725,7 +789,6 @@ function htmlToMarkdown(html) {
   }
 
   let md = walk(div);
-  // Normalize blank lines
   md = md.replace(/\n{3,}/g, '\n\n').trim();
   return md;
 }
@@ -742,7 +805,6 @@ const ED = (() => {
     const lineArr = txt.split('\n');
     const lineCount = lineArr.length;
 
-    // Cursor position
     const pos = t.selectionStart;
     const before = txt.substring(0, pos);
     const ln = before.split('\n').length;
@@ -752,7 +814,6 @@ const ED = (() => {
     _e('ed-lc').textContent = lineCount + (lineCount === 1 ? ' line' : ' lines');
     _e('ed-pos').textContent = `Ln ${ln}, Col ${col}`;
 
-    // Update line numbers
     const lnEl = lines();
     const needed = lineCount;
     const existing = lnEl.childNodes.length;
@@ -768,7 +829,6 @@ const ED = (() => {
       while (lnEl.childNodes.length > needed) lnEl.removeChild(lnEl.lastChild);
     }
 
-    // Sync line number scroll
     lnEl.scrollTop = t.scrollTop;
   }
 
@@ -776,7 +836,6 @@ const ED = (() => {
     lines().scrollTop = ta().scrollTop;
   }
 
-  // Insert text at cursor, restore selection
   function insert(before, after = '', placeholder = '') {
     const t = ta();
     const start = t.selectionStart, end = t.selectionEnd;
@@ -790,20 +849,15 @@ const ED = (() => {
     updateStats();
   }
 
-  // Public API
   return {
     init() {
       const t = ta();
 
-      // Line number scroll sync
       t.addEventListener('scroll', syncScroll);
-
-      // Stats on every input/click/key
       t.addEventListener('input', updateStats);
       t.addEventListener('click', updateStats);
       t.addEventListener('keyup', updateStats);
 
-      // Smart keyboard handling
       t.addEventListener('keydown', e => {
         const start = t.selectionStart, end = t.selectionEnd;
         const val = t.value;
@@ -811,11 +865,9 @@ const ED = (() => {
         const lineStart = before.lastIndexOf('\n') + 1;
         const currentLine = before.substring(lineStart);
 
-        // Tab → 2 spaces (or indent selection)
         if (e.key === 'Tab') {
           e.preventDefault();
           if (start !== end) {
-            // Multi-line indent
             const selText = val.substring(start, end);
             const indented = e.shiftKey
               ? selText.replace(/^ {1,2}/gm, '')
@@ -830,14 +882,12 @@ const ED = (() => {
           return;
         }
 
-        // Enter → smart continuation of lists
         if (e.key === 'Enter' && !e.shiftKey) {
           const listMatch = currentLine.match(/^(\s*)([-*+]|\d+\.)\s+(\[[ x]\]\s+)?/);
           if (listMatch) {
             const [fullMatch, indent, bullet, check] = listMatch;
             const lineContent = currentLine.substring(fullMatch.length);
             if (!lineContent.trim()) {
-              // Empty list item → exit list
               e.preventDefault();
               const removeFrom = start - fullMatch.length;
               t.value = val.substring(0, removeFrom) + '\n' + val.substring(end);
@@ -858,7 +908,6 @@ const ED = (() => {
           }
         }
 
-        // Auto-pair: (, [, {, ", '
         const pairs = {'(':')', '[':']', '{':'}', '"':'"'};
         if (pairs[e.key] && start === end) {
           e.preventDefault();
@@ -869,7 +918,6 @@ const ED = (() => {
           return;
         }
 
-        // Skip over closing pair
         const closers = [')', ']', '}', '"'];
         if (closers.includes(e.key) && val[start] === e.key && start === end) {
           e.preventDefault();
@@ -877,7 +925,6 @@ const ED = (() => {
           return;
         }
 
-        // Backspace: delete pair
         if (e.key === 'Backspace' && start === end && start > 0) {
           const pairMap = {'(':')', '[':']', '{':'}', '"':'"', "'":'\'', '`':'`'};
           const charBefore = val[start - 1];
@@ -893,9 +940,7 @@ const ED = (() => {
         updateStats();
       });
 
-      // Smart paste
       t.addEventListener('paste', async e => {
-        // Check for HTML in clipboard (from rich text sources)
         const html = e.clipboardData?.getData('text/html');
         const plain = e.clipboardData?.getData('text/plain') || '';
 
@@ -903,11 +948,7 @@ const ED = (() => {
         let wasHtml = false;
 
         if (html && html.trim()) {
-          // Check if there's actual formatting worth converting
-          // (skip if it's just whitespace HTML wrapper with no tags)
-          const stripped = html.replace(/<[^>]+>/g, '').trim();
           const hasMeaningfulTags = /<(h[1-6]|strong|em|ul|ol|li|pre|code|blockquote|table|a|img|hr)[^>]*>/i.test(html);
-
           if (hasMeaningfulTags) {
             e.preventDefault();
             finalText = htmlToMarkdown(html);
@@ -916,14 +957,12 @@ const ED = (() => {
         }
 
         if (!wasHtml) {
-          // Still normalize plain text
           e.preventDefault();
           finalText = plain;
         }
 
         finalText = normalizeMarkdownPaste(finalText);
 
-        // Insert at cursor
         const start = t.selectionStart, end = t.selectionEnd;
         t.value = t.value.substring(0, start) + finalText + t.value.substring(end);
         const newPos = start + finalText.length;
@@ -949,7 +988,6 @@ const ED = (() => {
       const lineEnd = val.indexOf('\n', start);
       const line = val.substring(lineStart, lineEnd === -1 ? val.length : lineEnd);
 
-      // Toggle: if already prefixed, remove; otherwise add
       if (line.startsWith(prefix)) {
         t.value = val.substring(0, lineStart) + line.substring(prefix.length) + val.substring(lineEnd === -1 ? val.length : lineEnd);
         t.setSelectionRange(Math.max(lineStart, start - prefix.length), Math.max(lineStart, start - prefix.length));
@@ -1012,14 +1050,6 @@ const ED = (() => {
     clear() { ta().value = ''; updateStats(); }
   };
 })();
-
-// ==================== MARKDOWN METADATA ====================
-const _tm_fn = (b) => {
-  const m = _e('m-n'), i = b?.querySelector('i');
-  if (!m) return;
-  const o = m.classList.toggle('ac');
-  if (i) { i.className = o ? 'fa-solid fa-xmark transition-transform duration-300' : 'fa-solid fa-bars transition-transform duration-300'; }
-};
 
 // ==================== GITHUB API ====================
 const _g = {
@@ -1220,7 +1250,6 @@ document.querySelectorAll('.rl').forEach(x => _obs.observe(x));
 
 // ==================== KEYBOARD SHORTCUTS ====================
 document.addEventListener('keydown', (e) => {
-  // G to open admin login (when not in input)
   if ((e.key === 'g' || e.key === 'G') && !['INPUT','TEXTAREA'].includes(e.target.tagName)) {
     e.preventDefault(); _m(_e('m-a').style.opacity === '0');
   }
