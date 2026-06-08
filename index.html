@@ -135,9 +135,26 @@ body{background-color:var(--bg);color:var(--txt);font-family:system-ui,-apple-sy
   will-change: backdrop-filter, transform;
   box-shadow: rgba(255, 255, 255, 0.1) 0px 0px 0px 0.5px inset, rgba(0, 0, 0, 0.1) 0px 4px 16px, rgba(0, 0, 0, 0.08) 0px 8px 24px;
 }
+
+.glass-card {
+  overflow: hidden;
+  background: var(--nav-glass);
+  backdrop-filter: var(--card-filter, none) saturate(1.2);
+  -webkit-backdrop-filter: var(--card-filter, none) saturate(1.2);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: backdrop-filter, transform;
+  box-shadow: rgba(255, 255, 255, 0.07) 0px 0px 0px 0.5px inset, rgba(0, 0, 0, 0.25) 0px 8px 32px, rgba(0, 0, 0, 0.12) 0px 2px 8px;
+}
 </style>
 </head>
 <body class="dark flex flex-col min-h-screen">
+
+<!-- Hidden shared SVG: per-card glass filters injected here dynamically -->
+<svg id="svg-card-defs" style="position:absolute;width:0;height:0;overflow:hidden;pointer-events:none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <defs id="card-defs-root"></defs>
+</svg>
+
 <div class="f-x"></div>
 
 <!-- NAV -->
@@ -1145,7 +1162,9 @@ const _v = (t) => {
 // ==================== CARD GRID RENDERER ====================
 const _cg = (d, l) => {
   if (!d.length) return `<div class="col-span-full py-20 text-center text-lg" style="color:var(--mut)">No repository posts resolved.</div>`;
-  return d.slice(0, l).map(x => {
+  return d.slice(0, l).map((x, i) => {
+    const cardId = 'gc-' + x.s.substring(0, 8) + '-' + i;
+    const filterId = 'liq-' + cardId;
     const m = _ex(x.c); let p = _pt(m.b);
     let tmp = document.createElement('div'); tmp.innerHTML = p;
     let plainText = tmp.textContent || tmp.innerText || '';
@@ -1156,7 +1175,7 @@ const _cg = (d, l) => {
         <span class="text-xs font-bold hidden sm:block" style="color:var(--txt)">@${u}</span>
       </a>`).join('');
     const fbImg = `onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'100\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%23111\\'/></svg>'"`;
-    return `<div class="sf sf-h flex flex-col overflow-hidden relative group cursor-pointer h-full" onclick="_or('${x.s}')">
+    return `<div id="${cardId}" data-filter-id="${filterId}" class="glass-card sf-h flex flex-col overflow-hidden relative group cursor-pointer h-full" style="border:1px solid var(--brd);border-radius:1.5rem;transition:all .4s cubic-bezier(.4,0,.2,1)" onclick="_or('${x.s}')">
       <div class="h-52 w-full relative overflow-hidden shrink-0" style="mask-image:linear-gradient(to bottom,black 50%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,black 50%,transparent 100%)">
         <img src="${m.th || 'src/media/branding/banner.png'}" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-105" ${fbImg}>
       </div>
@@ -1176,7 +1195,103 @@ const _cg = (d, l) => {
   }).join('');
 };
 
-const _r = (d) => { _e('p-g').innerHTML = _cg(d, 99); _e('f-g').innerHTML = _cg(d, 3); };
+// ==================== CARD GLASS INIT ====================
+function buildCardFilterSVG(filterId, w, h, rx) {
+  const svgStr = `
+    <svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="cRG-${filterId}" x1="100%" y1="0%" x2="0%" y2="0%">
+          <stop offset="0%" stop-color="#0000"/>
+          <stop offset="100%" stop-color="red"/>
+        </linearGradient>
+        <linearGradient id="cBG-${filterId}" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#0000"/>
+          <stop offset="100%" stop-color="blue"/>
+        </linearGradient>
+      </defs>
+      <rect x="0" y="0" width="${w}" height="${h}" fill="black"/>
+      <rect x="0" y="0" width="${w}" height="${h}" rx="${rx}" fill="url(#cRG-${filterId})"/>
+      <rect x="0" y="0" width="${w}" height="${h}" rx="${rx}" fill="url(#cBG-${filterId})" style="mix-blend-mode:screen"/>
+      <rect x="1.68" y="1.68" width="${w-3.36}" height="${h-3.36}" rx="${Math.max(0,rx-1.68)}" fill="hsl(0 0% 50% / 0.93)" style="filter:blur(7px)"/>
+    </svg>
+  `.trim().replace(/\n/g,'').replace(/\s+/g,' ');
+  return 'data:image/svg+xml,' + encodeURIComponent(svgStr);
+}
+
+function initCardGlass() {
+  const defsRoot = document.getElementById('card-defs-root');
+  if (!defsRoot) return;
+
+  document.querySelectorAll('.glass-card[data-filter-id]').forEach(card => {
+    const filterId = card.dataset.filterId;
+    const cardId = card.id;
+
+    // Create or reuse filter element in the shared defs
+    let filter = document.getElementById(filterId);
+    if (!filter) {
+      filter = document.createElementNS('http://www.w3.org/2000/svg', 'filter');
+      filter.setAttribute('id', filterId);
+      filter.setAttribute('color-interpolation-filters', 'sRGB');
+      filter.setAttribute('x', '0%');
+      filter.setAttribute('y', '0%');
+      filter.setAttribute('width', '100%');
+      filter.setAttribute('height', '100%');
+      filter.innerHTML = `
+        <feImage id="map-${filterId}" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="map" href=""/>
+        <feDisplacementMap in="SourceGraphic" in2="map" result="dispRed" scale="-140" xChannelSelector="R" yChannelSelector="G"/>
+        <feColorMatrix in="dispRed" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="red"/>
+        <feDisplacementMap in="SourceGraphic" in2="map" result="dispGreen" scale="-132" xChannelSelector="R" yChannelSelector="G"/>
+        <feColorMatrix in="dispGreen" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="green"/>
+        <feDisplacementMap in="SourceGraphic" in2="map" result="dispBlue" scale="-124" xChannelSelector="R" yChannelSelector="G"/>
+        <feColorMatrix in="dispBlue" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="blue"/>
+        <feBlend in="red" in2="green" mode="screen" result="rg"/>
+        <feBlend in="rg" in2="blue" mode="screen" result="output"/>
+        <feGaussianBlur in="output" stdDeviation="0.4"/>
+      `;
+      defsRoot.appendChild(filter);
+    }
+
+    // Apply the filter to the card via CSS custom property
+    card.style.setProperty('--card-filter', `url(#${filterId})`);
+    card.style.backdropFilter = `url(#${filterId}) saturate(1.2)`;
+    card.style.webkitBackdropFilter = `url(#${filterId}) saturate(1.2)`;
+
+    // Update the displacement map feImage for this card's dimensions
+    function updateCardMap() {
+      const r = card.getBoundingClientRect();
+      if (r.width === 0 || r.height === 0) return;
+      const w = r.width, h = r.height, rx = 24; // 1.5rem = 24px matches border-radius
+      const mapEl = document.getElementById('map-' + filterId);
+      if (!mapEl) return;
+      const uri = buildCardFilterSVG(filterId, w, h, rx);
+      const fresh = document.createElementNS('http://www.w3.org/2000/svg', 'feImage');
+      fresh.setAttribute('id', 'map-' + filterId);
+      fresh.setAttribute('x', '0');
+      fresh.setAttribute('y', '0');
+      fresh.setAttribute('width', '100%');
+      fresh.setAttribute('height', '100%');
+      fresh.setAttribute('preserveAspectRatio', 'none');
+      fresh.setAttribute('result', 'map');
+      fresh.setAttribute('href', uri);
+      mapEl.parentNode.replaceChild(fresh, mapEl);
+    }
+
+    let cardRaf = 0;
+    new ResizeObserver(() => {
+      if (cardRaf) return;
+      cardRaf = requestAnimationFrame(() => { cardRaf = 0; updateCardMap(); });
+    }).observe(card);
+
+    setTimeout(updateCardMap, 80);
+  });
+}
+
+const _r = (d) => {
+  _e('p-g').innerHTML = _cg(d, 99);
+  _e('f-g').innerHTML = _cg(d, 3);
+  // Wire up glass effect after DOM is written
+  setTimeout(initCardGlass, 0);
+};
 
 // ==================== POST READ ====================
 const _or = (s) => {
