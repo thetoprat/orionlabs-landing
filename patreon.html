@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redirecting to Patreon — Orion Labs</title>
+<meta http-equiv="refresh" content="0;url=https://www.patreon.com/cw/OrionLabs/">
+<link rel="canonical" href="https://www.patreon.com/cw/OrionLabs/">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#09090b;color:#fff;font-family:system-ui,-apple-system,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1.5rem;overflow:hidden;-webkit-font-smoothing:antialiased}
+.bg{position:fixed;inset:0;z-index:0;background-image:radial-gradient(circle at 30% 50%,rgba(255,66,77,0.18),transparent 35%),radial-gradient(circle at 70% 50%,rgba(255,66,77,0.10),transparent 35%),linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:100% 100%,100% 100%,40px 40px,40px 40px;animation:p 20s linear infinite}
+@keyframes p{0%{background-position:0 0,0 0,0 0,0 0}100%{background-position:0 0,0 0,40px 40px,40px 40px}}
+.card{position:relative;z-index:1;background:#18181b;border:1px solid rgba(255,255,255,0.08);border-radius:1.5rem;padding:3rem 2.5rem;max-width:28rem;width:100%;text-align:center;box-shadow:0 32px 64px rgba(0,0,0,0.5)}
+.logo{width:64px;height:64px;border-radius:18px;background:#FF424D;display:flex;align-items:center;justify-content:center;font-size:1.75rem;margin:0 auto 1.5rem;box-shadow:0 0 32px rgba(255,66,77,0.4)}
+h1{font-size:1.75rem;font-weight:900;letter-spacing:-0.025em;margin-bottom:0.75rem}
+p{color:#a1a1aa;font-size:0.95rem;line-height:1.6;margin-bottom:2rem}
+.spinner{width:24px;height:24px;border:2px solid rgba(255,66,77,0.2);border-top-color:#FF424D;border-radius:50%;animation:s 0.8s linear infinite;margin:0 auto 1.5rem}
+@keyframes s{to{transform:rotate(360deg)}}
+.btn{display:inline-flex;align-items:center;gap:0.5rem;background:#FF424D;color:#fff;padding:0.85rem 1.75rem;border-radius:9999px;font-weight:700;font-size:0.95rem;text-decoration:none;transition:transform 0.2s,box-shadow 0.2s}
+.btn:hover{transform:scale(1.03);box-shadow:0 0 24px rgba(255,66,77,0.5)}
+.back{display:inline-block;margin-top:1.5rem;color:#a1a1aa;font-size:0.85rem;text-decoration:none;transition:color 0.2s}
+.back:hover{color:#fff}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="card">
+  <div class="logo"><i class="fa-brands fa-patreon"></i></div>
+  <h1>Opening Patreon…</h1>
+  <p>One moment — taking you to the Orion Labs Patreon page.</p>
+  <div class="spinner"></div>
+  <a href="https://www.patreon.com/cw/OrionLabs/" class="btn"><i class="fa-brands fa-patreon"></i> Continue to Patreon</a>
+  <div><a href="index.html" class="back">← Back to Orion Labs</a></div>
+</div>
+<script>
+window.location.replace('https://www.patreon.com/cw/OrionLabs/');
+</script>
+</body>
+</html>
